@@ -1,6 +1,6 @@
 CC=gcc
-CFLAGS=-Wextra -Wall 
-LDFLAGS=-lSDL2
+CFLAGS=-Wextra -Wall
+LDFLAGS=-lSDL2 -lm
 EXEC=snake
 
 all: $(EXEC)
