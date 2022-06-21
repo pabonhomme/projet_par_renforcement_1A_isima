@@ -4,16 +4,7 @@
 #include <string.h>
 #include <time.h>
 
-int main(int argc, char** argv) {
-
-  srand(time(NULL));
-  (void)argc;
-  (void)argv;
-
-  SDL_Window* window = NULL;
-  SDL_Renderer* renderer = NULL;
-  SDL_DisplayMode screen;
-  void end_sdl(char ok,                                               // fin normale : ok = 0 ; anormale ok = 1
+void end_sdl(char ok,                                               // fin normale : ok = 0 ; anormale ok = 1
              char const* msg,                                       // message à afficher
              SDL_Window* window,                                    // fenêtre à fermer
              SDL_Renderer* renderer) {                              // renderer à fermer
@@ -42,7 +33,18 @@ int main(int argc, char** argv) {
   if (!ok) {                                                        // On quitte si cela ne va pas                
     exit(EXIT_FAILURE);                                                           
   }                                                                               
-}                        
+}                 
+
+int main(int argc, char** argv) {
+
+  srand(time(NULL));
+  (void)argc;
+  (void)argv;
+
+  SDL_Window* window = NULL;
+  SDL_Renderer* renderer = NULL;
+  SDL_DisplayMode screen;
+         
   if (SDL_Init(SDL_INIT_VIDEO) != 0) end_sdl(0, "ERROR SDL INIT", window, renderer);
 
   SDL_GetCurrentDisplayMode(0, &screen);
