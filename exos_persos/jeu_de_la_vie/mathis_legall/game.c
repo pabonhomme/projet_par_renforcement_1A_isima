@@ -340,31 +340,3 @@ void freeGrid(int n, int** grid)
 
 	free(grid);
 }
-
-// int main()
-// {	
-// 	int n = 10;
-// 	int i,j;
-
-// 	int** grid = mallocGrid(n);
-
-// 	int** copyGrid = mallocGrid(n);
-
-// 	initGrid(n,grid);
-// 	grid[4][4] = 1;
-// 	grid[4][5] = 1;
-// 	grid[4][6] = 1;
-
-// 	printGrid(n,grid);
-	
-// 	newGrid(n,grid,copyGrid);
-	
-// 	printf("\n \n");
-
-// 	printGrid(n,copyGrid);
-
-// 	freeGrid(n,grid);
-// 	freeGrid(n,copyGrid);
-
-// 	return 0;
-// }

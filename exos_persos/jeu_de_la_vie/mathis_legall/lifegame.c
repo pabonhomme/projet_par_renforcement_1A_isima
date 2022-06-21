@@ -37,7 +37,6 @@ int main()
     int running = 1;
     int gameOn = 0;
     SDL_Event event;
-    int test = 0, color = 0, occur = 0;
     int CaseX, CaseY;
     SDL_Window *window;
     int width = SIZEWINDOW;
@@ -97,10 +96,6 @@ int main()
                 	case SDL_WINDOWEVENT_CLOSE:
                     	printf("appui sur la croix\n");
                     	break;
-                	case SDL_WINDOWEVENT_SIZE_CHANGED:
-                    	width = event.window.data1;
-                    	height = event.window.data2;
-                    	printf("Size : %d%d\n", width, height);
                 	default:
                     	displayRects(rect, renderer, grid);
                 }
@@ -113,13 +108,6 @@ int main()
                 if(!gameOn)
                 {
                 	grid[CaseX][CaseY] = 1;
-                }
-                else
-                {
-                	newGrid(SIZEGRID,grid,copyGrid,birth,survive);
-                	*tmp = *grid;
-                	*grid = *copyGrid;
-                	*copyGrid = *tmp;
                 }
                 displayRects(rect, renderer, grid);
                 break;
@@ -135,8 +123,17 @@ int main()
             case SDL_QUIT:
                 printf("on quitte\n");
                 running = 0;
+                break;
             }
         }
+        if(gameOn){
+            newGrid(SIZEGRID,grid,copyGrid,birth,survive);
+        tmp = grid;
+        grid = copyGrid;
+        copyGrid = tmp;
+        displayRects(rect, renderer, grid);
+        }
+        
         SDL_Delay(100); //  delai minimal
     }
 	freeGrid(SIZEGRID,grid);
