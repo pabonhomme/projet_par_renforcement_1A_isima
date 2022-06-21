@@ -4,7 +4,7 @@
 
 #define PI 3.14159
 
-void Rotate(SDL_Point point[], double theta, int xG, int yG)
+void rotate(SDL_Point point[], double theta, int xG, int yG)
 {
   int i;
   theta *= PI / 180;
