@@ -41,7 +41,7 @@ void printGrid(int n, int** grid)
 	}
 }
 
-void newCell(int n, int i, int j, int** grid, int** copyGrid)
+void newCell(int n, int i, int j, int** grid, int** copyGrid, int birth[], int survive[])
 {
 	int sumNeighbors;
 
@@ -316,7 +316,7 @@ void newCell(int n, int i, int j, int** grid, int** copyGrid)
 	}
 }
 
-void newGrid(int n, int** grid, int** copyGrid)
+void newGrid(int n, int** grid, int** copyGrid, int birth[], int survive[])
 {
 	int i,j;
 
@@ -324,7 +324,7 @@ void newGrid(int n, int** grid, int** copyGrid)
 	{
 		for (j=0; j<n; j++)
 		{
-			newCell(n,i,j,grid,copyGrid);
+			newCell(n,i,j,grid,copyGrid,birth,survive);
 		}
 	}
 }
@@ -341,30 +341,30 @@ void freeGrid(int n, int** grid)
 	free(grid);
 }
 
-int main()
-{	
-	int n = 10;
-	int i,j;
+// int main()
+// {	
+// 	int n = 10;
+// 	int i,j;
 
-	int** grid = mallocGrid(n);
+// 	int** grid = mallocGrid(n);
 
-	int** copyGrid = mallocGrid(n);
+// 	int** copyGrid = mallocGrid(n);
 
-	initGrid(n,grid);
-	grid[4][4] = 1;
-	grid[4][5] = 1;
-	grid[4][6] = 1;
+// 	initGrid(n,grid);
+// 	grid[4][4] = 1;
+// 	grid[4][5] = 1;
+// 	grid[4][6] = 1;
 
-	printGrid(n,grid);
+// 	printGrid(n,grid);
 	
-	newGrid(n,grid,copyGrid);
+// 	newGrid(n,grid,copyGrid);
 	
-	printf("\n \n");
+// 	printf("\n \n");
 
-	printGrid(n,copyGrid);
+// 	printGrid(n,copyGrid);
 
-	freeGrid(n,grid);
-	freeGrid(n,copyGrid);
+// 	freeGrid(n,grid);
+// 	freeGrid(n,copyGrid);
 
-	return 0;
-}
+// 	return 0;
+// }
