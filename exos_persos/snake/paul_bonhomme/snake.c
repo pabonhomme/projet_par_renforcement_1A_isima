@@ -1,124 +1,90 @@
 #include <SDL2/SDL.h>
 #include <stdio.h>
+#include <math.h>
 
-void clear(SDL_Renderer* renderer) {                                 // Je pense que vous allez faire moins laid :)
+#define PI 3.14159
 
-	SDL_SetRenderDrawColor(renderer,                                                
-                         0, 0, 0,                                  // mode Red, Green, Blue (tous dans 0..255)
-                         255);
-	SDL_RenderPresent(renderer);
-	SDL_RenderClear(renderer);
-}
-
-void draw(SDL_Renderer* renderer, SDL_Rect *rectangle, int i) {                                 // Je pense que vous allez faire moins laid :)
-
-	SDL_SetRenderDrawColor(renderer,                                                
-                         (35*i)%255, (5*i)%255, (75*i)%255,                                  // mode Red, Green, Blue (tous dans 0..255)
-                         255);
-	
-	SDL_RenderFillRect(renderer, rectangle);
-	SDL_RenderPresent(renderer);
-}
-
-void gameLoop(SDL_Renderer* renderer, SDL_Rect *rectangle)
+void rotate(SDL_Point point[], double theta, int xG, int yG)
 {
-	SDL_bool program_on = SDL_TRUE;             
-	SDL_Event event; 
-	int i = 0;                     
+  int i;
+  theta *= PI / 180;
 
-	while (program_on==SDL_TRUE)
-	{                        
-
-  		if (SDL_PollEvent(&event))
-  		{                 
-                                         
-    		switch(event.type)
-    		{                       
-    			case SDL_QUIT :                           
-      				program_on = SDL_FALSE;                
-      				break;
-      			case SDL_KEYDOWN:
-    				switch (event.key.keysym.sym)
-    				{             
-      					case SDLK_LEFT: 
-      						                     
-        					break;
-      					case SDLK_RIGHT: 
-      						break;
-      					case SDLK_UP:                               
-        					                                         
-        					break;
-        				default:                              
-      						break;
-      				}
-    			default:                      
-      				break;
-    		}
-  		}
-  		clear(renderer);
-  		draw(renderer, rectangle, i);
-  		i++;
-  		SDL_Delay(100);
- 	}
+  for (i=0; i<4; i++)
+  {
+    point[i].x = (point[i].x-xG)*cos(theta)+(point[i].y-yG)*sin(theta)+xG;
+    point[i].y = -1*(point[i].x-xG)*sin(theta)+(point[i].y-yG)*cos(theta)+yG;
+  }
 }
 
-
-int main() 
+int main()
 {
-  SDL_Window *window;
-  SDL_Renderer *renderer; 
-  SDL_Rect rectangle;                    // Future fenêtre de droite
-  int statut = EXIT_FAILURE;
+  int i = 0;
+  SDL_Renderer *renderer;
+  SDL_Event event;
+  SDL_bool program_on = SDL_TRUE; 
+  
+  SDL_Point point[5];
+  point[0].x = 200;
+  point[0].y = 200;
+  point[1].x = 400;
+  point[1].y = 200;
+  point[2].x = 400;
+  point[2].y = 600;
+  point[3].x = 200;
+  point[3].y = 600;
+  point[4].x = 200;
+  point[4].y = 200;
 
-  SDL_DisplayMode screen;
+  int xG = 600;
+  int yG = 400;
 
-  if (SDL_Init(SDL_INIT_VIDEO) != 0) 
+  double theta = PI;
+
+
+  SDL_Window *window = SDL_CreateWindow(
+    "Window",
+    SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+    1000, 1000,
+    SDL_WINDOW_RESIZABLE);
+
+  if (window == 0)
   {
-    SDL_Log("Error : SDL initialisation - %s\n", 
-    SDL_GetError());                // l'initialisation de la SDL a échoué 
-    goto Quit;
+    fprintf(stderr, "Erreur d'initialisation de la SDL : %s\n", SDL_GetError()); 
   }
 
-  SDL_GetCurrentDisplayMode(0, &screen);
-  printf("Résolution écran\n\tw : %d\n\th : %d\n",
-         screen.w, screen.h);
+  renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED );
 
-  /* Création de la fenêtre */
-  window = SDL_CreateWindow("Premier dessin",
-                            SDL_WINDOWPOS_CENTERED,
-                            SDL_WINDOWPOS_CENTERED, screen.w * 0.66,
-                            screen.h * 0.66,
-                            SDL_WINDOW_OPENGL);
-  if (window == NULL)
-  {
-  	SDL_Log("Error : SDL window 1 creation - %s\n", SDL_GetError());                 // échec de la création de la fenêtre
-  	goto Quit;
+  while (program_on == SDL_TRUE)
+  {                           
+    if (SDL_PollEvent(&event))
+    {                
+            switch(event.type)
+            {                      
+        case SDL_QUIT:                          
+            program_on = SDL_FALSE;                 
+            break;
+
+          case SDL_KEYDOWN:
+            switch (event.key.keysym.sym)
+            {
+              case SDLK_SPACE:
+                program_on = SDL_FALSE;
+                break;
+            }
+
+        default:                                 
+          break;
+        }
+      }
+      SDL_SetRenderDrawColor(renderer, (35*i)%255, (5*i)%255, (75*i)%255, 255);
+      Rotate(point,theta,xG,yG);
+      SDL_RenderDrawLines(renderer, point, 5);
+      SDL_RenderPresent(renderer);
+      SDL_Delay(100);
+
+      i+=1;
   }
-  		
-  /* Création du renderer */
-  renderer = SDL_CreateRenderer(window, -1,SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-  if (renderer == NULL)
-  {
-  	fprintf(stderr, "Erreur SDL_CreateRenderer : %s", SDL_GetError());
- 	goto Quit;
-  }
 
-  rectangle.x = 0;                                                  // x haut gauche du rectangle
-  rectangle.y = 0;                                                  // y haut gauche du rectangle
-  rectangle.w = 50;                                                // sa largeur (w = width)
-  rectangle.h = 50;                                                // sa hauteur (h = height)
-
-  gameLoop(renderer, &rectangle);                                     
-                       
-  SDL_Delay(1000);                                     
-
-Quit: 
-	if(NULL != renderer)
-		SDL_DestroyRenderer(renderer);
-	if(NULL != window)
-		SDL_DestroyWindow(window);
-  	SDL_Quit();
-  	return statut;
-
-return 0;
+  return 0;
+    
 }
