@@ -148,7 +148,10 @@ void moveTexture(SDL_Texture *bg_texture, SDL_Texture* my_texture,
                 		break;
             	}
         	}
-        moveTexture(bg_texture ,bird_texture, window, renderer);
+        if(running)
+        {
+        	moveTexture(bg_texture ,bird_texture, window, renderer);
+        }
       
     }
     
