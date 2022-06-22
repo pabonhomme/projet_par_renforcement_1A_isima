@@ -37,6 +37,7 @@ int main()
     int running = 1;
     int gameOn = 0;
     SDL_Event event;
+    SDL_Rect rect;
     int CaseX, CaseY;
     SDL_Window *window;
     int width = SIZEWINDOW;
@@ -69,8 +70,6 @@ int main()
         fprintf(stderr, "Erreur d'initialisation de la SDL : %s\n", SDL_GetError());
         // faire ce qu'il faut pour quitter proprement
     }
-
-    SDL_Rect rect;
 
     // couleur de fond
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
