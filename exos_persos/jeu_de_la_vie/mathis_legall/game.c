@@ -187,7 +187,7 @@ void newCell(int n, int i, int j, int** grid, int** copyGrid, int birth[], int s
 			if (j == 0)
 			{
 				sumNeighbors = grid[i][j+1]+grid[i+1][j+1]+grid[i+1][j];
-				if(survive[sumNeighbors] == 1)
+				if(birth[sumNeighbors] == 1)
 				{
 					copyGrid[i][j] = 1;
 				}
@@ -201,7 +201,7 @@ void newCell(int n, int i, int j, int** grid, int** copyGrid, int birth[], int s
 				if (j == n-1)
 				{
 					sumNeighbors = grid[i][j-1]+grid[i+1][j-1]+grid[i+1][j];
-					if(survive[sumNeighbors] == 1)
+					if(birth[sumNeighbors] == 1)
 					{
 						copyGrid[i][j] = 1;
 					}
@@ -213,7 +213,7 @@ void newCell(int n, int i, int j, int** grid, int** copyGrid, int birth[], int s
 				else
 				{
 					sumNeighbors = grid[i][j-1]+grid[i+1][j-1]+grid[i+1][j]+grid[i][j+1]+grid[i+1][j+1];
-					if(survive[sumNeighbors] == 1)
+					if(birth[sumNeighbors] == 1)
 					{
 						copyGrid[i][j] = 1;
 					}
