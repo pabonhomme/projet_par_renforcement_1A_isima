@@ -82,7 +82,6 @@ int main()
     if (renderer == 0)
     {
         fprintf(stderr, "Erreur d'initialisation de la SDL : %s\n", SDL_GetError());
-        // faire ce qu'il faut pour quitter proprement
     }
 
     font = TTF_OpenFont("LEMONMILK-Regular.otf", 65);
