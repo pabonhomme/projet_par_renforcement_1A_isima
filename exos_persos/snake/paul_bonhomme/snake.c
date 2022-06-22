@@ -77,7 +77,7 @@ int main()
         }
       }
       SDL_SetRenderDrawColor(renderer, (35*i)%255, (5*i)%255, (75*i)%255, 255);
-      Rotate(point,theta,xG,yG);
+      rotate(point,theta,xG,yG);
       SDL_RenderDrawLines(renderer, point, 5);
       SDL_RenderPresent(renderer);
       SDL_Delay(100);

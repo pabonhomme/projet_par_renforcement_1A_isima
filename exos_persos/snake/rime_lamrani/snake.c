@@ -92,7 +92,6 @@ int main(int argc, char** argv) {
                             255);                                    
       rectangle[i].x = rectangle[i].x+ 50;                                                  
                                                         
-      
       SDL_RenderDrawRect(renderer, &rectangle[i]);
                             
   }                                 
