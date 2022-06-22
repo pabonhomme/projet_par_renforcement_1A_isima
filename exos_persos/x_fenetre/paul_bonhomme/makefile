@@ -1,15 +1,15 @@
 CC=gcc
 CFLAGS=-Wextra -Wall 
 LDFLAGS=-lSDL2
-EXEC=snake
+EXEC=x_fenetre
 
 all: $(EXEC)
 
-snake: snake.o
+x_fenetre: x_fenetre.o
 	$(CC) -o $@ $^ $(LDFLAGS)
-	@echo "\nLancer le programme avec ./snake"
+	@echo "\nLancer le programme avec ./x_fenetre"
 
-snake.o: snake.c
+x_fenetre.o: x_fenetre.c
 	$(CC) -o $@ -c $< $(CFLAGS)
 
 clean: 
