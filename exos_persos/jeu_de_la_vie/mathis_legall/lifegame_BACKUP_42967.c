@@ -39,7 +39,10 @@ int main()
     int gameOn = 0;
     SDL_Event event;
     SDL_Rect rect;
+<<<<<<< HEAD
+=======
     SDL_Renderer *renderer;
+>>>>>>> e31fe01c39e3fd44c9c1e5ae159e7151c4b41de4
     int CaseX, CaseY;
     SDL_Window *window;
     int width = SIZEWINDOW;
@@ -51,13 +54,16 @@ int main()
     int result = 0;
    
     TTF_Font* font = NULL;                                              
+    font = TTF_OpenFont("LEMONMILK-Regular.otf", 65);
     SDL_Color color = {255, 255, 255, 255};
     SDL_Surface* text_surface = NULL;                                    // la surface  (uniquement transitoire)
+    text_surface = TTF_RenderText_Blended(font, "Jeu fixe!", color); // création du texte dans la surface 
     
     SDL_Texture* text_texture = NULL;                                    // la texture qui contient le texte
+    text_texture = SDL_CreateTextureFromSurface(renderer, text_surface); // transfert de la surface à la texture
 
     SDL_Rect pos = {0, 0, 0, 0};                                         // rectangle où le texte va être prositionné
-
+    SDL_QueryTexture(text_texture, NULL, NULL, &pos.w, &pos.h);
 
 
     initGrid(SIZEGRID,grid);
@@ -85,13 +91,10 @@ int main()
         // faire ce qu'il faut pour quitter proprement
     }
 
-    font = TTF_OpenFont("LEMONMILK-Regular.otf", 65);
-    text_surface = TTF_RenderText_Blended(font, "Jeu fixe!", color); // création du texte dans la surface   
-    text_texture = SDL_CreateTextureFromSurface(renderer, text_surface);
-    SDL_QueryTexture(text_texture, NULL, NULL, &pos.w, &pos.h);
-
-
+<<<<<<< HEAD
     // couleur de fond
+=======
+>>>>>>> e31fe01c39e3fd44c9c1e5ae159e7151c4b41de4
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
     SDL_RenderClear(renderer);
 
