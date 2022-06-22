@@ -39,7 +39,10 @@ int main()
     int gameOn = 0;
     SDL_Event event;
     SDL_Rect rect;
+<<<<<<< HEAD
+=======
     SDL_Renderer *renderer;
+>>>>>>> e31fe01c39e3fd44c9c1e5ae159e7151c4b41de4
     int CaseX, CaseY;
     SDL_Window *window;
     int width = SIZEWINDOW;
@@ -88,7 +91,10 @@ int main()
         // faire ce qu'il faut pour quitter proprement
     }
 
+<<<<<<< HEAD
     // couleur de fond
+=======
+>>>>>>> e31fe01c39e3fd44c9c1e5ae159e7151c4b41de4
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
     SDL_RenderClear(renderer);
 
