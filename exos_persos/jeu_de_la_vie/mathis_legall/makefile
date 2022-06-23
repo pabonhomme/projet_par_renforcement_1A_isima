@@ -7,7 +7,7 @@ all: $(EXEC)
 
 lifeGame: lifegame.o game.o
 	$(CC) -o $@ $^ $(LDFLAGS)
-	@echo "\nLancer le programme avec ./sprite"
+	@echo "\nLancer le programme avec ./lifeGame"
 
 lifegame.o: lifegame.c
 	$(CC) -o $@ -c $< $(CFLAGS)
