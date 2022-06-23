@@ -93,3 +93,27 @@ a{
 	color:aliceblue;
 	text-align: center;
 }
+.gif{
+	float: left;
+	margin: 0 15px 15px 0;
+	padding: 1cm;
+	padding-bottom: 0cm;
+	width: 15cm;
+	height:10cm ;
+	color: white;
+}
+.prp{
+	text-align: right;
+	color: aliceblue;
+}
+.test{
+	color:white;
+	margin: 4cm;
+	margin-right:0cm;
+	margin-bottom: 0cm;
+
+}
+.lien{
+	margin: 6cm;
+	margin-right:0cm;
+}
