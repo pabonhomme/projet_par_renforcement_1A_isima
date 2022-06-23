@@ -2,6 +2,7 @@
 
 int main()
 {
+    srand(0);
     SDL_Rect rect_score;
 	SDL_Window* window;
 	SDL_Renderer* renderer;
@@ -12,7 +13,7 @@ int main()
     SDL_Texture* bg_texture;  
     SDL_Texture *score_texture;
 	Enemies_t enemies[NB_ENEMIES_MAX];
-	SDL_Rect positionCharac = {0};
+	SDL_Rect positionCharac = {0}, rect_destination_diamant = {0}, source_diamant = {0};
 	SDL_Event event;
 	int colorkey,
         score =0,
@@ -23,8 +24,6 @@ int main()
 		hasIntersectDiamond = 0, 
 		diamondLine = rand()%2, 
 		diamondColumn = rand()%3, 
-		destination_x = rand()%SCREEN_WIDTH, 
-		destination_y = rand()%SCREEN_HEIGHT,
 		markov[4][10] = { {0,0,0,0,0,0,0,1,2,3},
 
 
@@ -75,10 +74,16 @@ int main()
   		fprintf(stderr, "Erreur d'initialisation de la texture : %s\n", SDL_GetError());  
 
     diamond_texture = IMG_LoadTexture(renderer,"./img/listDiamond.png");
-    create_diamond(diamond_texture, renderer, diamondLine, diamondColumn, destination_x, destination_y );
-  
+    
   	if (diamond_texture == NULL) 
   		fprintf(stderr, "Erreur d'initialisation de la texture : %s\n", SDL_GetError());
+
+    SDL_QueryTexture(diamond_texture, NULL, NULL, &source_diamant.w, &source_diamant.h);  // Récupération des dimensions de l'image
+    int largeurVignette = source_diamant.w / 3,   // La largeur d'une vignette de l'image, marche car la planche est bien réglée
+           hauteurVignette = source_diamant.h / 2;           // La hauteur d'une vignette de l'image, marche car la planche est bien réglée
+    rect_destination_diamant.x = largeurVignette*rand()%SCREEN_WIDTH;
+    rect_destination_diamant.y = hauteurVignette*rand()%SCREEN_HEIGHT;
+    create_diamond(diamond_texture, renderer, diamondLine, diamondColumn, &rect_destination_diamant);
 
 	tmp = SDL_LoadBMP("./img/character.bmp");
 	tmp2 = SDL_LoadBMP("./img/enemy.bmp");
@@ -100,32 +105,35 @@ int main()
         SDL_RenderClear(renderer);
         display_background(bg_texture,window,renderer);
         SDL_RenderCopy(renderer, score_texture, NULL, &rect_score);
-        score++;
         sprintf(mot,"%d",score);
         strcpy(texte, "");
         strcpy(texte, "Score: ");
         strcat(texte,mot);
         get_text(renderer, 0, 0, texte,  font, &score_texture, &rect_score);
 
+        hasIntersectDiamond = SDL_HasIntersection(&positionCharac, &rect_destination_diamant) ==  SDL_TRUE ?  1 : 0;
+
     	if(hasIntersectDiamond)
         {
         	diamondLine = rand()%2, 
 			diamondColumn = rand()%3, 
-			destination_x = rand()%SCREEN_WIDTH, 
-			destination_y = rand()%SCREEN_HEIGHT;
-        	create_diamond(diamond_texture, renderer, diamondLine, diamondColumn, destination_x, destination_y );
+            rect_destination_diamant.x = rand()%SCREEN_WIDTH;
+            rect_destination_diamant.y = rand()%SCREEN_HEIGHT;
+            create_diamond(diamond_texture, renderer, diamondLine, diamondColumn, &rect_destination_diamant);
         	hasIntersectDiamond = 0;
+            score++;
+            nb_enemies++;
 
         }
         else
         {
-        	create_diamond(diamond_texture, renderer, diamondLine, diamondColumn, destination_x, destination_y );
+            create_diamond(diamond_texture, renderer, diamondLine, diamondColumn, &rect_destination_diamant);
         }
 
-		moveCharacter(character,renderer,positionCharac,currDirection,animFlipC);
+		moveCharacter(character,renderer, &positionCharac,currDirection,animFlipC);
 		moveEnemies(enemies,renderer,nb_enemies,markov);
 		SDL_RenderPresent(renderer);
-		SDL_Delay(75);
+		SDL_Delay(120);
 		SDL_RenderClear(renderer);
     }
 
