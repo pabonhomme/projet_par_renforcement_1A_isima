@@ -45,4 +45,5 @@ void moveEnemies(Enemies_t enemies[], SDL_Renderer* renderer, int nb_enemies, in
 
 
 void create_diamond(SDL_Texture* diamond_texture, SDL_Renderer* renderer, int diamondLine, int diamondColumn, SDL_Rect *destination);
+int collisionEnemies(SDL_Rect positionCharac, Enemies_t enemies[], int nb_enemies);
 

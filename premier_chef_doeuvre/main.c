@@ -21,7 +21,8 @@ int main()
 	 	animFlipC = 0,
 	 	running = 1,
 	 	currDirection = DIR_RIGHT,
-		hasIntersectDiamond = 0, 
+		hasIntersectDiamond = 0,
+		hasIntersectEnemy = 0, 
 		diamondLine = rand()%2, 
 		diamondColumn = rand()%3, 
 		markov[4][10] = { {0,0,0,0,0,0,0,1,2,3},
@@ -77,12 +78,16 @@ int main()
     
   	if (diamond_texture == NULL) 
   		fprintf(stderr, "Erreur d'initialisation de la texture : %s\n", SDL_GetError());
+  	else
+  	{
+  		printf("diamant ouvert");
+  	}
 
     SDL_QueryTexture(diamond_texture, NULL, NULL, &source_diamant.w, &source_diamant.h);  // Récupération des dimensions de l'image
     int largeurVignette = source_diamant.w / 3,   // La largeur d'une vignette de l'image, marche car la planche est bien réglée
            hauteurVignette = source_diamant.h / 2;           // La hauteur d'une vignette de l'image, marche car la planche est bien réglée
-    rect_destination_diamant.x = largeurVignette*rand()%SCREEN_WIDTH;
-    rect_destination_diamant.y = hauteurVignette*rand()%SCREEN_HEIGHT;
+    rect_destination_diamant.x = rand()%(SCREEN_WIDTH-largeurVignette);
+    rect_destination_diamant.y = rand()%(SCREEN_HEIGHT-hauteurVignette);
     create_diamond(diamond_texture, renderer, diamondLine, diamondColumn, &rect_destination_diamant);
 
 	tmp = SDL_LoadBMP("./img/character.bmp");
@@ -117,8 +122,8 @@ int main()
         {
         	diamondLine = rand()%2, 
 			diamondColumn = rand()%3, 
-            rect_destination_diamant.x = rand()%SCREEN_WIDTH;
-            rect_destination_diamant.y = rand()%SCREEN_HEIGHT;
+            rect_destination_diamant.x = rand()%(SCREEN_WIDTH-largeurVignette);
+            rect_destination_diamant.y = rand()%(SCREEN_WIDTH-hauteurVignette);
             create_diamond(diamond_texture, renderer, diamondLine, diamondColumn, &rect_destination_diamant);
         	hasIntersectDiamond = 0;
             score++;
@@ -128,6 +133,12 @@ int main()
         else
         {
             create_diamond(diamond_texture, renderer, diamondLine, diamondColumn, &rect_destination_diamant);
+        }
+
+        hasIntersectEnemy = collisionEnemies(positionCharac,enemies,nb_enemies);
+        if (hasIntersectEnemy)
+        {
+        	running = 0;
         }
 
 		moveCharacter(character,renderer, &positionCharac,currDirection,animFlipC);

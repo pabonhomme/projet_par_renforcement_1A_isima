@@ -92,13 +92,18 @@ void handleEvent(SDL_Event event, int *running, int *currDirection, int* animFli
 
 void initEnemies(Enemies_t enemies[], SDL_Texture* enemy)
 {
-	int i;
+	int i=0;
+	SDL_Rect source = {0};
+
+	SDL_QueryTexture(enemies[0].sprite, NULL, NULL, &source.w, &source.h);
 
 	for (i=0; i<NB_ENEMIES_MAX; i++)
 	{
 		enemies[i].sprite = enemy;
 		(enemies[i].position).x = rand()%SCREEN_WIDTH;
     	(enemies[i].position).y = rand()%SCREEN_HEIGHT;
+    	(enemies[i].position).w = source.w/8;
+    	(enemies[i].position).h = source.h;
     	enemies[i].prevDirection = rand()%4;
     	enemies[i].animFlip = 0;
 
@@ -151,8 +156,7 @@ void moveEnemies(Enemies_t enemies[], SDL_Renderer* renderer, int nb_enemies, in
 	float zoom = 2;
 
 	SDL_Rect 
-            source = {0},                            
-            destination = {0},              
+            source = {0},                                         
             state = {0};  
 
     for (i=0; i<nb_enemies; i++)
@@ -173,39 +177,36 @@ void moveEnemies(Enemies_t enemies[], SDL_Renderer* renderer, int nb_enemies, in
 	    state.w = offset_x;                    
 	    state.h = offset_y;  
 
-	    destination.w = offset_x*zoom;      
-	    destination.h = offset_y*zoom;       
+	    (enemies[i].position).w = offset_x*zoom;      
+	    (enemies[i].position).h = offset_y*zoom;       
 
 	    if (nextDirection == DIR_UP)
 	    {
-	    	destination.x = (enemies[i].position).x;
-	   	 	destination.y = (((enemies[i].position).y)-SPRITE_STEP+SCREEN_HEIGHT)%SCREEN_HEIGHT; 
+	    	(enemies[i].position).x = (enemies[i].position).x;
+	   	 	(enemies[i].position).y = (((enemies[i].position).y)-SPRITE_STEP+SCREEN_HEIGHT)%SCREEN_HEIGHT; 
 	    }
 
 	    if (nextDirection == DIR_DOWN)
 	    {
-	    	destination.x = (enemies[i].position).x;
-	   	 	destination.y = (((enemies[i].position).y)+SPRITE_STEP+SCREEN_HEIGHT)%SCREEN_HEIGHT; 
+	    	(enemies[i].position).x = (enemies[i].position).x;
+	   	 	(enemies[i].position).y = (((enemies[i].position).y)+SPRITE_STEP+SCREEN_HEIGHT)%SCREEN_HEIGHT; 
 	    }
 
 	    if (nextDirection == DIR_LEFT)
 	    {
-	    	destination.x = (((enemies[i].position).x)-SPRITE_STEP+SCREEN_WIDTH)%SCREEN_WIDTH;
-	   	 	destination.y = (enemies[i].position).y;
+	    	(enemies[i].position).x = (((enemies[i].position).x)-SPRITE_STEP+SCREEN_WIDTH)%SCREEN_WIDTH;
+	   	 	(enemies[i].position).y = (enemies[i].position).y;
 	    }
 
 	    if (nextDirection == DIR_RIGHT)
 	    {
-	    	destination.x = (((enemies[i].position).x)+SPRITE_STEP+SCREEN_WIDTH)%SCREEN_WIDTH;
-	   	 	destination.y = (enemies[i].position).y;
+	    	(enemies[i].position).x = (((enemies[i].position).x)+SPRITE_STEP+SCREEN_WIDTH)%SCREEN_WIDTH;
+	   	 	(enemies[i].position).y = (enemies[i].position).y;
 	    }
-
-	    (enemies[i].position).x = destination.x;
-	    (enemies[i].position).y = destination.y;
 
 	    enemies[i].prevDirection = nextDirection;
 
-	    SDL_RenderCopy(renderer, enemies[i].sprite, &state, &destination);  
+	    SDL_RenderCopy(renderer, enemies[i].sprite, &state, &(enemies[i].position));  
     }
 }
 
@@ -235,4 +236,24 @@ void create_diamond(SDL_Texture* diamond_texture, SDL_Renderer* renderer, int di
      SDL_RenderCopy(renderer, diamond_texture,     // Préparation de l'affichage  
                     &state,
                     destination);            
-   }
+}
+
+
+int collisionEnemies(SDL_Rect positionCharac, Enemies_t enemies[], int nb_enemies)
+{
+	int i=0;
+	int result = 0;
+	int collision;
+
+	while (!result && i<nb_enemies)
+	{
+		collision = SDL_HasIntersection(&positionCharac, &(enemies[i].position)) == SDL_TRUE ? 1 : 0;
+		if (collision)
+		{
+			result = 1;
+		}
+		i++;
+	}
+
+	return result;
+}
