@@ -1,5 +1,6 @@
 #include "game.h"
 
+// Affiche le background du menu
 void display_background(SDL_Texture *bg_texture, SDL_Window *window,
                          SDL_Renderer *renderer) {
   SDL_Rect 
@@ -22,6 +23,7 @@ void display_background(SDL_Texture *bg_texture, SDL_Window *window,
 
 }
 
+// Insère le texte dans une surface
 void get_text(SDL_Renderer *renderer, int x, int y, char *text,
         TTF_Font *font, SDL_Texture **texture, SDL_Rect *rect) {
     int text_width;
@@ -40,6 +42,7 @@ void get_text(SDL_Renderer *renderer, int x, int y, char *text,
     rect->h = text_height;
 }
 
+// gère les evenements du jeu
 void handleEvent(SDL_Event event, int *running, int *currDirection, int* animFlip, SDL_Rect* position, int isDead)
 {
 	switch(event.type)
@@ -97,7 +100,7 @@ void handleEvent(SDL_Event event, int *running, int *currDirection, int* animFli
 	}
 }
 
-
+// initialise tous les
 void initEnemies(Enemies_t enemies[], SDL_Texture* enemy)
 {
 	int i=0;
@@ -108,8 +111,8 @@ void initEnemies(Enemies_t enemies[], SDL_Texture* enemy)
 	for (i=0; i<NB_ENEMIES_MAX; i++)
 	{
 		enemies[i].sprite = enemy;
-		(enemies[i].position).x = rand()%SCREEN_WIDTH;
-    	(enemies[i].position).y = rand()%SCREEN_HEIGHT;
+		(enemies[i].position).x = rand()%(SCREEN_WIDTH-source.w/8); // abcisse aléatoire modulo la taille de la fenetre - la largeur du sprite de l'ennemi
+    	(enemies[i].position).y = rand()%(SCREEN_HEIGHT-source.h);
     	(enemies[i].position).w = source.w/8;
     	(enemies[i].position).h = source.h;
     	enemies[i].prevDirection = rand()%4;
@@ -117,7 +120,7 @@ void initEnemies(Enemies_t enemies[], SDL_Texture* enemy)
 
 	}
 }
-
+// mouvement du personnage
 void moveCharacter(SDL_Texture* sprite, SDL_Renderer* renderer, SDL_Rect *position, int currDirection, int animFlip)
 {
 	int nb_images = 8;
@@ -146,7 +149,7 @@ void moveCharacter(SDL_Texture* sprite, SDL_Renderer* renderer, SDL_Rect *positi
 }
 
 
-
+// direction choisie par la matrice des chaines de markov
 int newDirection(int markov[][10], int prevDirection)
 {
 	int alpha = rand()%10;
@@ -154,7 +157,7 @@ int newDirection(int markov[][10], int prevDirection)
 	return (markov[prevDirection][alpha]);
 }
 
-
+// mouvement des ennemis en fonction des chaines de markov
 void moveEnemies(Enemies_t enemies[], SDL_Renderer* renderer, int nb_enemies, int markov[][10])
 {
 	int nb_images = 8;
@@ -218,6 +221,7 @@ void moveEnemies(Enemies_t enemies[], SDL_Renderer* renderer, int nb_enemies, in
     }
 }
 
+// Creation d'un diamant sur la map
 void create_diamond(SDL_Texture* diamond_texture, SDL_Renderer* renderer, int diamondLine, int diamondColumn, SDL_Rect *destination) 
 {
      SDL_Rect 
@@ -246,7 +250,7 @@ void create_diamond(SDL_Texture* diamond_texture, SDL_Renderer* renderer, int di
                     destination);            
 }
 
-
+// gestion des collisions entre le perso principal et la gestion des ennemis
 int collisionEnemies(SDL_Rect positionCharac, Enemies_t enemies[], int nb_enemies)
 {
 	int i=0;

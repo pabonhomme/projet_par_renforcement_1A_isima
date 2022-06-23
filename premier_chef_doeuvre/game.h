@@ -21,6 +21,7 @@ Ordre de chaque position dans le sprite */
 /* Nombre de pixels pour chaque pas du personnage */
 #define SPRITE_STEP 21
 
+/* Nombre d'enemies au maximum*/
 #define NB_ENEMIES_MAX 50
 
 void display_background(SDL_Texture *bg_texture, SDL_Window *window,
@@ -28,6 +29,7 @@ void display_background(SDL_Texture *bg_texture, SDL_Window *window,
 void get_text(SDL_Renderer *renderer, int x, int y, char *text,
         TTF_Font *font, SDL_Texture **texture, SDL_Rect *rect);
 
+// STRUCTURE DE TYPE ENEMIE
 typedef struct enemies
 {
 	SDL_Texture* sprite;

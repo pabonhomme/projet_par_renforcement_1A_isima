@@ -2,8 +2,8 @@
 
 int main()
 {
-	SDL_Window* window;
-	SDL_Renderer* renderer;
+	SDL_Window* window; // fenetre de jeu
+	SDL_Renderer* renderer; 
 	SDL_Surface *tmp;
 	SDL_Surface *tmp2;
 	SDL_Texture* character;                          
@@ -18,7 +18,7 @@ int main()
         score =0,
         isDead = 0,
 		nb_enemies = 1,
-	 	animFlipC = 0,
+	 	animFlipC = 0, // 0 premiere image, 1 deuxieme image de l'animation
 	 	running = 1,
 	 	currDirection = DIR_RIGHT,
 		hasIntersectDiamond = 0,
@@ -90,13 +90,13 @@ int main()
 
 	tmp = SDL_LoadBMP("./img/character.bmp");
 	tmp2 = SDL_LoadBMP("./img/enemy.bmp");
-	colorkey = SDL_MapRGB(tmp->format,255, 0, 255); // on enlève le background du sprite
-	SDL_SetColorKey(tmp, SDL_TRUE, colorkey);
+	colorkey = SDL_MapRGB(tmp->format,255, 0, 255); // choisi la couleur à enlever dans la ligne suivante
+	SDL_SetColorKey(tmp, SDL_TRUE, colorkey); // enleve le background perso
 	SDL_SetColorKey(tmp2, SDL_TRUE, colorkey);
 	character = SDL_CreateTextureFromSurface(renderer,tmp);
 	initEnemies(enemies,SDL_CreateTextureFromSurface(renderer,tmp2));
 
-    positionCharac.x = (SCREEN_WIDTH - SPRITE_SIZE) / 2;
+    positionCharac.x = (SCREEN_WIDTH - SPRITE_SIZE) / 2; // initialisation de la position du personnage
     positionCharac.y = (SCREEN_HEIGHT - SPRITE_SIZE) / 2;
 
     while(running)
@@ -116,7 +116,7 @@ int main()
 
         hasIntersectDiamond = SDL_HasIntersection(&positionCharac, &rect_destination_diamant) ==  SDL_TRUE ?  1 : 0;
 
-    	if(hasIntersectDiamond)
+    	if(hasIntersectDiamond) // si on a touché un diamant on en ajoute un nouveau ailleurs
         {
         	diamondLine = rand()%2, 
 			diamondColumn = rand()%3, 
@@ -128,24 +128,24 @@ int main()
             nb_enemies++;
 
         }
-        else
+        else // sinon on affiche le même diamant
         {
             create_diamond(diamond_texture, renderer, diamondLine, diamondColumn, &rect_destination_diamant);
         }
 
-        hasIntersectEnemy = collisionEnemies(positionCharac,enemies,nb_enemies);
+        hasIntersectEnemy = collisionEnemies(positionCharac,enemies,nb_enemies); // collision avec un ennemi
         if (hasIntersectEnemy)
         {
-        	isDead = 1;
+        	isDead = 1; // si collision donc mort alors fin de partie et permet de ne plus toucher aux touches
         }
-        if (isDead)
+        if (isDead) // affichage message fin de partie 
         {
             get_text(renderer, SCREEN_WIDTH/13, SCREEN_WIDTH/3, loss,  font2, &loss_texture, &rect_loss);
         	SDL_RenderCopy(renderer, loss_texture, NULL, &rect_loss);
         }
 
-		moveCharacter(character,renderer, &positionCharac,currDirection,animFlipC);
-		moveEnemies(enemies,renderer,nb_enemies,markov);
+		moveCharacter(character,renderer, &positionCharac,currDirection,animFlipC); // maj position perso principal
+		moveEnemies(enemies,renderer,nb_enemies,markov); // maj position ennemi(s)
 		SDL_RenderPresent(renderer);
 		SDL_Delay(120);
 		SDL_RenderClear(renderer);
