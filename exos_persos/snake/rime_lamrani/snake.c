@@ -68,8 +68,8 @@ int main(int argc, char** argv) {
                           rand()%255,          
                           255);                                    
     rectangle[i].x =  40*i; 
-    rectangle[i].h = 10+rand()%10;                                                 
-    rectangle[i].y =  20-rectangle[i].h/2;                                                  
+    rectangle[i].h = 10+i;                                                 
+    rectangle[i].y =  20*i;                                                  
     rectangle[i].w = 50;                                               
      
     SDL_RenderDrawRect(renderer, &rectangle[i]);
@@ -103,7 +103,7 @@ int main(int argc, char** argv) {
                             
   }                                 
   SDL_RenderPresent(renderer);                         
-  SDL_Delay(100);                                     
+  SDL_Delay(500);                                     
  }
 
   /* on referme proprement la SDL */
