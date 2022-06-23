@@ -2,8 +2,6 @@
 
 int main()
 {
-    SDL_Rect rect_score;
-    SDL_Rect rect_loss;
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 	SDL_Surface *tmp;
@@ -14,7 +12,7 @@ int main()
     SDL_Texture *score_texture;
     SDL_Texture *loss_texture;
 	Enemies_t enemies[NB_ENEMIES_MAX];
-	SDL_Rect positionCharac = {0}, rect_destination_diamant = {0}, source_diamant = {0};
+	SDL_Rect positionCharac = {0}, rect_destination_diamant = {0}, source_diamant = {0}, rect_score = {0}, rect_loss = {0};
 	SDL_Event event;
 	int colorkey,
         score =0,
@@ -28,7 +26,6 @@ int main()
 		diamondLine = rand()%2, 
 		diamondColumn = rand()%3, 
 		markov[4][10] = { {0,0,0,0,0,0,0,1,2,3},
-
 
 						 {0,0,0,1,1,1,2,2,2,3},
 
@@ -83,10 +80,6 @@ int main()
     
   	if (diamond_texture == NULL) 
   		fprintf(stderr, "Erreur d'initialisation de la texture : %s\n", SDL_GetError());
-  	else
-  	{
-  		printf("diamant ouvert");
-  	}
 
     SDL_QueryTexture(diamond_texture, NULL, NULL, &source_diamant.w, &source_diamant.h);  // Récupération des dimensions de l'image
     int largeurVignette = source_diamant.w / 3,   // La largeur d'une vignette de l'image, marche car la planche est bien réglée
@@ -147,8 +140,8 @@ int main()
         }
         if (isDead)
         {
+            get_text(renderer, SCREEN_WIDTH/13, SCREEN_WIDTH/3, loss,  font2, &loss_texture, &rect_loss);
         	SDL_RenderCopy(renderer, loss_texture, NULL, &rect_loss);
-        	get_text(renderer, SCREEN_WIDTH/13, SCREEN_WIDTH/3, loss,  font2, &loss_texture, &rect_loss);
         }
 
 		moveCharacter(character,renderer, &positionCharac,currDirection,animFlipC);
@@ -158,13 +151,13 @@ int main()
 		SDL_RenderClear(renderer);
     }
 
-
-    
     SDL_DestroyTexture(score_texture);
     SDL_DestroyTexture(bg_texture);
     SDL_DestroyTexture(diamond_texture);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
+    TTF_CloseFont(font);
+    TTF_CloseFont(font2);
     TTF_Quit();
     IMG_Quit();
     SDL_Quit();
