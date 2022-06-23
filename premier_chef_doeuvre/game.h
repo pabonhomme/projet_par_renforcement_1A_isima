@@ -9,7 +9,7 @@
 #define SCREEN_HEIGHT 480
 
 /* Taille d'un sprite */
-#define SPRITE_SIZE 50
+#define SPRITE_SIZE 20
 
 /* Le sprite contient 2 images pour chaque position
 Ordre de chaque position dans le sprite */
@@ -39,11 +39,10 @@ typedef struct enemies
 
 void handleEvent(SDL_Event event, int *running, int *currDirection, int* animFlip, SDL_Rect* position, int* nb_enemies);
 void initEnemies(Enemies_t enemies[], SDL_Texture* enemy);
-void moveCharacter(SDL_Texture* sprite, SDL_Renderer* renderer, SDL_Rect position, int currDirection, int animFlip);
+void moveCharacter(SDL_Texture* sprite, SDL_Renderer* renderer, SDL_Rect *position, int currDirection, int animFlip);
 int newDirection(int markov[][10], int prevDirection);
 void moveEnemies(Enemies_t enemies[], SDL_Renderer* renderer, int nb_enemies, int markov[][10]);
 
 
-void create_diamond(SDL_Texture* diamond_texture, SDL_Renderer* renderer, 
-	int diamondLine, int diamondColumn, int destination_x, int destination_y );
+void create_diamond(SDL_Texture* diamond_texture, SDL_Renderer* renderer, int diamondLine, int diamondColumn, SDL_Rect *destination);
 

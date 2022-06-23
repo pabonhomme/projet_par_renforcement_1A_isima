@@ -58,13 +58,13 @@ void handleEvent(SDL_Event event, int *running, int *currDirection, int* animFli
 				case SDLK_UP:
 					*currDirection = DIR_UP;
 					*animFlip = 1 - *animFlip;
-					position->y = ((position->y)-SPRITE_STEP+SCREEN_WIDTH)%SCREEN_WIDTH;
+					position->y = ((position->y)-SPRITE_STEP+SCREEN_HEIGHT)%SCREEN_HEIGHT;
 					break;
 
 				case SDLK_DOWN:
 					*currDirection = DIR_DOWN;
 					*animFlip = 1 - *animFlip;
-					position->y = ((position->y)+SPRITE_STEP+SCREEN_WIDTH)%SCREEN_WIDTH;
+					position->y = ((position->y)+SPRITE_STEP+SCREEN_HEIGHT)%SCREEN_HEIGHT;
 					break;
 
 				case SDLK_LEFT:
@@ -105,7 +105,7 @@ void initEnemies(Enemies_t enemies[], SDL_Texture* enemy)
 	}
 }
 
-void moveCharacter(SDL_Texture* sprite, SDL_Renderer* renderer, SDL_Rect position, int currDirection, int animFlip)
+void moveCharacter(SDL_Texture* sprite, SDL_Renderer* renderer, SDL_Rect *position, int currDirection, int animFlip)
 {
 	int nb_images = 8;
 	int offset_x,offset_y;
@@ -113,7 +113,7 @@ void moveCharacter(SDL_Texture* sprite, SDL_Renderer* renderer, SDL_Rect positio
 
 	SDL_Rect 
             source = {0},                            
-            destination = {0},              
+             
             state = {0};  
 
     SDL_QueryTexture(sprite,NULL,NULL,&source.w, &source.h);
@@ -126,13 +126,10 @@ void moveCharacter(SDL_Texture* sprite, SDL_Renderer* renderer, SDL_Rect positio
     state.w = offset_x;                    
     state.h = offset_y;  
 
-    destination.w = offset_x*zoom;      
-    destination.h = offset_y*zoom;       
+    position->w = offset_x*zoom;      
+    position->h = offset_y*zoom;       
 
-    destination.x = position.x;
-    destination.y = position.y; 
-
-    SDL_RenderCopy(renderer, sprite, &state, &destination);  
+    SDL_RenderCopy(renderer, sprite, &state, position);  
 }
 
 
@@ -182,13 +179,13 @@ void moveEnemies(Enemies_t enemies[], SDL_Renderer* renderer, int nb_enemies, in
 	    if (nextDirection == DIR_UP)
 	    {
 	    	destination.x = (enemies[i].position).x;
-	   	 	destination.y = (((enemies[i].position).y)-SPRITE_STEP+SCREEN_WIDTH)%SCREEN_WIDTH; 
+	   	 	destination.y = (((enemies[i].position).y)-SPRITE_STEP+SCREEN_HEIGHT)%SCREEN_HEIGHT; 
 	    }
 
 	    if (nextDirection == DIR_DOWN)
 	    {
 	    	destination.x = (enemies[i].position).x;
-	   	 	destination.y = (((enemies[i].position).y)+SPRITE_STEP+SCREEN_WIDTH)%SCREEN_WIDTH; 
+	   	 	destination.y = (((enemies[i].position).y)+SPRITE_STEP+SCREEN_HEIGHT)%SCREEN_HEIGHT; 
 	    }
 
 	    if (nextDirection == DIR_LEFT)
@@ -212,11 +209,10 @@ void moveEnemies(Enemies_t enemies[], SDL_Renderer* renderer, int nb_enemies, in
     }
 }
 
-void create_diamond(SDL_Texture* diamond_texture, SDL_Renderer* renderer, int diamondLine, int diamondColumn, int destination_x, int destination_y ) 
+void create_diamond(SDL_Texture* diamond_texture, SDL_Renderer* renderer, int diamondLine, int diamondColumn, SDL_Rect *destination) 
 {
      SDL_Rect 
            source = {0},                      // Rectangle définissant la zone de la texture à récupérer
-           destination = {0},                // Rectangle définissant où la zone_source doit être déposée dans le renderer
            state = {0};                     // Rectangle de la vignette en cours dans la planche 
 
      SDL_QueryTexture(diamond_texture, NULL, NULL,
@@ -232,17 +228,11 @@ void create_diamond(SDL_Texture* diamond_texture, SDL_Renderer* renderer, int di
        state.w = largeurVignette;                    // Largeur de la vignette
        state.h = hauteurVignette;                    // Hauteur de la vignette
 
-       destination.w = largeurVignette * zoom;       // Largeur du sprite à l'écran
-       destination.h = hauteurVignette * zoom;       // Hauteur du sprite à l'écran
-
-
-
-     destination.x = destination_x;
-
-     destination.y = destination_y;
+       destination->w = largeurVignette * zoom;       // Largeur du sprite à l'écran
+       destination->h = hauteurVignette * zoom;       // Hauteur du sprite à l'écran
 
 
      SDL_RenderCopy(renderer, diamond_texture,     // Préparation de l'affichage  
                     &state,
-                    &destination);            
+                    destination);            
    }
