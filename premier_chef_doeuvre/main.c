@@ -24,6 +24,7 @@ int main()
 		destination_y = rand()%SCREEN_HEIGHT,
 		markov[4][10] = { {0,0,0,0,0,0,0,1,2,3},
 
+
 						 {0,0,0,1,1,1,2,2,2,3},
 
 						 {0,1,2,2,2,2,2,2,2,3},
@@ -92,7 +93,7 @@ int main()
 		moveCharacter(character,renderer,positionCharac,currDirection,animFlipC);
 		moveEnemies(enemies,renderer,nb_enemies,markov);
 		SDL_RenderPresent(renderer);
-		SDL_Delay(50);
+		SDL_Delay(75);
 		SDL_RenderClear(renderer);
     }
 

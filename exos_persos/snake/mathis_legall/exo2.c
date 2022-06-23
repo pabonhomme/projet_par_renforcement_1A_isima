@@ -82,6 +82,9 @@ int main()
 
   		i+=1;
 	}
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
 
 	return 0;
 		
