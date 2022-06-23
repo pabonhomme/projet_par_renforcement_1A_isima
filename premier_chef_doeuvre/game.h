@@ -1,4 +1,8 @@
 #include <SDL2/SDL.h>
+#include <stdio.h>
+#include<string.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 
 /* Taille de la fenêtre */
 #define SCREEN_WIDTH  800
@@ -16,3 +20,8 @@ Ordre de chaque position dans le sprite */
 
 /* Nombre de pixels pour chaque pas du personnage */
 #define SPRITE_STEP 5
+
+void display_background(SDL_Texture *bg_texture, SDL_Window *window,
+                         SDL_Renderer *renderer);
+void get_text(SDL_Renderer *renderer, int x, int y, char *text,
+        TTF_Font *font, SDL_Texture **texture, SDL_Rect *rect);

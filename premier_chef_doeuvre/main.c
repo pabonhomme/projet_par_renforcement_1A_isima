@@ -1,46 +1,20 @@
-#include <SDL2/SDL.h>
-#include <stdio.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_ttf.h>
+#include "game.h"
 
-#define SIZEWINDOW 600
-
-
-void display_background(SDL_Texture *bg_texture, SDL_Window *window,
-                         SDL_Renderer *renderer) {
-  SDL_Rect 
-    source = {0},                         // Rectangle définissant la zone de la texture à récupérer
-    window_dimensions = {0},              // Rectangle définissant la fenêtre, on n'utilisera que largeur et hauteur
-    destination = {0};                    // Rectangle définissant où la zone_source doit être déposée dans le renderer
-    SDL_GetWindowSize(
-      window, &window_dimensions.w,
-      &window_dimensions.h);                    // Récupération des dimensions de la fenêtre
-    SDL_QueryTexture(bg_texture, NULL, NULL,
-                   &source.w, &source.h);       // Récupération des dimensions de l'image
-
-  destination = window_dimensions;              // On fixe les dimensions de l'affichage à  celles de la fenêtre
-
-  /* On veut afficher la texture de façon à ce que l'image occupe la totalité de la fenêtre */
-
-    SDL_RenderCopy(renderer, bg_texture,
-                 &source,
-                 &destination);                 // Création de l'élément à afficher
-    SDL_RenderPresent(renderer);         // Affichage
-    SDL_Delay(50);                       // Pause en ms
-    SDL_RenderClear(renderer);
-}
-
-
-
-int main(int argc, char** argv) {
+int main() {
     int running = 1;
+    SDL_Rect rect_score;
 	SDL_Event event;
     SDL_Renderer *renderer;
-    SDL_Window *window;  
-    int width = SIZEWINDOW;
-    int height = SIZEWINDOW;                                                               
-    SDL_Texture* bg_texture; 
-
+    SDL_Window *window;                                                                
+    SDL_Texture* bg_texture;
+    SDL_Texture *score_texture;
+    int i=5;
+    char mot[100];
+    char texte[100];
+    strcpy(texte, "Score: ");
+    sprintf(mot,"%d",i); 
+    strcat(texte,mot);
+    printf("%s\n",mot);
                                       
 
     if (SDL_Init(SDL_INIT_VIDEO) == -1)
@@ -54,7 +28,7 @@ int main(int argc, char** argv) {
     }
 
     window = SDL_CreateWindow("Jeu de la vie", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                              width, height,
+                            SCREEN_WIDTH , SCREEN_HEIGHT,
                               SDL_WINDOW_RESIZABLE);
 
     if (window == 0)
@@ -69,9 +43,16 @@ int main(int argc, char** argv) {
         fprintf(stderr, "Erreur d'initialisation de la SDL : %s\n", SDL_GetError());
         // faire ce qu'il faut pour quitter proprement
     }
+    TTF_Init();
+    TTF_Font *font = TTF_OpenFont("./font/SIXTY.TTF", 24);
+    if (font == NULL) {
+        fprintf(stderr, "error: font not found\n");
+        exit(EXIT_FAILURE);
+    }
+        get_text(renderer, 0, 0, mot,  font, &score_texture, &rect_score);
+    
 
-
-  	bg_texture = IMG_LoadTexture(renderer,"./425.jpg");
+  	bg_texture = IMG_LoadTexture(renderer,"./img/425.jpg");
   	if (bg_texture == NULL) 
   		fprintf(stderr, "Erreur d'initialisation de la texture : %s\n", SDL_GetError());
                                               
@@ -98,12 +79,28 @@ int main(int argc, char** argv) {
                 		break;
             	}
         	}
-    display_background(bg_texture,window,renderer);
+        SDL_RenderClear(renderer);
+        display_background(bg_texture,window,renderer);
+        SDL_RenderCopy(renderer, score_texture, NULL, &rect_score);
+        SDL_RenderPresent(renderer);
+        i++;
+        sprintf(mot,"%d",i);
+        strcpy(texte, "");
+        strcpy(texte, "Score: ");
+        strcat(texte,mot);
+        get_text(renderer, 0, 0, texte,  font, &score_texture, &rect_score);
+
+        SDL_RenderPresent(renderer);         // Affichage                      
+        SDL_RenderClear(renderer);
+        SDL_Delay(100);
+  
     }
     SDL_Delay(5000);
+    SDL_DestroyTexture(score_texture);
     SDL_DestroyTexture(bg_texture);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
+    TTF_Quit();
     IMG_Quit();
     SDL_Quit();
     return 0;
