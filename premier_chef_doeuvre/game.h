@@ -19,7 +19,7 @@ Ordre de chaque position dans le sprite */
 #define DIR_LEFT        3
 
 /* Nombre de pixels pour chaque pas du personnage */
-#define SPRITE_STEP 16
+#define SPRITE_STEP 21
 
 #define NB_ENEMIES_MAX 50
 
@@ -37,13 +37,11 @@ typedef struct enemies
 
 } Enemies_t;
 
-void handleEvent(SDL_Event event, int *running, int *currDirection, int* animFlip, SDL_Rect* position, int* nb_enemies);
+void handleEvent(SDL_Event event, int *running, int *currDirection, int* animFlip, SDL_Rect* position, int isDead);
 void initEnemies(Enemies_t enemies[], SDL_Texture* enemy);
 void moveCharacter(SDL_Texture* sprite, SDL_Renderer* renderer, SDL_Rect *position, int currDirection, int animFlip);
 int newDirection(int markov[][10], int prevDirection);
 void moveEnemies(Enemies_t enemies[], SDL_Renderer* renderer, int nb_enemies, int markov[][10]);
-
-
 void create_diamond(SDL_Texture* diamond_texture, SDL_Renderer* renderer, int diamondLine, int diamondColumn, SDL_Rect *destination);
 int collisionEnemies(SDL_Rect positionCharac, Enemies_t enemies[], int nb_enemies);
 

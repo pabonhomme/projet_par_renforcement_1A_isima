@@ -40,7 +40,7 @@ void get_text(SDL_Renderer *renderer, int x, int y, char *text,
     rect->h = text_height;
 }
 
-void handleEvent(SDL_Event event, int *running, int *currDirection, int* animFlip, SDL_Rect* position, int* nb_enemies)
+void handleEvent(SDL_Event event, int *running, int *currDirection, int* animFlip, SDL_Rect* position, int isDead)
 {
 	switch(event.type)
 	{
@@ -51,36 +51,44 @@ void handleEvent(SDL_Event event, int *running, int *currDirection, int* animFli
 					*running = 0;
 					break;
 
-				case SDLK_SPACE:
-					*nb_enemies +=1;
+					case SDLK_UP:
+						if (!isDead)
+						{
+							*currDirection = DIR_UP;
+							*animFlip = 1 - *animFlip;
+							position->y = ((position->y)-SPRITE_STEP+SCREEN_HEIGHT)%(SCREEN_HEIGHT);
+						}
 					break;
 
-				case SDLK_UP:
-					*currDirection = DIR_UP;
-					*animFlip = 1 - *animFlip;
-					position->y = ((position->y)-SPRITE_STEP+SCREEN_HEIGHT)%SCREEN_HEIGHT;
-					break;
+					case SDLK_DOWN:
+						if (!isDead)
+						{
+							*currDirection = DIR_DOWN;
+							*animFlip = 1 - *animFlip;
+							position->y = ((position->y)+SPRITE_STEP+SCREEN_HEIGHT)%(SCREEN_HEIGHT);
+						}	
+						break;
 
-				case SDLK_DOWN:
-					*currDirection = DIR_DOWN;
-					*animFlip = 1 - *animFlip;
-					position->y = ((position->y)+SPRITE_STEP+SCREEN_HEIGHT)%SCREEN_HEIGHT;
-					break;
+					case SDLK_LEFT:
+						if (!isDead)
+						{
+							*currDirection = DIR_LEFT;
+							*animFlip = 1 - *animFlip;
+							position->x = ((position->x)-SPRITE_STEP+SCREEN_WIDTH)%(SCREEN_WIDTH);
+						}
+						break;
 
-				case SDLK_LEFT:
-					*currDirection = DIR_LEFT;
-					*animFlip = 1 - *animFlip;
-					position->x = ((position->x)-SPRITE_STEP+SCREEN_WIDTH)%SCREEN_WIDTH;
-					break;
+					case SDLK_RIGHT:
+						if (!isDead)
+						{
+							*currDirection = DIR_RIGHT;
+							*animFlip = 1 - *animFlip;
+							position->x = ((position->x)+SPRITE_STEP+SCREEN_WIDTH)%(SCREEN_WIDTH);
+						}
+						break;	
 
-				case SDLK_RIGHT:
-					*currDirection = DIR_RIGHT;
-					*animFlip = 1 - *animFlip;
-					position->x = ((position->x)+SPRITE_STEP+SCREEN_WIDTH)%SCREEN_WIDTH;
-					break;
-
-				default:
-					break;
+					default:
+						break;
 			}
 			break;
 

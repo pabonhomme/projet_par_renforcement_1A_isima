@@ -2,8 +2,8 @@
 
 int main()
 {
-    srand(0);
     SDL_Rect rect_score;
+    SDL_Rect rect_loss;
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 	SDL_Surface *tmp;
@@ -12,11 +12,13 @@ int main()
     SDL_Texture* diamond_texture;  
     SDL_Texture* bg_texture;  
     SDL_Texture *score_texture;
+    SDL_Texture *loss_texture;
 	Enemies_t enemies[NB_ENEMIES_MAX];
 	SDL_Rect positionCharac = {0}, rect_destination_diamant = {0}, source_diamant = {0};
 	SDL_Event event;
 	int colorkey,
         score =0,
+        isDead = 0,
 		nb_enemies = 1,
 	 	animFlipC = 0,
 	 	running = 1,
@@ -35,7 +37,9 @@ int main()
 						 {0,0,1,1,2,2,3,3,3,3} };
     char mot[100];
     char texte[100];
+    char loss[100];
     strcpy(texte, "Score: ");
+    strcpy(loss, "Vous avez perdu! Appuyez sur ESC pour quitter");
     sprintf(mot,"%d",score); 
     strcat(texte,mot);
 
@@ -63,6 +67,7 @@ int main()
     }
     TTF_Init();
     TTF_Font *font = TTF_OpenFont("./font/SIXTY.TTF", 24);
+    TTF_Font *font2 = TTF_OpenFont("./font/SIXTY.TTF", 32);
     if (font == NULL) {
         fprintf(stderr, "error: font not found\n");
         exit(EXIT_FAILURE);
@@ -105,7 +110,7 @@ int main()
     {
     	while (SDL_PollEvent(&event))
     	{
-    		handleEvent(event,&running,&currDirection,&animFlipC,&positionCharac, &nb_enemies);
+    		handleEvent(event,&running,&currDirection,&animFlipC,&positionCharac, isDead);
     	}
         SDL_RenderClear(renderer);
         display_background(bg_texture,window,renderer);
@@ -138,7 +143,12 @@ int main()
         hasIntersectEnemy = collisionEnemies(positionCharac,enemies,nb_enemies);
         if (hasIntersectEnemy)
         {
-        	running = 0;
+        	isDead = 1;
+        }
+        if (isDead)
+        {
+        	SDL_RenderCopy(renderer, loss_texture, NULL, &rect_loss);
+        	get_text(renderer, SCREEN_WIDTH/13, SCREEN_WIDTH/3, loss,  font2, &loss_texture, &rect_loss);
         }
 
 		moveCharacter(character,renderer, &positionCharac,currDirection,animFlipC);
@@ -148,6 +158,8 @@ int main()
 		SDL_RenderClear(renderer);
     }
 
+
+    
     SDL_DestroyTexture(score_texture);
     SDL_DestroyTexture(bg_texture);
     SDL_DestroyTexture(diamond_texture);
