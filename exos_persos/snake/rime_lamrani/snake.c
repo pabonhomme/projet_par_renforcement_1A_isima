@@ -98,7 +98,6 @@ int main(int argc, char** argv) {
         rectangle[i].y= rectangle[i].y+25;
       }                                          
                                                         
-      
       SDL_RenderDrawRect(renderer, &rectangle[i]);
       SDL_RenderFillRect(renderer, &rectangle[i]);
                             

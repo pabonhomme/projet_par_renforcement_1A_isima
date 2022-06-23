@@ -2,6 +2,7 @@
 
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 #include "game.h"
 
 #define SIZECELL 50 
@@ -40,7 +41,8 @@ int main()
     int running = 1;
     int gameOn = 0;
     SDL_Event event;
-    int test = 0, color = 0, occur = 0;
+    SDL_Rect rect;
+    SDL_Renderer *renderer;
     int CaseX, CaseY;
     SDL_Window *window;
     int width = SIZEWINDOW;
@@ -48,6 +50,19 @@ int main()
     int** grid = mallocGrid(SIZEGRID);
     int** copyGrid = mallocGrid(SIZEGRID);
     int** tmp;
+    int speed = 300;
+    int result = 0;
+   
+    TTF_Font* font = NULL;                                              
+    SDL_Color color = {255, 255, 255, 255};
+    SDL_Surface* text_surface = NULL;                                    // la surface  (uniquement transitoire)
+    
+    SDL_Texture* text_texture = NULL;                                    // la texture qui contient le texte
+
+    SDL_Rect pos = {0, 0, 0, 0};                                         // rectangle où le texte va être prositionné
+
+
+
     initGrid(SIZEGRID,grid);
 
     if (SDL_Init(SDL_INIT_VIDEO) == -1)
@@ -65,22 +80,23 @@ int main()
         fprintf(stderr, "Erreur d'initialisation de la SDL : %s\n", SDL_GetError());
         // on peut aussi utiliser SLD_Log()
     }
-    SDL_Renderer *renderer;
 
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED); //  SDL_RENDERER_SOFTWARE
     if (renderer == 0)
     {
         fprintf(stderr, "Erreur d'initialisation de la SDL : %s\n", SDL_GetError());
-        // faire ce qu'il faut pour quitter proprement
     }
 
-    SDL_Rect rect;
+    font = TTF_OpenFont("LEMONMILK-Regular.otf", 65);
+    text_surface = TTF_RenderText_Blended(font, "Jeu fixe!", color); // création du texte dans la surface   
+    text_texture = SDL_CreateTextureFromSurface(renderer, text_surface);
+    SDL_QueryTexture(text_texture, NULL, NULL, &pos.w, &pos.h);
+
 
     // couleur de fond
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
     SDL_RenderClear(renderer);
 
-    // dessiner CASES
     displayRects(rect, renderer, grid);
 
     // afficher à l'ecran
@@ -88,8 +104,7 @@ int main()
 
     while (running)
     {
-
-        while (SDL_PollEvent(&event))
+		while (SDL_PollEvent(&event))
         {
             switch (event.type)
             {
@@ -100,10 +115,6 @@ int main()
                 	case SDL_WINDOWEVENT_CLOSE:
                     	printf("appui sur la croix\n");
                     	break;
-                	case SDL_WINDOWEVENT_SIZE_CHANGED:
-                    	width = event.window.data1;
-                    	height = event.window.data2;
-                    	printf("Size : %d%d\n", width, height);
                 	default:
                     	displayRects(rect, renderer, grid);
                 }
@@ -117,13 +128,6 @@ int main()
                 {
                 	grid[CaseX][CaseY] = 1;
                 }
-                else
-                {
-                	newGrid(SIZEGRID,grid,copyGrid,birth,survive);
-                	*tmp = *grid;
-                	*grid = *copyGrid;
-                	*copyGrid = *tmp;
-                }
                 displayRects(rect, renderer, grid);
                 break;
             case SDL_KEYDOWN:
@@ -132,15 +136,40 @@ int main()
               		case SDLK_SPACE:
                 		gameOn = 1;
                 		break;
-                		
+                	case SDLK_UP:
+                        speed = speed*2;
+                        break;
+
+                    case SDLK_DOWN:
+                        speed = speed/2;
+                        break;    
+
+                    default:
+                		break;	       		
             	}
             	break;
             case SDL_QUIT:
                 printf("on quitte\n");
                 running = 0;
+                break;
             }
         }
-        SDL_Delay(100); //  delai minimal
+        if(gameOn)
+        {
+            newGridToric(SIZEGRID,grid,copyGrid,birth,survive);
+        	result = equalGrid(SIZEGRID,grid,copyGrid);
+            if (result)
+            {
+                printf("Jeu fixe");
+                SDL_RenderCopy(renderer, text_texture, NULL, &pos);
+            }
+            tmp = grid;
+        	grid = copyGrid;
+        	copyGrid = tmp;
+        	displayRects(rect, renderer, grid);
+        }
+        
+        SDL_Delay(speed); //  delai minimal
     }
 	freeGrid(SIZEGRID,grid);
 	freeGrid(SIZEGRID,copyGrid);

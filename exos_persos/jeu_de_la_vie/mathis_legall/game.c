@@ -187,7 +187,7 @@ void newCell(int n, int i, int j, int** grid, int** copyGrid, int birth[], int s
 			if (j == 0)
 			{
 				sumNeighbors = grid[i][j+1]+grid[i+1][j+1]+grid[i+1][j];
-				if(survive[sumNeighbors] == 1)
+				if(birth[sumNeighbors] == 1)
 				{
 					copyGrid[i][j] = 1;
 				}
@@ -201,7 +201,7 @@ void newCell(int n, int i, int j, int** grid, int** copyGrid, int birth[], int s
 				if (j == n-1)
 				{
 					sumNeighbors = grid[i][j-1]+grid[i+1][j-1]+grid[i+1][j];
-					if(survive[sumNeighbors] == 1)
+					if(birth[sumNeighbors] == 1)
 					{
 						copyGrid[i][j] = 1;
 					}
@@ -213,7 +213,7 @@ void newCell(int n, int i, int j, int** grid, int** copyGrid, int birth[], int s
 				else
 				{
 					sumNeighbors = grid[i][j-1]+grid[i+1][j-1]+grid[i+1][j]+grid[i][j+1]+grid[i+1][j+1];
-					if(survive[sumNeighbors] == 1)
+					if(birth[sumNeighbors] == 1)
 					{
 						copyGrid[i][j] = 1;
 					}
@@ -341,30 +341,67 @@ void freeGrid(int n, int** grid)
 	free(grid);
 }
 
-// int main()
-// {	
-// 	int n = 10;
-// 	int i,j;
 
-// 	int** grid = mallocGrid(n);
+void newCellToric(int n, int i, int j, int** grid, int** copyGrid, int birth[], int survive[])
+{
+	int sumNeighbors;
+	sumNeighbors = grid[(i-1+n)%n][(j-1+n)%n]+grid[(i-1+n)%n][(j+n)%n]+grid[(i-1+n)%n][(j+1+n)%n]+
+					   grid[(i+n)%n][(j-1+n)%n]+grid[(i+n)%n][(j+1+n)%n]+grid[(i+1+n)%n][(j-1+n)%n]+
+					   grid[(i+1+n)%n][(j+n)%n]+grid[(i+1+n)%n][(j+1+n)%n];
 
-// 	int** copyGrid = mallocGrid(n);
+	if (grid[i][j] == 1)
+	{
+		if (survive[sumNeighbors] == 1)
+		{
+			copyGrid[i][j] = 1;
+		}
+		else
+		{
+			copyGrid[i][j] = 0;
+		}
+	}
+	else
+	{
+		if (birth[sumNeighbors] == 1)
+		{
+			copyGrid[i][j] = 1;
+		}
+		else
+		{
+			copyGrid[i][j] = 0;
+		}
+	}
+}
 
-// 	initGrid(n,grid);
-// 	grid[4][4] = 1;
-// 	grid[4][5] = 1;
-// 	grid[4][6] = 1;
+void newGridToric(int n, int** grid, int** copyGrid, int birth[], int survive[])
+{
+	int i,j;
 
-// 	printGrid(n,grid);
-	
-// 	newGrid(n,grid,copyGrid);
-	
-// 	printf("\n \n");
+	for (i=0; i<n; i++)
+	{
+		for (j=0; j<n; j++)
+		{
+			newCellToric(n,i,j,grid,copyGrid,birth,survive);
+		}
+	}
+}
 
-// 	printGrid(n,copyGrid);
+int equalGrid(int n, int** grid1, int** grid2)
+{
+	int result = 1;
+	int i = 0;
+	int j = 0;
 
-// 	freeGrid(n,grid);
-// 	freeGrid(n,copyGrid);
+	while (i<n && result==1)
+	{
+		while (j<n && result==1)
+		{
+			result = (grid1[i][j] == grid2[i][j]);
+			j = j+1;
+		}
 
-// 	return 0;
-// }
+		i = i+1;
+	}
+
+	return result;
+}

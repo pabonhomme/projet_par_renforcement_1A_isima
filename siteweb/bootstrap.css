@@ -1,0 +1,119 @@
+body{
+	position: relative;
+}
+
+/*NAVBAR*/
+.rounded.float-left {
+	height: 50px;
+}
+
+/* Jumbotron */
+#Introduction {
+	background-color: white;
+}
+
+.display-4 {
+	text-align: center;
+	font-size: 40px;
+}
+
+.lead {
+	text-align: center;
+	color: black;
+}
+
+/* BOUTON */
+.btn-primary {
+    background-color: #E16000;
+    margin-top:10px;
+}
+.btn-primary:hover {
+    background-color:#E16000;
+}
+/* IMAGES */
+figcaption {
+    text-align: center;
+}
+
+/* CONTAINER BLANC */
+.container-fluid {
+    margin-bottom: 50px;
+    margin-top: 50px;
+}
+
+/* CONTAINER BLEU */
+.p-10 {
+
+    padding:7%;
+}
+.text-dark {
+    text-align: center;
+}
+
+#Contact{ 
+ 	padding-top: 6em;
+  }
+
+#Technologies{
+	padding-top: 6em;
+}
+
+.active>.nav-link {
+	border-bottom: 3px solid cornflowerblue;
+}
+.partie2{
+	background-color: cornflowerblue;
+	padding: 1cm;
+	color: aliceblue;
+}
+.partie3{
+	background-color: aliceblue;
+}
+.partie1{
+	background-color: #282828;
+}
+.image{
+	width: 10cm;
+	height: 8cm;
+	padding: 1cm;
+	padding-bottom: 0cm;
+}
+h1{
+	font-family: 'Roboto', sans-serif;
+	font-style: bold;
+	padding: 1cm;
+}
+a{
+	color: aliceblue;
+	text-decoration: none;
+	font-style: bold;
+	font-family: 'Open Sans', sans-serif;
+}
+.xfene{
+	color:aliceblue;
+	text-align: center;
+}
+.gif{
+	float: left;
+	margin: 0 15px 15px 0;
+	padding: 1cm;
+	padding-bottom: 0cm;
+	width: 15cm;
+	height:10cm ;
+	color: white;
+}
+.prp{
+	text-align: right;
+	color: aliceblue;
+}
+.test{
+	color:white;
+	margin: 4cm;
+	margin-right:0cm;
+	margin-bottom: 0cm;
+
+}
+.lien{
+	margin: 6cm;
+	margin-right:0cm;
+}
