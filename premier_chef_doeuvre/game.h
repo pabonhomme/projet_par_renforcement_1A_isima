@@ -16,3 +16,20 @@ Ordre de chaque position dans le sprite */
 
 /* Nombre de pixels pour chaque pas du personnage */
 #define SPRITE_STEP 5
+
+#define NB_ENEMIES_MAX 10
+
+typedef struct enemies
+{
+	SDL_Texture* sprite;
+	SDL_Rect position;
+	int prevDirection;
+	int animFlip;
+
+} Enemies_t;
+
+void handleEvent(SDL_Event event, int *running, int *currDirection, int* animFlip, SDL_Rect* position);
+void initEnemies(Enemies_t enemies[], SDL_Texture* enemy);
+void moveCharacter(SDL_Texture* sprite, SDL_Renderer* renderer, SDL_Rect position, int currDirection, int animFlip);
+int newDirection(int markov[][10], int prevDirection);
+void moveEnemies(Enemies_t enemies[], SDL_Renderer* renderer, int nb_enemies, int markov[][10]);
