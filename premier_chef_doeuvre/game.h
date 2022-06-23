@@ -20,7 +20,7 @@ Ordre de chaque position dans le sprite */
 
 #define SPRITE_STEP 20
 
-#define NB_ENEMIES_MAX 10
+#define NB_ENEMIES_MAX 50
 
 typedef struct enemies
 {
@@ -31,7 +31,7 @@ typedef struct enemies
 
 } Enemies_t;
 
-void handleEvent(SDL_Event event, int *running, int *currDirection, int* animFlip, SDL_Rect* position);
+void handleEvent(SDL_Event event, int *running, int *currDirection, int* animFlip, SDL_Rect* position, int* nb_enemies);
 void initEnemies(Enemies_t enemies[], SDL_Texture* enemy);
 void moveCharacter(SDL_Texture* sprite, SDL_Renderer* renderer, SDL_Rect position, int currDirection, int animFlip);
 int newDirection(int markov[][10], int prevDirection);

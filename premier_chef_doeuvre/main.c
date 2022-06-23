@@ -13,6 +13,7 @@ int main()
 	SDL_Rect positionCharac = {0};
 	SDL_Event event;
 	int colorkey,
+		nb_enemies = 1,
 	 	animFlipC = 0,
 	 	running = 1,
 	 	currDirection = DIR_RIGHT,
@@ -56,13 +57,13 @@ int main()
   	if (diamond_texture == NULL) 
   		fprintf(stderr, "Erreur d'initialisation de la texture : %s\n", SDL_GetError());
 
-	tmp = SDL_LoadBMP("./img/sprite.bmp");
-	tmp2 = SDL_LoadBMP("./img/sprite.bmp");
-
-	//colorkey = SDL_MapRGB((window->icon)->format,255, 0, 255);
-	//SDL_SetColorKey(tmp, SDL_TRUE, colorkey);
+	tmp = SDL_LoadBMP("./img/character.bmp");
+	tmp2 = SDL_LoadBMP("./img/enemy.bmp");
+	colorkey = SDL_MapRGB(tmp->format,255, 0, 255); // on enlève le background du sprite
+	SDL_SetColorKey(tmp, SDL_TRUE, colorkey);
+	SDL_SetColorKey(tmp2, SDL_TRUE, colorkey);
 	character = SDL_CreateTextureFromSurface(renderer,tmp);
-	initEnemies(enemies,SDL_CreateTextureFromSurface(renderer,tmp));
+	initEnemies(enemies,SDL_CreateTextureFromSurface(renderer,tmp2));
 
     positionCharac.x = (SCREEN_WIDTH - SPRITE_SIZE) / 2;
     positionCharac.y = (SCREEN_HEIGHT - SPRITE_SIZE) / 2;
@@ -71,7 +72,7 @@ int main()
     {
     	while (SDL_PollEvent(&event))
     	{
-    		handleEvent(event,&running,&currDirection,&animFlipC,&positionCharac);
+    		handleEvent(event,&running,&currDirection,&animFlipC,&positionCharac, &nb_enemies);
     	}
     	if(hasIntersect)
         {
@@ -80,21 +81,18 @@ int main()
 			destination_x = rand()%SCREEN_WIDTH, 
 			destination_y = rand()%SCREEN_HEIGHT;
         	create_diamond(diamond_texture, renderer, diamondLine, diamondColumn, destination_x, destination_y );
-        	SDL_Delay(1);
         	hasIntersect = 0;
 
         }
         else
         {
         	create_diamond(diamond_texture, renderer, diamondLine, diamondColumn, destination_x, destination_y );
-        	SDL_Delay(1);
         }
 
 		moveCharacter(character,renderer,positionCharac,currDirection,animFlipC);
-		SDL_Delay(1);
-		moveEnemies(enemies,renderer,2,markov);
+		moveEnemies(enemies,renderer,nb_enemies,markov);
 		SDL_RenderPresent(renderer);
-		SDL_Delay(100);
+		SDL_Delay(50);
 		SDL_RenderClear(renderer);
     }
 

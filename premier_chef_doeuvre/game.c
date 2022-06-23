@@ -1,7 +1,7 @@
 #include "game.h"
 
 
-void handleEvent(SDL_Event event, int *running, int *currDirection, int* animFlip, SDL_Rect* position)
+void handleEvent(SDL_Event event, int *running, int *currDirection, int* animFlip, SDL_Rect* position, int* nb_enemies)
 {
 	switch(event.type)
 	{
@@ -10,6 +10,10 @@ void handleEvent(SDL_Event event, int *running, int *currDirection, int* animFli
 			{
 				case SDLK_ESCAPE:
 					*running = 0;
+					break;
+
+				case SDLK_SPACE:
+					*nb_enemies +=1;
 					break;
 
 				case SDLK_UP:
