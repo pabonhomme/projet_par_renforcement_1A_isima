@@ -17,8 +17,7 @@ Ordre de chaque position dans le sprite */
 #define DIR_LEFT        3
 
 /* Nombre de pixels pour chaque pas du personnage */
-#define SPRITE_STEP 5
+#define SPRITE_STEP 20
 
-void create_diamond(SDL_Texture* diamond_texture, SDL_Rect *tabDiamond[50], int nbDiamond,
-                            SDL_Window* window,
-                            SDL_Renderer* renderer);
+void create_diamond(SDL_Texture* diamond_texture, int nbDiamond, SDL_Window* window, SDL_Renderer* renderer, 
+	int diamondLine, int diamondColumn, int destination_x, int destination_y );
