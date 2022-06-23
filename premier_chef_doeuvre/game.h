@@ -1,10 +1,12 @@
 #include <SDL2/SDL.h>
 #include <stdio.h>
+#include<string.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 
 /* Taille de la fenêtre */
-#define SCREEN_WIDTH  800
-#define SCREEN_HEIGHT 800
+#define SCREEN_WIDTH  640
+#define SCREEN_HEIGHT 480
 
 /* Taille d'un sprite */
 #define SPRITE_SIZE 50
@@ -17,10 +19,14 @@ Ordre de chaque position dans le sprite */
 #define DIR_LEFT        3
 
 /* Nombre de pixels pour chaque pas du personnage */
-
-#define SPRITE_STEP 20
+#define SPRITE_STEP 5
 
 #define NB_ENEMIES_MAX 50
+
+void display_background(SDL_Texture *bg_texture, SDL_Window *window,
+                         SDL_Renderer *renderer);
+void get_text(SDL_Renderer *renderer, int x, int y, char *text,
+        TTF_Font *font, SDL_Texture **texture, SDL_Rect *rect);
 
 typedef struct enemies
 {

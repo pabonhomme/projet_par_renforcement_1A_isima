@@ -1,23 +1,26 @@
 #include "game.h"
 
-
 int main()
 {
+    SDL_Rect rect_score;
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 	SDL_Surface *tmp;
 	SDL_Surface *tmp2;
 	SDL_Texture* character;                          
-    SDL_Texture* diamond_texture;    
+    SDL_Texture* diamond_texture;  
+    SDL_Texture* bg_texture;  
+    SDL_Texture *score_texture;
 	Enemies_t enemies[NB_ENEMIES_MAX];
 	SDL_Rect positionCharac = {0};
 	SDL_Event event;
 	int colorkey,
+        score =0,
 		nb_enemies = 1,
 	 	animFlipC = 0,
 	 	running = 1,
 	 	currDirection = DIR_RIGHT,
-		hasIntersect = 0, 
+		hasIntersectDiamond = 0, 
 		diamondLine = rand()%2, 
 		diamondColumn = rand()%3, 
 		destination_x = rand()%SCREEN_WIDTH, 
@@ -30,6 +33,11 @@ int main()
 						 {0,1,2,2,2,2,2,2,2,3},
 
 						 {0,0,1,1,2,2,3,3,3,3} };
+    char mot[100];
+    char texte[100];
+    strcpy(texte, "Score: ");
+    sprintf(mot,"%d",score); 
+    strcat(texte,mot);
 
 	if (SDL_Init(SDL_INIT_VIDEO) == -1)
     {
@@ -50,7 +58,21 @@ int main()
     if (renderer == 0)
     {
         fprintf(stderr, "Erreur d'initialisation de la SDL : %s\n", SDL_GetError());
+
+        // faire ce qu'il faut pour quitter proprement
     }
+    TTF_Init();
+    TTF_Font *font = TTF_OpenFont("./font/SIXTY.TTF", 24);
+    if (font == NULL) {
+        fprintf(stderr, "error: font not found\n");
+        exit(EXIT_FAILURE);
+    }
+    get_text(renderer, 0, 0, texte,  font, &score_texture, &rect_score);
+    
+
+  	bg_texture = IMG_LoadTexture(renderer,"./img/background.png");
+  	if (bg_texture == NULL) 
+  		fprintf(stderr, "Erreur d'initialisation de la texture : %s\n", SDL_GetError());  
 
     diamond_texture = IMG_LoadTexture(renderer,"./img/listDiamond.png");
     create_diamond(diamond_texture, renderer, diamondLine, diamondColumn, destination_x, destination_y );
@@ -75,14 +97,24 @@ int main()
     	{
     		handleEvent(event,&running,&currDirection,&animFlipC,&positionCharac, &nb_enemies);
     	}
-    	if(hasIntersect)
+        SDL_RenderClear(renderer);
+        display_background(bg_texture,window,renderer);
+        SDL_RenderCopy(renderer, score_texture, NULL, &rect_score);
+        score++;
+        sprintf(mot,"%d",score);
+        strcpy(texte, "");
+        strcpy(texte, "Score: ");
+        strcat(texte,mot);
+        get_text(renderer, 0, 0, texte,  font, &score_texture, &rect_score);
+
+    	if(hasIntersectDiamond)
         {
         	diamondLine = rand()%2, 
 			diamondColumn = rand()%3, 
 			destination_x = rand()%SCREEN_WIDTH, 
 			destination_y = rand()%SCREEN_HEIGHT;
         	create_diamond(diamond_texture, renderer, diamondLine, diamondColumn, destination_x, destination_y );
-        	hasIntersect = 0;
+        	hasIntersectDiamond = 0;
 
         }
         else
@@ -97,9 +129,12 @@ int main()
 		SDL_RenderClear(renderer);
     }
 
+    SDL_DestroyTexture(score_texture);
+    SDL_DestroyTexture(bg_texture);
     SDL_DestroyTexture(diamond_texture);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
+    TTF_Quit();
     IMG_Quit();
     SDL_Quit();
 	return 0;

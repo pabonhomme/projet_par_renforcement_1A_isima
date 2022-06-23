@@ -52,3 +52,8 @@ Module.symvers
 Mkfile.old
 dkms.conf
 projet
+x_fenetre
+snake
+sprite
+gamelife
+game

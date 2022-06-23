@@ -42,7 +42,7 @@ void moveTexture(SDL_Texture* my_texture,
        destination.y =                        // La course se fait en milieu d'écran (en vertical)
          (window_dimensions.h - destination.h) /2;
 
-       int speed = 3;
+       int speed = 6;
        for (int x = window_dimensions.w - destination.w; x >0 ; x -= speed) {
        	SDL_RenderClear(renderer);           // Effacer l'image précédente avant de dessiner la nouvelle
          destination.x = x;                   // Position en x pour l'affichage du sprite
