@@ -1,13 +1,13 @@
 CC=gcc
 CFLAGS=-Wextra -Wall
 LDFLAGS=-lSDL2
-EXEC=xfenetre
+EXEC=x_fenetre
 
 all:$(EXEC)
 
-xfenetre: xfenetre.o
+x_fenetre: xfenetre.o
 	$(CC) -o xfenetre xfenetre.o -lSDL2
-	@echo "Lancer le programme avec ./xfenetre"
+	@echo "Lancer le programme avec ./x_fenetre"
 
 xfenetre.o: xfenetre.c
 			$(CC) -o xfenetre.o -c xfenetre.c -lSDL2

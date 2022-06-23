@@ -1,13 +1,13 @@
 CC=gcc
 CFLAGS=-Wextra -Wall 
 LDFLAGS=-lSDL2
-EXEC=xfen
+EXEC=x_fenetre
 
 all: $(EXEC)
 
-xfen: xfen.o
+x_fenetre: xfen.o
 	$(CC) -o $@ $^ $(LDFLAGS)
-	@echo "\nLancer le programme avec ./xfen"
+	@echo "\nLancer le programme avec ./x_fenetre"
 
 xfen.o: xfen.c
 	$(CC) -o $@ -c $< $(sdl2-config --cflags --libs) $(CFLAGS)
