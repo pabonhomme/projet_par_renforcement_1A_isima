@@ -19,7 +19,7 @@ Ordre de chaque position dans le sprite */
 #define DIR_LEFT        3
 
 /* Nombre de pixels pour chaque pas du personnage */
-#define SPRITE_STEP 5
+#define SPRITE_STEP 16
 
 #define NB_ENEMIES_MAX 50
 

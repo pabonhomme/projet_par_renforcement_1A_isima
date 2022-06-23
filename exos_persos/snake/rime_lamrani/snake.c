@@ -45,6 +45,7 @@ int main(int argc, char** argv) {
   SDL_Window* window = NULL;
   SDL_Renderer* renderer = NULL;
   SDL_DisplayMode screen;
+  SDL_Event event;
          
   if (SDL_Init(SDL_INIT_VIDEO) != 0) end_sdl(0, "ERROR SDL INIT", window, renderer);
 
@@ -80,7 +81,8 @@ int main(int argc, char** argv) {
   SDL_RenderPresent(renderer);                         
   SDL_Delay(200); 
  
-  while(1) {                                              // boucle infinie pour faire deplacer le serpent 
+  while(1) { 
+    if (SDL_PollEvent(&event)){}                                             // boucle infinie pour faire deplacer le serpent 
     SDL_SetRenderDrawColor(renderer,0, 0 , 0, 255);  
 
   SDL_RenderClear(renderer);
