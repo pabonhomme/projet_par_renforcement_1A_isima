@@ -2,6 +2,7 @@
 
 #include "game.h"
 
+/* Fonction qui remplit une matrice à partir d'un fichier*/
 void charger(char* nomFichier,int **grid, int n)
 {   
     FILE    * flot;
@@ -31,6 +32,7 @@ void charger(char* nomFichier,int **grid, int n)
     fclose(flot);
 }
 
+/* Fonction qui sauvegarde une matrice dans un fichier*/
 void sauvegarder(char* nomFichier, int **grid, int n)
 {
     FILE * flot;
@@ -55,6 +57,7 @@ void sauvegarder(char* nomFichier, int **grid, int n)
     fclose(flot);
 }
 
+/* Fonction qui affiche le background dans la window */
 void display_background(SDL_Texture *bg_texture, SDL_Window *window,
                          SDL_Renderer *renderer) {
   SDL_Rect 
@@ -76,12 +79,14 @@ void display_background(SDL_Texture *bg_texture, SDL_Window *window,
                  &source,
                  &destination);                 // Création de l'élément à afficher
 }
+
+/* Fonction qui copie le texte dans le renderer */
 void get_text(SDL_Renderer *renderer, int x, int y, char *text,
         TTF_Font *font, SDL_Texture **texture, SDL_Rect *rect) {
     int text_width;
     int text_height;
     SDL_Surface *surface;
-    SDL_Color textColor = {255, 0, 0, 0};
+    SDL_Color textColor = {255, 0, 0, 0}; // texte en rouge
 
     surface = TTF_RenderText_Solid(font, text, textColor);
     *texture = SDL_CreateTextureFromSurface(renderer, surface);
@@ -94,6 +99,8 @@ void get_text(SDL_Renderer *renderer, int x, int y, char *text,
     rect->h = text_height;
 }
 
+
+/* Fonction qui gère le menu du jeu */
 int menu(int * running_game, int *sauvegarde, int *chargement)
 {
 	int running = 1, mode = 0;
@@ -107,7 +114,7 @@ int menu(int * running_game, int *sauvegarde, int *chargement)
     SDL_Texture* bg_texture;   
 
                                
-
+    /* Initialisation des variables */
     if (SDL_Init(SDL_INIT_VIDEO) == -1)
     {
         fprintf(stderr, "Erreur d'initialisation de la SDL : %s\n", SDL_GetError());
@@ -121,14 +128,12 @@ int menu(int * running_game, int *sauvegarde, int *chargement)
     if (window == 0)
     {
         fprintf(stderr, "Erreur d'initialisation de la SDL : %s\n", SDL_GetError());
-        // on peut aussi utiliser SLD_Log()
     }
 
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED); //  SDL_RENDERER_SOFTWARE
     if (renderer == 0)
     {
         fprintf(stderr, "Erreur d'initialisation de la SDL : %s\n", SDL_GetError());
-        // faire ce qu'il faut pour quitter proprement
     }
   	bg_texture = IMG_LoadTexture(renderer,"./back.jpg");
   	if (bg_texture == NULL) 
@@ -139,10 +144,6 @@ int menu(int * running_game, int *sauvegarde, int *chargement)
         fprintf(stderr, "error: font not found\n");
         exit(EXIT_FAILURE);
     }
-        // get_text(renderer, 300-(rect1.w/2), 300, "Appuyez sur n pour monde normal",  font, &texture1, &rect1);
-        // get_text(renderer,300-(rect1.w/2), 300 + rect1.h, "Appuyez sur t pour monde torique", font, &texture2, &rect2);
-        // get_text(renderer,300-(rect1.w/2), 300 + rect2.h+rect1.h, "Appuyez sur s pour sauvegarder", font, &texture3, &rect3);
-        // get_text(renderer,300-(rect1.w/2), 300 + rect3.h+rect2.h+rect1.h, "Appuyez sur c pour charger", font, &texture4, &rect4);
 
 	while (running)
     {
@@ -154,7 +155,7 @@ int menu(int * running_game, int *sauvegarde, int *chargement)
                 		switch (event.window.event)
                 		{
                 			case SDL_WINDOWEVENT_CLOSE:
-                                *running_game=0;   
+                                *running_game=0;   			// si on ferme le menu, on ferme également la fenêtre de jeu
                     			break;
                 			default:
                 				break;
@@ -163,26 +164,26 @@ int menu(int * running_game, int *sauvegarde, int *chargement)
                     case SDL_KEYDOWN:                                                                         
                         switch (event.key.keysym.sym){             
                         case SDLK_n:                                
-                            mode = 0;
+                            mode = 0;		// mode normal
                             running = 0;
                         break;
                         case SDLK_t:                                
-                            mode = 1; 
+                            mode = 1; 		// mode torique
                             running = 0;    
                         break;
                         case SDLK_s:                                
                             printf("Sauvegarde\n"); 
-                            *sauvegarde = 1; 
+                            *sauvegarde = 1; 	// mode sauvegarde
                             running = 0;
                             break;
                         case SDLK_c:                                
                             printf("Charger config\n"); 
-                            *chargement = 1; 
+                            *chargement = 1; 	// mode chargement
                             running = 0;
                             break;
                         case SDLK_ESCAPE:                           
                         case SDLK_q:                               
-                        running =0;  
+                        running =0;  			// on quite les deux menus
                         *running_game=0;                                                           
                         break;
                         default:                                    
@@ -195,6 +196,9 @@ int menu(int * running_game, int *sauvegarde, int *chargement)
                 		break;
             	}
             }
+
+            /* Affichage des textes */
+
             SDL_RenderClear(renderer);
             display_background(bg_texture,window,renderer);
             get_text(renderer, 300-(rect1.w/2), 300-rect1.h/2, "Appuyez sur n pour monde normal",  font, &texture1, &rect1);
@@ -211,7 +215,6 @@ int menu(int * running_game, int *sauvegarde, int *chargement)
       
     }
     
-    //SDL_Delay(5000);
     SDL_DestroyTexture(texture1);
     SDL_DestroyTexture(texture2);
     SDL_DestroyTexture(texture3);
@@ -222,9 +225,11 @@ int menu(int * running_game, int *sauvegarde, int *chargement)
     TTF_Quit();
     IMG_Quit();
     SDL_Quit();
+
     return mode;
 }
 
+/* Fonction qui crée la grille à partir de la matrice */
 void displayRects(SDL_Rect rect, SDL_Renderer *renderer, int** grid)
 {
     int i,j;
@@ -250,6 +255,7 @@ void displayRects(SDL_Rect rect, SDL_Renderer *renderer, int** grid)
     SDL_RenderPresent(renderer);
 }
 
+/* Fonction d'allocation de la matrice */
 int** mallocGrid(int n)
 {
 	int i;
@@ -264,6 +270,7 @@ int** mallocGrid(int n)
 	return grid;
 }
 
+/* Fonction qui initialise la matrice */
 void initGrid(int n, int** grid)
 {
 	int i,j;
@@ -277,6 +284,7 @@ void initGrid(int n, int** grid)
 	}
 }
 
+/* Fonction d'affichage de la grille */
 void printGrid(int n, int** grid)
 {
 	int i,j;
@@ -291,6 +299,7 @@ void printGrid(int n, int** grid)
 	}
 }
 
+/* Fonction qui modifie la valeur de la nouvelle cellule par rapport à la précédente */
 void newCell(int n, int i, int j, int** grid, int** copyGrid, int birth[], int survive[])
 {
 	int sumNeighbors;
@@ -566,6 +575,8 @@ void newCell(int n, int i, int j, int** grid, int** copyGrid, int birth[], int s
 	}
 }
 
+
+/* Fonction qui met à jour la nouvelle matrice */
 void newGrid(int n, int** grid, int** copyGrid, int birth[], int survive[])
 {
 	int i,j;
@@ -579,6 +590,7 @@ void newGrid(int n, int** grid, int** copyGrid, int birth[], int survive[])
 	}
 }
 
+/* Fonction qui libère la matrice */
 void freeGrid(int n, int** grid)
 {
 	int i;
@@ -591,7 +603,7 @@ void freeGrid(int n, int** grid)
 	free(grid);
 }
 
-
+/* Fonction qui modifie la valeur de la nouvelle cellule par rapport à la précédente */
 void newCellToric(int n, int i, int j, int** grid, int** copyGrid, int birth[], int survive[])
 {
 	int sumNeighbors;
@@ -623,6 +635,7 @@ void newCellToric(int n, int i, int j, int** grid, int** copyGrid, int birth[], 
 	}
 }
 
+/* Fonction qui met à jour la nouvelle matrice (monde torique) */
 void newGridToric(int n, int** grid, int** copyGrid, int birth[], int survive[])
 {
 	int i,j;
@@ -636,6 +649,7 @@ void newGridToric(int n, int** grid, int** copyGrid, int birth[], int survive[])
 	}
 }
 
+/* Fonction qui renvoie 1 si les deux matrices sont égales, 0 sinon */
 int equalGrid(int n, int** grid1, int** grid2)
 {
 	int result = 0;
