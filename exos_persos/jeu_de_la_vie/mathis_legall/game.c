@@ -2,6 +2,35 @@
 
 #include "game.h"
 
+void charger(char* nomFichier,int **grid, int n)
+{   
+    FILE    * flot;
+    int i,j;
+
+    flot=fopen(nomFichier,"r"); // ouverture du fichier en lecture
+
+    if (flot == NULL) // si l'ouverture s'est mal passee
+    {
+        printf("Problème d'ouverture du fichier\n");
+    }
+    if (feof(flot)) // si le fichier est vide
+    {
+        printf("fichier vide\n");
+    }
+    else
+    {
+    	for (i=0; i<n; i++)
+		{
+			for (j=0; j<n; j++)
+			{
+				fscanf(flot,"%d", &grid[j][i]); // car matrice transposee
+			}
+		}
+    }
+
+    fclose(flot);
+}
+
 void sauvegarder(char* nomFichier, int **grid, int n)
 {
     FILE * flot;

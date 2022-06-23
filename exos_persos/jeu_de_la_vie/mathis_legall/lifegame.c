@@ -19,7 +19,7 @@ int main()
     int** tmp;
     int speed = 300;
     int result = 0;
-    void (* tabMode[2])(int, int**, int**, int*, int *) = {newGrid, newGridToric};
+    void (* tabMode[2])(int, int**, int**, int*, int *) = {newGrid, newGridToric}; // pointeur de fonction en fonction du mode thorique ou non
    
     TTF_Font* font;                                              
 
@@ -81,12 +81,14 @@ int main()
                 }
                 break;
             case SDL_MOUSEBUTTONDOWN:
-                if()
-                CaseX = event.button.x/SIZECELL;
-                CaseY = event.button.y/SIZECELL;
-                if(!gameOn)
+                if(!chargement)
                 {
-                	grid[CaseX][CaseY] = 1;
+                    CaseX = event.button.x/SIZECELL;
+                    CaseY = event.button.y/SIZECELL;
+                    if(!gameOn)
+                    {
+                        grid[CaseX][CaseY] = 1;
+                    }
                 }
                 displayRects(rect, renderer, grid);
                 break;
@@ -120,6 +122,14 @@ int main()
             case SDL_QUIT:
                 printf("on quitte\n");
                 running = 0;
+                break;
+            default: 
+                if(chargement)
+                {
+                    charger("sauvegarde.txt", grid, SIZEGRID);
+                    displayRects(rect, renderer, grid);
+                    chargement = 0;
+                }
                 break;
             }
         }

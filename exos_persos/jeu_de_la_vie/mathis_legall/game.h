@@ -9,6 +9,7 @@
 #define SIZEGRID SIZEWINDOW/SIZECELL
 
 //MENU
+void charger(char* nomFichier,int **grid, int n);
 void sauvegarder(char* nomFichier, int **grid, int n);
 void display_background(SDL_Texture *bg_texture, SDL_Window *window,
                          SDL_Renderer *renderer);
