@@ -9,11 +9,12 @@
 #define SIZEGRID SIZEWINDOW/SIZECELL
 
 //MENU
+void sauvegarder(char* nomFichier, int **grid, int n);
 void display_background(SDL_Texture *bg_texture, SDL_Window *window,
                          SDL_Renderer *renderer);
 void get_text(SDL_Renderer *renderer, int x, int y, char *text,
         TTF_Font *font, SDL_Texture **texture, SDL_Rect *rect);
-int menu(int *running);
+int menu(int *running, int* sauvegarde, int *chargement);
 
 //GAME
 void displayRects(SDL_Rect rect, SDL_Renderer *renderer, int** grid);

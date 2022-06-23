@@ -4,7 +4,7 @@ int main()
 {
 	int survive[9] = {0,0,1,1,0,0,0,0,0};
 	int birth[9] = {0,0,0,1,0,0,0,0,0};
-    int running = 1, gameOn = 0, mode = 0;
+    int running = 1, gameOn = 0, mode = 0, sauvegarde = 0, chargement = 0, endGame = 0;
     SDL_Event event;
     SDL_Rect rect;
     SDL_Rect rect_mess;
@@ -32,7 +32,7 @@ int main()
         return EXIT_FAILURE;
     }
 
-    mode = menu(&running);
+    mode = menu(&running, &sauvegarde, &chargement);
 
     window = SDL_CreateWindow("Jeu de la vie", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                               width, height,
@@ -81,6 +81,7 @@ int main()
                 }
                 break;
             case SDL_MOUSEBUTTONDOWN:
+                if()
                 CaseX = event.button.x/SIZECELL;
                 CaseY = event.button.y/SIZECELL;
                 if(!gameOn)
@@ -93,13 +94,22 @@ int main()
             	switch (event.key.keysym.sym)
             	{
               		case SDLK_SPACE:
-                		gameOn = 1;
+                        if(sauvegarde)
+                        {
+                            printGrid(SIZEGRID, grid);
+                            sauvegarder("sauvegarde.txt", grid, SIZEGRID);
+                            running = 0;
+                        }
+                        else
+                        {
+                		  gameOn = 1;
+                        }
                 		break;
-                	case SDLK_UP:
+                	case SDLK_LEFT:
                         speed = speed*2;
                         break;
 
-                    case SDLK_DOWN:
+                    case SDLK_RIGHT:
                         speed = speed/2;
                         break;    
 
@@ -113,30 +123,38 @@ int main()
                 break;
             }
         }
-        if(gameOn)
-        {
-            tabMode[mode](SIZEGRID,grid,copyGrid,birth,survive);
-        	
-            tmp = grid;
-        	grid = copyGrid;
-        	copyGrid = tmp;
-        	displayRects(rect, renderer, grid);
-            //SDL_RenderPresent(renderer);
-            //SDL_Delay(100);
-            SDL_RenderClear(renderer);
-            result = equalGrid(SIZEGRID,grid,copyGrid);
-            if (result)
+        
+            if(gameOn)
+            {
+                tabMode[mode](SIZEGRID,grid,copyGrid,birth,survive);
+                
+                tmp = grid;
+                grid = copyGrid;
+                copyGrid = tmp;
+                displayRects(rect, renderer, grid);
+                //SDL_RenderPresent(renderer);
+                //SDL_Delay(100);
+                SDL_RenderClear(renderer);
+                result = equalGrid(SIZEGRID,grid,copyGrid);
+                if (result)
+                {
+                    endGame = 1; 
+                    gameOn = 0;
+
+                }
+            }
+            if(endGame)
             {
                 SDL_RenderClear(renderer);
+                displayRects(rect, renderer, grid);
                 get_text(renderer, 300-(rect_mess.w/2), 300-(rect_mess.h/2), "JEU FIXE",  font, &texture_mess, &rect_mess);
                 SDL_RenderCopy(renderer, texture_mess, NULL, &rect_mess);
                 SDL_RenderPresent(renderer);
-                SDL_Delay(100);
-
             }
-        }
+
         
-        //SDL_Delay(speed); //  delai minimal
+        
+        SDL_Delay(speed); //  delai minimal
     }
 	freeGrid(SIZEGRID,grid);
 	freeGrid(SIZEGRID,copyGrid);

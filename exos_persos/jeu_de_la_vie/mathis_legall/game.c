@@ -2,6 +2,30 @@
 
 #include "game.h"
 
+void sauvegarder(char* nomFichier, int **grid, int n)
+{
+    FILE * flot;
+    int i,j;
+
+    flot=fopen(nomFichier,"w"); // ouverture du fichier en ecriture
+
+    if (flot == NULL) // si l'ouverture s'est mal passee
+    {
+        printf("Problème d'ouverture du fichier\n");
+    }
+
+	for (i=0; i<n; i++)
+	{
+		for (j=0; j<n; j++)
+		{
+			fprintf(flot,"%d\t", grid[j][i]); // car matrice transposee quand on clique
+		}
+		fprintf(flot, "\n");
+	}
+
+    fclose(flot);
+}
+
 void display_background(SDL_Texture *bg_texture, SDL_Window *window,
                          SDL_Renderer *renderer) {
   SDL_Rect 
@@ -41,7 +65,7 @@ void get_text(SDL_Renderer *renderer, int x, int y, char *text,
     rect->h = text_height;
 }
 
-int menu(int * running_game)
+int menu(int * running_game, int *sauvegarde, int *chargement)
 {
 	int running = 1, mode = 0;
     SDL_Texture *texture1, *texture2, *texture3, *texture4;
@@ -117,6 +141,16 @@ int menu(int * running_game)
                             mode = 1; 
                             running = 0;    
                         break;
+                        case SDLK_s:                                
+                            printf("Sauvegarde\n"); 
+                            *sauvegarde = 1; 
+                            running = 0;
+                            break;
+                        case SDLK_c:                                
+                            printf("Charger config\n"); 
+                            *chargement = 1; 
+                            running = 0;
+                            break;
                         case SDLK_ESCAPE:                           
                         case SDLK_q:                               
                         running =0;  
@@ -222,7 +256,7 @@ void printGrid(int n, int** grid)
 	{
 		for (j=0; j<n; j++)
 		{
-			printf("%d\t", grid[i][j]);
+			printf("%d\t", grid[j][i]);
 		}
 		printf("\n");
 	}
