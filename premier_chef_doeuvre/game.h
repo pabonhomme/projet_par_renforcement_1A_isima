@@ -1,4 +1,6 @@
 #include <SDL2/SDL.h>
+#include <stdio.h>
+#include <SDL2/SDL_image.h>
 
 /* Taille de la fenêtre */
 #define SCREEN_WIDTH  800
@@ -16,3 +18,7 @@ Ordre de chaque position dans le sprite */
 
 /* Nombre de pixels pour chaque pas du personnage */
 #define SPRITE_STEP 5
+
+void create_diamond(SDL_Texture* diamond_texture, SDL_Rect *tabDiamond[50], int nbDiamond,
+                            SDL_Window* window,
+                            SDL_Renderer* renderer);
