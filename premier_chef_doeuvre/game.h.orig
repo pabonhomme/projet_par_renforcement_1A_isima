@@ -17,8 +17,8 @@ Ordre de chaque position dans le sprite */
 #define DIR_LEFT        3
 
 /* Nombre de pixels pour chaque pas du personnage */
-
-#define SPRITE_STEP 20
+<<<<<<< HEAD
+#define SPRITE_STEP 5
 
 #define NB_ENEMIES_MAX 10
 
@@ -36,8 +36,9 @@ void initEnemies(Enemies_t enemies[], SDL_Texture* enemy);
 void moveCharacter(SDL_Texture* sprite, SDL_Renderer* renderer, SDL_Rect position, int currDirection, int animFlip);
 int newDirection(int markov[][10], int prevDirection);
 void moveEnemies(Enemies_t enemies[], SDL_Renderer* renderer, int nb_enemies, int markov[][10]);
+=======
+#define SPRITE_STEP 20
 
-
-void create_diamond(SDL_Texture* diamond_texture, SDL_Renderer* renderer, 
+void create_diamond(SDL_Texture* diamond_texture, int nbDiamond, SDL_Window* window, SDL_Renderer* renderer, 
 	int diamondLine, int diamondColumn, int destination_x, int destination_y );
-
+>>>>>>> 6f71d8b28fe91d8e5380695f0abfaaf263611a67

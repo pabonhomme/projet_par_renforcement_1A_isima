@@ -33,7 +33,8 @@ void end_sdl(char ok,                                               // fin norma
   if (!ok) {                                                        // On quitte si cela ne va pas                
     exit(EXIT_FAILURE);                                                           
   }                                                                               
-}                 
+}      
+           
 
 int main(int argc, char** argv) {
 
@@ -58,17 +59,17 @@ int main(int argc, char** argv) {
   /* Création du renderer */
   renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
   if (renderer == NULL) end_sdl(0, "ERROR RENDERER CREATION", window, renderer);
-  SDL_Rect rectangle[10]; 
+  SDL_Rect rectangle[20]; 
                        // tableau de rectangle pour en avoir plusieurs                                        
-  for (int i=0;i<10;i++) {      
+  for (int i=0;i<20;i++) {      
     SDL_SetRenderDrawColor(renderer,    // creation de rectangles modelisant un serpent avec des couleurs aleatoires
                           rand()%255+20,           
                           rand()%255,       
                           rand()%255,          
                           255);                                    
     rectangle[i].x =  40*i; 
-    rectangle[i].h = 10+rand()%10;                                                 
-    rectangle[i].y =  20-rectangle[i].h/2;                                                  
+    rectangle[i].h = 10+i;                                                 
+    rectangle[i].y =  20*i;                                                  
     rectangle[i].w = 50;                                               
      
     SDL_RenderDrawRect(renderer, &rectangle[i]);
@@ -77,26 +78,32 @@ int main(int argc, char** argv) {
 
 
   SDL_RenderPresent(renderer);                         
-  SDL_Delay(100); 
+  SDL_Delay(200); 
  
   while(1) {                                              // boucle infinie pour faire deplacer le serpent 
     SDL_SetRenderDrawColor(renderer,0, 0 , 0, 255);  
 
   SDL_RenderClear(renderer);
                                                               
-  for (int i=0;i<10 ; i++) {      
+  for (int i=0;i<20 ; i++) {   
       SDL_SetRenderDrawColor(renderer,
                               rand()%255 +20 ,           
                               rand()%255  ,       
                             rand()%255    ,          
                             255);                                    
-      rectangle[i].x = rectangle[i].x+ 50;                                                  
+      if(i<10){
+        rectangle[i].x= rectangle[i].x+25;
+      }        
+      else{
+        rectangle[i].y= rectangle[i].y+25;
+      }                                          
                                                         
       SDL_RenderDrawRect(renderer, &rectangle[i]);
+      SDL_RenderFillRect(renderer, &rectangle[i]);
                             
   }                                 
   SDL_RenderPresent(renderer);                         
-  SDL_Delay(100);                                     
+  SDL_Delay(500);                                     
  }
 
   /* on referme proprement la SDL */

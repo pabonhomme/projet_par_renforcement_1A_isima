@@ -1,6 +1,6 @@
 #include "game.h"
 
-
+<<<<<<< HEAD
 void handleEvent(SDL_Event event, int *running, int *currDirection, int* animFlip, SDL_Rect* position)
 {
 	switch(event.type)
@@ -66,7 +66,7 @@ void moveCharacter(SDL_Texture* sprite, SDL_Renderer* renderer, SDL_Rect positio
 {
 	int nb_images = 8;
 	int offset_x,offset_y;
-	float zoom = 2;
+	float zoom = 1.5;
 
 	SDL_Rect 
             source = {0},                            
@@ -108,7 +108,7 @@ void moveEnemies(Enemies_t enemies[], SDL_Renderer* renderer, int nb_enemies, in
 	int offset_x,offset_y;
 	int i;
 	int nextDirection;
-	float zoom = 2;
+	float zoom = 1.5;
 
 	SDL_Rect 
             source = {0},                            
@@ -168,11 +168,12 @@ void moveEnemies(Enemies_t enemies[], SDL_Renderer* renderer, int nb_enemies, in
 	    SDL_RenderCopy(renderer, enemies[i].sprite, &state, &destination);  
     }
 }
-
-void create_diamond(SDL_Texture* diamond_texture, SDL_Renderer* renderer, int diamondLine, int diamondColumn, int destination_x, int destination_y ) 
+=======
+void create_diamond(SDL_Texture* diamond_texture, int nbDiamond, SDL_Window* window, SDL_Renderer* renderer, int diamondLine, int diamondColumn, int destination_x, int destination_y ) 
 {
      SDL_Rect 
            source = {0},                      // Rectangle définissant la zone de la texture à récupérer
+           window_dimensions = {0},           // Rectangle définissant la fenêtre, on n'utilisera que largeur et hauteur
            destination = {0},                // Rectangle définissant où la zone_source doit être déposée dans le renderer
            state = {0};                     // Rectangle de la vignette en cours dans la planche 
 
@@ -203,3 +204,4 @@ void create_diamond(SDL_Texture* diamond_texture, SDL_Renderer* renderer, int di
                     &state,
                     &destination);            
    }
+>>>>>>> 6f71d8b28fe91d8e5380695f0abfaaf263611a67
