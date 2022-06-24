@@ -130,6 +130,12 @@ int main()
   		}
   		animatedSprite(bg,sprite,window,renderer);
   	}
+  	SDL_DestroyTexture(bg);
+    SDL_DestroyTexture(sprite);
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    IMG_Quit();
+    SDL_Quit();
 
   	return 0;
 }

@@ -9,7 +9,7 @@ void rotate(SDL_Point point[], double theta, int xG, int yG)
   int i;
   theta *= PI / 180;
 
-  for (i=0; i<4; i++)
+  for (i=0; i<5; i++)
   {
     point[i].x = (point[i].x-xG)*cos(theta)+(point[i].y-yG)*sin(theta)+xG;
     point[i].y = -1*(point[i].x-xG)*sin(theta)+(point[i].y-yG)*cos(theta)+yG;
@@ -76,6 +76,8 @@ int main()
           break;
         }
       }
+      SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+      SDL_RenderClear(renderer);
       SDL_SetRenderDrawColor(renderer, (35*i)%255, (5*i)%255, (75*i)%255, 255);
       rotate(point,theta,xG,yG);
       SDL_RenderDrawLines(renderer, point, 5);

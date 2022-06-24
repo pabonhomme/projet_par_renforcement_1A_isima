@@ -89,7 +89,7 @@ int main(int argc, char **argv){
   } 
   CreateWindow(tab);
   while (program_on) {                              
-  if(SDL_PollEvent(&event)) { 
+  while(SDL_PollEvent(&event)) { 
     if(program_on==SDL_TRUE){
       if(sens==0){
         Move_WindowLeft(tab, &sens);

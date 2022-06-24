@@ -82,7 +82,7 @@ void moveTexture(SDL_Texture *bg_texture, SDL_Texture* my_texture,
        SDL_RenderClear(renderer);             // Effacer la fenêtre avant de rendre la main
    }
 
-   int main()
+int main()
 {
 	int running = 1;
 	SDL_Event event;

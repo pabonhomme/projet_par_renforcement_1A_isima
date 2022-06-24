@@ -109,7 +109,7 @@ int main()
 
 	while (program_on == SDL_TRUE)
 	{                           
-		if (SDL_PollEvent(&event))
+		while (SDL_PollEvent(&event))
 		{                
             switch(event.type)
             {                      
@@ -141,4 +141,5 @@ int main()
  		SDL_Delay(50);
  	}
 	CloseWindow(TabWindow);
+	SDL_Quit();
 }

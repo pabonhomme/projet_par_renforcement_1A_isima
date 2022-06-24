@@ -41,6 +41,7 @@
 *.su
 *.idb
 *.pdb
+*.orig
 
 # Kernel Module Compile Results
 *.mod*
@@ -51,3 +52,9 @@ Module.symvers
 Mkfile.old
 dkms.conf
 projet
+x_fenetre
+snake
+sprite
+gamelife
+game
+lifeGame

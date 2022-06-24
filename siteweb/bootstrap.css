@@ -140,7 +140,7 @@ a{
 }
 .cd{
 	padding:2cm;
-
+	padding-bottom: 0cm;
 }
 .partie5{
 	color:aliceblue;
@@ -173,4 +173,10 @@ h5{
 }
 .ph4{
 	padding-top: 1cm;
+}
+.conc{
+	background-color: aliceblue;
+}
+.ff{
+	padding-bottom: 2cm;
 }
