@@ -72,6 +72,10 @@ figcaption {
 .partie1{
 	background-color: #282828;
 }
+.partie4{
+	background-color:  #282828;
+	color: aliceblue;
+}
 .image{
 	width: 10cm;
 	height: 8cm;
@@ -116,4 +120,57 @@ a{
 .lien{
 	margin: 6cm;
 	margin-right:0cm;
+}
+.lsprite{
+	color:black;
+}
+.texte{
+	font-family: 'Open Sans', sans-serif;
+	font-size: 32;
+	text-align:justify;
+	padding:4cm;
+	padding-top: 0cm;
+	padding-bottom: 0cm;
+}
+.jdv{
+	width: 15cm;
+	height: 10cm;
+	padding:1cm;
+	padding-bottom: 0cm;
+}
+.cd{
+	padding:2cm;
+
+}
+.partie5{
+	color:aliceblue;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 32;
+	text-align:justify;
+	padding-left: 2cm;
+}
+.hpartie5{
+	font-family: 'Roboto', sans-serif;
+	font-style: bold;
+	padding: 1cm;
+	color: aliceblue;
+}
+h5{
+	padding-top: 1cm;
+	padding-left: 2cm;
+	color: aliceblue;
+}
+.fin{
+	padding-bottom: 2cm;
+}
+.p1{
+	text-align:justify;
+	font-style: bold;
+	padding:4cm;
+	padding-top: 0cm;
+	padding-bottom: 0cm;
+	color: #282828;
+}
+.ph4{
+	padding-top: 1cm;
 }

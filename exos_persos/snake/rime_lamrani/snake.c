@@ -90,7 +90,7 @@ int main(int argc, char** argv) {
                               rand()%255  ,       
                             rand()%255    ,          
                             255);                                    
-      rectangle[i].x = rectangle[i].x+ 50;                                                  
+      rectangle[i].y = rectangle[i].y+ 50;                                                  
                                                         
       SDL_RenderDrawRect(renderer, &rectangle[i]);
                             

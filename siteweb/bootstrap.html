@@ -38,19 +38,12 @@
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                           <a class="dropdown-item" href="#xfen">X_fenetre</a>
                           <a class="dropdown-item" href="#snake">Snake</a>
+                          <a class="dropdown-item" href="#sprite">Sprite</a>
                           <a class="dropdown-item" href="#Jeu">Jeu de la vie</a>
                         </div>
                       </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#sem2" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          Deuxième semaine
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                          <a class="dropdown-item" href="#">Action</a>
-                          <a class="dropdown-item" href="#">Another action</a>
-                          <a class="dropdown-item" href="#">Something else here</a>
-                        </div>
-                    </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="#pcd">Premier Chef d'oeuvre</a>
                     <li class="nav-item">
                         <a class="nav-link" href="#Conclusion">Conclusion</a>
                 </ul>
@@ -61,7 +54,21 @@
     <div class="jumbotron jumbotron-fluid" id="Introduction">
         <div class="container-fluid">
             <h1 class="display-4 font-weight-bold">Présentation du projet</h1>
-            <p class="lead font-weight-bold">Le projet se décompose en deux phases, correspondant chacune approximativement à une semaine de travail. La première phase est commune à tous les groupes et met en place des outils permettant de manipuler des images et d'interagir avec l'utilisateur. Cette phase est ponctuée de petits exercices assez libres où vous devrez démontrer votre maîtrise des points abordés en individuel et se termine par la création d'un petit jeu d'arcade en groupe qui mettra de plus en œuvre un processus Markovien. La seconde phase, plus spécifique à chaque groupe, consiste à réinvestir les acquis de la première phase afin de créer un prototype de votre propre « jeu vidéo » respectant la thématique du projet.</p>
+            <p class="lead font-weight-bold">Le but du projet est d'améliorer nos compétences en C et en SDL afin de parvenir à créer nos propres jeux et animations.<br>Le projet se décompose en deux phases; &nbsp;la première phase consiste à réaliser plusieurs exercices personnels afin de faciliter la créaction d'un jeu de groupe.</br>
+                 Nous nous sommes réparti les taches, nous avons utilisé le système de versioning de git à travers les branches. Nous avons créé une branche pour chaque fonctionnalité du projet.</p>
+            <h4 class="font-weight-bold p1 ph4">Répartition des taches</h5>
+            <ul style="list-style-type:lower-alpha partie5">
+                <li class="font-weight-bold p1">Mathis: réalisation de la partie logique </li>
+                <li class="font-weight-bold p1">Paul: affichage du jeu et sauvegarde et chargement d'une configuration</li>
+                <li class="font-weight-bold p1">Rime: affichage menu et affichage de fin</li>
+                <li class="font-weight-bold p1">Commun: gestion du main, gestion de bugs</li>
+            </ul>
+            <ul style="list-style-type:lower-alpha partie5">
+                <li class=" font-weight-bold p1">Mathis: gestion perso/ennemis et collision ennemis </li>
+                <li class=" font-weight-bold p1" >Paul: génération diamants et collision diamants</li>
+                <li class=" font-weight-bold p1" >Rime: affichage et site web</li>
+                <li class=" font-weight-bold p1">Commun: gestion du main, gestion de bugs</li>
+            </ul>
         </div>
     </div>
 
@@ -130,28 +137,119 @@
                             <figcaption><a href="../exos_persos/snake/mathis_legall/">Mathis Legall</a></figcaption>
                         </article>
                         <article class="col-lg-4">
-                            <img src="gif/snakerime.gif" class="image" alt="">
+                            <img src="gif/snake2rime.gif" class="image" alt="">
                             <figcaption><a href="../exos_persos/snake/rime_lamrani/">Rime Lamrani</a></figcaption>
                         </article>
                         <article class="col-lg-4">
-                            <img src="gif/snakepaul.gif" class="image" alt="">
+                            <img src="gif/snake2paul.gif" class="image" alt="">
                             <figcaption><a href="../exos_persos/snake/paul_bonhomme/">Paul bonhomme</a></figcaption>
                         </article>
                     </div>
                 </div>
 
         </div>
-        <div class="row partie3" id="Jeu">
+        <div class="row partie3" id="sprite">
             <div class="container-fluid">
-                <h1><center>Jeu de la vie</center></h1>
-                <p> 
-                    <br>ici on parle du x fenetre</br>
-                </p>
+                <h1><center>Sprite</center></h1>
+                <div class="container">
+                    <div class="row">
+                        <article class="col-lg-4">
+                            <img src="gif/spritemlg.gif"  class="image" alt="">
+                            <figcaption><a class="lsprite" href="">Mathis Legall</a></figcaption>
+                        </article>
+                        <article class="col-lg-4">
+                            <img src="gif/spriterime.gif" class="image" alt="">
+                            <figcaption><a class="lsprite" href="../exos_persos/snake/rime_lamrani/">Rime Lamrani</a></figcaption>
+                        </article>
+                        <article class="col-lg-4">
+                            <img src="gif/spritepaul.gif" class="image" alt="">
+                            <figcaption><a class="lsprite" href="../exos_persos/snake/paul_bonhomme/">Paul bonhomme</a></figcaption>
+                        </article>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
-    <div class="p-10 mb-3 bg-primary text-dark" id="sem2">
-        
+    <div class="row partie4" id="Jeu">
+        <div class="container">
+            <h1><center>Jeu de la vie</center></h1> 
+            <p class="texte">Pour le jeu de la vie, nous avons commencé par proposer un menu. 
+                <br>Nous avons 4 options:</br> 
+                &nbsp; &nbsp;-Jeu en monde normal
+            
+                <br>&nbsp;&nbsp;-Jeu en mode torique</br> 
+                &nbsp;&nbsp;-Sauvegarde d'une configuration
+                <br>&nbsp;&nbsp;-Chargement d'une configuration</br>
+                Pour le monde normal, notre jeu est borné; les cellules ne peuvent pas dépasser les bords de la fenêtre.&nbsp;
+                Pour le monde torique, les cellules peuvent dépasser les bords de la fenêtre pour obtenir une configuration.
+                <br> Le choix du type de monde se fait en appuyant sur n pour monde normal et t pour monde torique.</br>
+                Pour sauvegarder une configuration, il faut appuyer sur la touche s.&nbsp;Pour charger une configuration, il faut appuyer sur c.
+                <br>Dans les deux mondes, quand nous atteignons une configuration fixe, un message signalant une configuration fixe s'affiche à l'écran.</br>
+                Afin de détecter une configuration fixe, nous faisons une comparaison entre notre grille actuelle et la grille de l'état suivant. 
+                <div class="container">
+                    <div class="row">
+                        <article class="col-lg-6">
+                            <img src="gif/jeudelavienormal.gif"  class="jdv" alt="">
+                            <figcaption><a  href="">Monde normal</a></figcaption>
+                        </article>
+                        <article class="col-lg-6">
+                            <img src="gif/jeudelavietorique.gif" class="jdv" alt="">
+                            <figcaption><a  href="../exos_persos/snake/rime_lamrani/">Monde torique</a></figcaption>
+                        </article>
+                    </div>
+                </div>
+                <h5>Comment jouer ?</h5>
+                <ol style="list-style-type:lower-alpha partie5">
+                    <li class="partie5">Choisir l'option désirée: n pour normal, t pour torique, s pour sauvegarde et c pour charge</li>
+                    <li class="partie5">Chosir une configuration en faisant des clicks</li>
+                    <li class="partie5">Appuyer sur espace pour commencer la partie</li>
+                    </ol>
+                <h5>Pistes pour améliorer notre jeu ?</h5>
+                <ul style="list-style-type:lower-alpha partie5">
+                    <li class="partie5">Avoir la possibilité de sauvegarde pour les deux modes</li>
+                    <li class="partie5 ">Avoir la possibilité de rejouer sans quitter la fenêtre</li>
+                    <li class="partie5 ">Avoir la possibilité de sauvegarder plusieurs configurations</li>
+                    <li class="partie5 fin ">Avoir la possibilité de revenir sur le menu quand la partie est terminée</li>
+
+                </ul>
+            </p>
+        </div>
+    </div>
+</div>
+
+    <div class="p-10 mb-3 bg-primary text-dark partie5" id="pcd">
+        <div class="container">
+            <h1 class ="hpartie5"><center>Premier chef d'oeuvre</center></h1> 
+            <p class ="partie5">Pour le premier chef d'oeuvre, nous avons décidé de créer un jeu d'arcarde en 2D. 
+                &nbsp;Ce jeu implémente différentes contraines telles que les chaines de markov.
+                &nbsp;Nous avons décidé que la matrice des transitions agirait sur le déplacement de personnages. 
+                &nbsp;Notre jeu consiste à ramasser le plus de diamant possible en évitant de se faire tuer. 
+                &nbsp;Dès que le personnage ramasse un diamant, un ennemi en plus arrive sur la map. 
+                &nbsp;Plus il y a d'ennemis, plus le jeu devient difficile jusqu'à mourir si un ennemi nous touche. 
+                </p>
+                <center><img src="gif/chefdoeuvre.gif"  class="cd" alt=""></center>
+                <p class ="partie5">Notre matrice prend la forme  <br> markov[4][10] = { {0,0,0,0,0,0,0,1,2,3},</br>
+                &nbsp;&nbsp;{0,0,0,1,1,1,2,2,2,3},
+                <br>&nbsp;&nbsp;{0,1,2,2,2,2,2,2,2,3},</br>
+                &nbsp;&nbsp;{0,0,1,1,2,2,3,3,3,3} };
+                <br>Ici une ligne correspond à une direction. Le 0 est pour up, le 1 pour right, le 2 pour down et le 3 pour left.</br>
+                Dans le cas où notre ennemi est entrain d'aller vers le haut : on voit qu'il a 7/10 
+                chance de continuer à aller vers le haut et 1/10 d'aller en bas, gauche, droite 
+                </p>
+                <h5>Comment jouer ?</h5>
+                <ol style="list-style-type:lower-alpha partie5">
+                    <li class="partie5">La partie est lancée directement</li>
+                    <li class="partie5">Il faut éviter les ennemis et prendre les diamants en utilisant les touches directionnelles</li>
+                    <li class="partie5 ">une fois perdu utiliser la touche esc pour quitter</li>
+                    </ol>
+                <h5>Pistes pour améliorer notre jeu ?</h5>
+                <ul style="list-style-type:lower-alpha partie5">
+                    <li class="partie5">Avoir un menu avec le score et les anciens scores</li>
+                    <li class="partie5">Avoir un pseudo avec un score</li>
+                    <li class="partie5 ">Avoir la possibilité de rejouer sans quitter la fenêtre</li>
+                    <li class="partie5 ">Améliorer la fluidité du jeu</li>
+                </ul>
     </div>
 
     <div class="container-fluid bg-white" id="Conclusion">
