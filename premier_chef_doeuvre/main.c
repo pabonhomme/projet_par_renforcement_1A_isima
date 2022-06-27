@@ -147,7 +147,7 @@ int main()
 		moveCharacter(character,renderer, &positionCharac,currDirection,animFlipC); // maj position perso principal
 		moveEnemies(enemies,renderer,nb_enemies,markov); // maj position ennemi(s)
 		SDL_RenderPresent(renderer);
-		SDL_Delay(120);
+		SDL_Delay(50);
 		SDL_RenderClear(renderer);
     }
 

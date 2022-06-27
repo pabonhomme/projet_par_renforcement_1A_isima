@@ -53,7 +53,7 @@ void animatedSprite(SDL_Texture* bg, SDL_Texture* sprite, SDL_Window* window, SD
 
     destination.y = (window_dimensions.h - destination.h) /2 + 200; // on veut le voir courir au milieu de l'écran
 
-    for (x=window_dimensions.w - destination.w; x>0; x -= speed) 
+    for (x=window_dimensions.w - destination.w; x>100; x -= speed) 
     {
     	 SDL_RenderClear(renderer); 
     	 background(bg,window,renderer);
