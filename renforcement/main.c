@@ -1,26 +1,23 @@
 #include "game.h"
 
 int main(){
-    int running=1,i=0,j=0;
-
     SDL_Renderer *renderer;
     SDL_Event event;
-
     SDL_Window *window;
+    SDL_Texture *texture[15], *sprite;
+    SDL_Surface* image[15];
 
-    SDL_Texture* sprite;
     Character_t character;
-    Teleporter_t tabTeleporter[NB_TELEPORTER], 
-    t1 = {3, 2, 17, 7},
-    t2 = {17, 7, 3, 2};
-    tabTeleporter[0] = t1;
-    tabTeleporter[1] = t2;
+    Teleporter_t tabTeleporter[NB_TELEPORTER];
+
+    initTeleporter(tabTeleporter);
+
     SDL_Rect source = {0};
+	float zoom = 0.8;
 
-    int offset_w, offset_h, cptCharac = 0, cptCharacMax = 6, action, movement = 1, teleport = -1, hasTeleported = 0, firstTeleport = 1;
-    float zoom = 0.8;
-
-    int grille [][25]={{1,1,1,1,1,1,1,1,   1,1,1,1,1,1,1,1,  1,1,1,1,1,1,1,1,1},
+    int running = 1, i = 0, j = 0, offset_w, offset_h, cptCharac = 0, cptCharacMax = 6, action, 
+    movement = 1, teleport = -1, hasTeleported = 0, firstTeleport = 1,
+    	grille [][25]={{1,1,1,1,1,1,1,1,   1,1,1,1,1,1,1,1,  1,1,1,1,1,1,1,1,1},
                        {1,2,2,2,2,2,2,2,   1,2,2,2,12,2,2,2, 1,2,2,4,2,2,2,2,1},
                        {1,2,4,2,2,14,4,2,  1,2,2,4,4,2,2,2,  1,2,2,2,2,7,2,2,1},
                        {1,2,13,2,2,2,2,2,  1,2,2,3,2,2,2,2,  1,2,2,4,2,2,2,2,1},
@@ -49,8 +46,6 @@ int main(){
                        {1,1,1,1,1,1,1,1,   1,1,1,1,1,1,1,1,  1,1,1,1,1,1,1,1,1},
                        };
 
-    SDL_Texture *texture[15];
-    SDL_Surface* image[15];
     char * link[15]={"./img/green_button06.png",
                        "./img/tile_0000.png",
                        "./img/grey_button09.png",
@@ -78,7 +73,6 @@ int main(){
     window = SDL_CreateWindow("Game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                               600, 600,
                               SDL_WINDOW_RESIZABLE);
-
     if (window == 0)
     {
         fprintf(stderr, "Erreur d'initialisation de la SDL : %s\n", SDL_GetError());
@@ -121,6 +115,7 @@ int main(){
         texture[i]=SDL_CreateTextureFromSurface(renderer,image[i]);
         SDL_FreeSurface(image[i]);
     }
+    
     while (running)
     {
 		while (SDL_PollEvent(&event))
@@ -387,7 +382,7 @@ int main(){
         }
 
         SDL_RenderCopy(renderer, character.sprite, &(character.state), &(character.position)); 
-        SDL_Delay(60);
+        SDL_Delay(50);
 
         SDL_RenderPresent(renderer);
     }

@@ -43,3 +43,4 @@ typedef struct teleporter
 
 
 int hasToTeleport(Teleporter_t tabTeleporter[], Character_t character);
+void initTeleporter(Teleporter_t tabTeleporter[]);
