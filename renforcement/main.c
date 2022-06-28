@@ -7,55 +7,57 @@
 
 int main(){
     int running=1,i=0,j=0;
-    int grille [][25]={{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-                       {1,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,1},
-                       {1,2,4,2,2,2,4,2,1,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,1},
-                       {1,2,6,2,2,2,2,2,1,2,2,3,2,2,2,8,1,2,2,2,2,2,2,2,1},
-                       {1,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,1},
-                       {1,2,2,2,2,2,2,2,1,2,2,2,2,4,2,2,1,2,2,2,2,2,2,2,1},
-                       {1,2,4,2,2,2,2,2,1,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,1},
-                       {1,2,2,2,2,2,2,2,1,2,2,2,2,2,2,4,1,2,2,2,2,2,2,2,1},
-                       {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-                       {1,2,2,2,2,2,2,2,1,4,2,2,2,7,2,2,1,2,2,2,2,2,2,2,1},
-                       {1,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,1},
-                       {1,2,2,2,2,2,2,2,1,2,2,4,2,4,2,2,1,2,2,2,2,2,2,2,1},
-                       {1,2,2,2,2,8,2,2,1,2,2,2,5,2,2,2,1,2,2,2,2,2,2,2,1},
-                       {1,2,2,2,2,2,2,2,1,2,2,4,2,4,2,2,1,2,2,2,2,2,2,2,1},
-                       {1,2,4,2,2,2,2,4,1,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,1},
-                       {1,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,1},
-                       {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-                       {1,2,2,2,2,2,2,6,1,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,1},
-                       {1,2,2,7,2,2,2,2,1,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,1},
-                       {1,2,4,2,2,2,2,2,1,2,2,2,2,2,2,2,1,4,2,2,2,2,2,2,1},
-                       {1,2,4,2,2,2,2,2,1,2,2,2,2,2,2,2,1,4,4,2,2,2,2,2,1},
-                       {1,2,4,2,2,2,2,2,1,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,1},
-                       {1,2,4,2,2,2,2,2,1,2,2,2,2,2,2,2,1,2,4,2,2,2,2,2,1},
-                       {1,2,2,2,2,2,2,2,1,2,2,2,0,2,2,2,1,2,2,2,2,2,2,2,1},
-                       {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+    int grille [][25]={{1,1,1,1,1,1,1,1,   1,1,1,1,1,1,1,1,  1,1,1,1,1,1,1,1,1},
+                       {1,2,2,2,2,2,2,2,   1,2,2,2,12,2,2,2, 1,2,2,4,2,2,2,2,1},
+                       {1,2,4,2,2,14,4,2,  1,2,2,4,4,2,2,2,  1,2,2,2,2,7,2,2,1},
+                       {1,2,13,2,2,2,2,2,  1,2,2,3,2,2,2,2,  1,2,2,4,2,2,2,2,1},
+                       {1,4,4,4,4,4,4,2,   1,2,2,2,2,2,2,2,  1,2,2,2,2,2,4,2,1},
+                       {1,2,2,2,2,2,2,2,   1,2,2,2,2,4,2,2,  1,2,4,2,4,2,2,2,1},
+                       {1,2,4,2,2,2,2,2,   1,2,2,2,2,9,2,2,  1,2,2,2,2,2,2,2,1},
+                       {1,2,2,2,2,2,2,2,   1,2,2,2,2,2,2,4,  1,2,4,2,2,2,2,2,1},
+                       {1,1,1,1,1,1,1,1,   1,1,1,1,1,1,1,1,  1,1,1,1,1,1,1,1,1},
+
+                       {1,2,2,2,2,2,2,2,   1,4,2,2,14,2,2,2, 1,2,2,11,2,2,2,2,1},
+                       {1,2,2,2,2,2,2,2,   1,2,2,2,2,2,2,2,  1,2,2,2,2,9,2,2,1},
+                       {1,2,2,4,2,2,2,2,   1,2,2,4,2,4,2,2,  1,2,2,4,2,2,2,2,1},
+                       {1,12,2,2,4,11,2,2, 1,2,2,2,5,2,2,2,  1,2,2,2,2,2,2,2,1},
+                       {1,2,2,2,2,4,2,2,   1,2,3,4,2,4,2,2,  1,2,2,2,2,4,2,2,1},
+                       {1,2,4,2,2,2,2,4,   1,2,2,2,2,2,2,2,  1,2,4,2,2,2,2,4,1},
+                       {1,2,2,2,2,2,2,2,   1,2,2,2,2,2,2,2,  1,2,2,2,8,2,2,2,1},
+                       {1,1,1,1,1,1,1,1,   1,1,1,1,1,1,1,1,  1,1,1,1,1,1,1,1,1},
+
+                       {1,2,2,2,2,2,4,6,   1,4,4,4,2,2,2,2,  1,2,2,2,7,2,2,2,1},
+                       {1,2,2,2,2,2,4,2,   1,4,10,2,2,2,2,2, 1,2,2,2,4,2,2,2,1},
+                       {1,2,2,2,2,2,2,2,   1,4,4,4,4,4,2,2,  1,4,2,2,2,2,2,4,1},
+                       {1,2,4,4,4,4,4,4,   1,2,2,2,2,4,2,6,  1,4,4,2,2,2,2,10,1},
+                       {1,2,2,2,8,2,2,2,   1,2,2,2,2,4,2,2,  1,13,2,2,2,2,2,4,1},
+                       {1,2,2,2,2,2,2,2,   1,2,2,2,2,2,2,2,  1,2,4,2,2,2,2,2,1},
+                       {1,2,2,2,2,2,2,2,   1,2,2,2,0,2,2,2,  1,2,2,2,2,2,2,2,1},
+                       {1,1,1,1,1,1,1,1,   1,1,1,1,1,1,1,1,  1,1,1,1,1,1,1,1,1},
                        };
     SDL_Renderer *renderer;
     SDL_Event event;
-    SDL_Texture *texture1, 
-                *texture2, 
-                *texture3, 
-                *texture4, 
-                *texture5, 
-                *texture6, 
-                *texture7,
-                *texture8,
-                *texture9,
-                *texture10;  // texture du message
+
+    SDL_Texture *texture[15];
     SDL_Window *window;
-    SDL_Surface* image1, 
-                * image2, 
-                * image3, 
-                * image4, 
-                * image5, 
-                * image6, 
-                * image7,
-                * image8,
-                * image9,
-                *image10;
+    SDL_Surface* image[15];
+    char * source[15]={"./img/green_button06.png",
+                       "./img/tile_0000.png",
+                       "./img/grey_button09.png",
+                       "./img/blue_button06.png",
+                       "./img/tile_0043.png",
+                       "./img/green_button07.png",
+                       "./img/redbutton.png",
+                       "./img/yellow_button06.png",
+                       "./img/magenta_button.png",
+                       "./img/sky_button.png",
+                       "./img/olive_button.png",
+                       "./img/pink_button.png",
+                       "./img/purple_button.png",
+                       "./img/brown_button.png",
+                       "./img/red_button03.png"
+                       };
+
     if (SDL_Init(SDL_INIT_VIDEO) == -1)
     {
         fprintf(stderr, "Erreur d'initialisation de la SDL : %s\n", SDL_GetError());
@@ -76,88 +78,16 @@ int main(){
     {
         fprintf(stderr, "Erreur d'initialisation de la SDL : %s\n", SDL_GetError());
     }
-    
-    image2 = IMG_Load("./img/blue_button06.png");
-    if(!image2)
-    {
+    for(i=0;i<15;i++){
+        image[i]=IMG_Load(source[i]);
+        if(!image[i])
+        {
         printf("Erreur de chargement de l'image : %s",SDL_GetError());
         return -1;
+        }
+        texture[i]=SDL_CreateTextureFromSurface(renderer,image[i]);
+        SDL_FreeSurface(image[i]);
     }
-    texture2=SDL_CreateTextureFromSurface(renderer,image2);
-    SDL_FreeSurface(image2);
-    image3 = IMG_Load("./img/grey_button09.png");
-    if(!image3)
-    {
-        printf("Erreur de chargement de l'image : %s",SDL_GetError());
-        return -1;
-    }
-    texture3=SDL_CreateTextureFromSurface(renderer,image3);
-    SDL_FreeSurface(image3);
-    image4 = IMG_Load("./img/green_button06.png");
-    if(!image4)
-    {
-        printf("Erreur de chargement de l'image : %s",SDL_GetError());
-        return -1;
-    }
-    texture4=SDL_CreateTextureFromSurface(renderer,image4);
-    SDL_FreeSurface(image4);
-    image5 = IMG_Load("./img/green_button07.png");
-    if(!image5)
-    {
-        printf("Erreur de chargement de l'image : %s",SDL_GetError());
-        return -1;
-    }
-    texture5=SDL_CreateTextureFromSurface(renderer,image5);
-    SDL_FreeSurface(image5);
-    image6 = IMG_Load("./img/tile_0000.png");
-    if(!image6)
-    {
-        printf("Erreur de chargement de l'image : %s",SDL_GetError());
-        return -1;
-    }
-    texture6=SDL_CreateTextureFromSurface(renderer,image6);
-    SDL_FreeSurface(image6);
-    image7 = IMG_Load("./img/grey_sliderVertical.png");
-    if(!image7)
-    {
-        printf("Erreur de chargement de l'image : %s",SDL_GetError());
-        return -1;
-    }
-    texture7=SDL_CreateTextureFromSurface(renderer,image7);
-    SDL_FreeSurface(image7);
-    image8 = IMG_Load("./img/red_button03.png");
-    if(!image8)
-    {
-        printf("Erreur de chargement de l'image : %s",SDL_GetError());
-        return -1;
-    }
-    texture8=SDL_CreateTextureFromSurface(renderer,image8);
-    SDL_FreeSurface(image8);
-    image9 = IMG_Load("./img/redbutton.png");
-    if(!image9)
-    {
-        printf("Erreur de chargement de l'image : %s",SDL_GetError());
-        return -1;
-    }
-    texture9=SDL_CreateTextureFromSurface(renderer,image9);
-    SDL_FreeSurface(image9);
-    image10 = IMG_Load("./img/yellow_button06.png");
-    if(!image10)
-    {
-        printf("Erreur de chargement de l'image : %s",SDL_GetError());
-        return -1;
-    }
-    texture10=SDL_CreateTextureFromSurface(renderer,image10);
-    SDL_FreeSurface(image10);
-    image1 = IMG_Load("./img/black_button.png");
-    if(!image1)
-    {
-        printf("Erreur de chargement de l'image : %s",SDL_GetError());
-        return -1;
-    }
-    SDL_RenderClear(renderer);
-    texture1=SDL_CreateTextureFromSurface(renderer,image1);
-    SDL_FreeSurface(image1);
      while (running)
     {
 		while (SDL_PollEvent(&event))
@@ -165,12 +95,20 @@ int main(){
             switch (event.type)
             {
             case SDL_WINDOWEVENT:
-                switch (event.window.event)
-                {
-                	case SDL_WINDOWEVENT_CLOSE:
-                    break;
-                    	
-                }
+                		
+                		switch (event.window.event)
+                		{
+                			case SDL_WINDOWEVENT_CLOSE:
+                    			
+                    			break;
+                			default:
+                				break;
+                		}
+                		break;
+            		case SDL_QUIT:
+                		
+                		running = 0;
+                		break;
             }
         }
         for(i=0;i<25;i++){
@@ -182,44 +120,60 @@ int main(){
                 rect.h=24;
                 switch(grille[i][j]){
                     case 0:
-                        SDL_RenderCopy(renderer,texture4,NULL,&rect);
+                        SDL_RenderCopy(renderer,texture[0],NULL,&rect);
                     break;
                     case 1:
-                        SDL_RenderCopy(renderer,texture6,NULL,&rect);
+                        SDL_RenderCopy(renderer,texture[1],NULL,&rect);
                     break;
                     case 2:
-                        SDL_RenderCopy(renderer,texture3,NULL,&rect);
+                        SDL_RenderCopy(renderer,texture[2],NULL,&rect);
                     break;
                     case 3:
-                        SDL_RenderCopy(renderer,texture2,NULL,&rect);
+                        SDL_RenderCopy(renderer,texture[3],NULL,&rect);
                     break;
                     case 4:
-                        SDL_RenderCopy(renderer,texture1,NULL,&rect);
+                        SDL_RenderCopy(renderer,texture[4],NULL,&rect);
                     break;
                     case 5:
-                        SDL_RenderCopy(renderer,texture5,NULL,&rect);
+                        SDL_RenderCopy(renderer,texture[5],NULL,&rect);
                     break;
                     case 6:
-                        SDL_RenderCopy(renderer,texture10,NULL,&rect);
+                        SDL_RenderCopy(renderer,texture[6],NULL,&rect);
                     break;
                     case 7:
-                        SDL_RenderCopy(renderer,texture9,NULL,&rect);
+                        SDL_RenderCopy(renderer,texture[7],NULL,&rect);
                     break;
                     case 8:
-                        SDL_RenderCopy(renderer,texture8,NULL,&rect);
+                        SDL_RenderCopy(renderer,texture[8],NULL,&rect);
                     break;
+                    case 9:
+                        SDL_RenderCopy(renderer,texture[9],NULL,&rect);
+                    break;
+                    case 10:
+                        SDL_RenderCopy(renderer,texture[10],NULL,&rect);
+                    break;
+                    case 11:
+                        SDL_RenderCopy(renderer,texture[11],NULL,&rect);
+                    break;
+                    case 12:
+                        SDL_RenderCopy(renderer,texture[12],NULL,&rect);
+                    break;
+                    case 13:
+                        SDL_RenderCopy(renderer,texture[13],NULL,&rect);
+                    break;
+                    case 14:
+                        SDL_RenderCopy(renderer,texture[14],NULL,&rect);
+                    break;
+
                 }
             }
     SDL_RenderPresent(renderer);
         }
     }
-    SDL_DestroyTexture(texture1);
-    SDL_DestroyTexture(texture2);
-    SDL_DestroyTexture(texture3);
-    SDL_DestroyTexture(texture4);
-    SDL_DestroyTexture(texture5);
-    SDL_DestroyTexture(texture6);
-    SDL_DestroyTexture(texture7);
+    for(i=0;i<15;i++){
+        SDL_DestroyTexture(texture[i]);
+    }
+
     SDL_Delay(500);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
