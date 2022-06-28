@@ -33,6 +33,7 @@ int main(){
     Character_t character;
     SDL_Rect source = {0};
     int offset_w, offset_h, cptCharac = 0, cptCharacMax = 6;
+    int action;
 
     if (SDL_Init(SDL_INIT_VIDEO) == -1)
     {
@@ -147,6 +148,29 @@ int main(){
                     break;
                     	
                 }
+            case SDL_KEYDOWN:
+                switch(event.key.keysym.sym)
+                {
+                    case SDLK_ESCAPE:
+                        running = 0;
+                        break;
+
+                        case SDLK_UP:
+                            action = UP;
+                            break;
+                        case SDLK_RIGHT:
+                            action = RIGHT;
+                            break;
+                        case SDLK_DOWN:
+                            action = DOWN;
+                            break;
+                        case SDLK_LEFT:
+                            action = LEFT;
+                            break;
+
+
+                        
+
             /*case SDL_QUIT:
                 running = 0;
                 break;*/
