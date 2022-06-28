@@ -20,6 +20,54 @@ int main(){
     int offset_w, offset_h, cptCharac = 0, cptCharacMax = 6, action, movement = 1, teleport = -1, hasTeleported = 0, firstTeleport = 1;
     float zoom = 0.8;
 
+    int grille [][25]={{1,1,1,1,1,1,1,1,   1,1,1,1,1,1,1,1,  1,1,1,1,1,1,1,1,1},
+                       {1,2,2,2,2,2,2,2,   1,2,2,2,12,2,2,2, 1,2,2,4,2,2,2,2,1},
+                       {1,2,4,2,2,14,4,2,  1,2,2,4,4,2,2,2,  1,2,2,2,2,7,2,2,1},
+                       {1,2,13,2,2,2,2,2,  1,2,2,3,2,2,2,2,  1,2,2,4,2,2,2,2,1},
+                       {1,4,4,4,4,4,4,2,   1,2,2,2,2,2,2,2,  1,2,2,2,2,2,4,2,1},
+                       {1,2,2,2,2,2,2,2,   1,2,2,2,2,4,2,2,  1,2,4,2,4,2,2,2,1},
+                       {1,2,4,2,2,2,2,2,   1,2,2,2,2,9,2,2,  1,2,2,2,2,2,2,2,1},
+                       {1,2,2,2,2,2,2,2,   1,2,2,2,2,2,2,4,  1,2,4,2,2,2,2,2,1},
+                       {1,1,1,1,1,1,1,1,   1,1,1,1,1,1,1,1,  1,1,1,1,1,1,1,1,1},
+
+                       {1,2,2,2,2,2,2,2,   1,4,2,2,14,2,2,2, 1,2,2,11,2,2,2,2,1},
+                       {1,2,2,2,2,2,2,2,   1,2,2,2,2,2,2,2,  1,2,2,2,2,9,2,2,1},
+                       {1,2,2,4,2,2,2,2,   1,2,2,4,2,4,2,2,  1,2,2,4,2,2,2,2,1},
+                       {1,12,2,2,4,11,2,2, 1,2,2,2,5,2,2,2,  1,2,2,2,2,2,2,2,1},
+                       {1,2,2,2,2,4,2,2,   1,2,3,4,2,4,2,2,  1,2,2,2,2,4,2,2,1},
+                       {1,2,4,2,2,2,2,4,   1,2,2,2,2,2,2,2,  1,2,4,2,2,2,2,4,1},
+                       {1,2,2,2,2,2,2,2,   1,2,2,2,2,2,2,2,  1,2,2,2,8,2,2,2,1},
+                       {1,1,1,1,1,1,1,1,   1,1,1,1,1,1,1,1,  1,1,1,1,1,1,1,1,1},
+
+                       {1,2,2,2,2,2,4,6,   1,4,4,4,2,2,2,2,  1,2,2,2,7,2,2,2,1},
+                       {1,2,2,2,2,2,4,2,   1,4,10,2,2,2,2,2, 1,2,2,2,4,2,2,2,1},
+                       {1,2,2,2,2,2,2,2,   1,4,4,4,4,4,2,2,  1,4,2,2,2,2,2,4,1},
+                       {1,2,4,4,4,4,4,4,   1,2,2,2,2,4,2,6,  1,4,4,2,2,2,2,10,1},
+                       {1,2,2,2,8,2,2,2,   1,2,2,2,2,4,2,2,  1,13,2,2,2,2,2,4,1},
+                       {1,2,2,2,2,2,2,2,   1,2,2,2,2,2,2,2,  1,2,4,2,2,2,2,2,1},
+                       {1,2,2,2,2,2,2,2,   1,2,2,2,0,2,2,2,  1,2,2,2,2,2,2,2,1},
+                       {1,1,1,1,1,1,1,1,   1,1,1,1,1,1,1,1,  1,1,1,1,1,1,1,1,1},
+                       };
+
+    SDL_Texture *texture[15];
+    SDL_Surface* image[15];
+    char * link[15]={"./img/green_button06.png",
+                       "./img/tile_0000.png",
+                       "./img/grey_button09.png",
+                       "./img/blue_button06.png",
+                       "./img/tile_0043.png",
+                       "./img/green_button07.png",
+                       "./img/redbutton.png",
+                       "./img/yellow_button06.png",
+                       "./img/magenta_button.png",
+                       "./img/sky_button.png",
+                       "./img/olive_button.png",
+                       "./img/pink_button.png",
+                       "./img/purple_button.png",
+                       "./img/brown_button.png",
+                       "./img/red_button03.png"
+                       };
+
     if (SDL_Init(SDL_INIT_VIDEO) == -1)
     {
         fprintf(stderr, "Erreur d'initialisation de la SDL : %s\n", SDL_GetError());
@@ -63,6 +111,16 @@ int main(){
     character.row = 1;
     character.column = 1;
 
+    for(i=0;i<15;i++){
+        image[i]=IMG_Load(link[i]);
+        if(!image[i])
+        {
+        printf("Erreur de chargement de l'image : %s",SDL_GetError());
+        return -1;
+        }
+        texture[i]=SDL_CreateTextureFromSurface(renderer,image[i]);
+        SDL_FreeSurface(image[i]);
+    }
     while (running)
     {
 		while (SDL_PollEvent(&event))
@@ -70,12 +128,22 @@ int main(){
             switch (event.type)
             {
             case SDL_WINDOWEVENT:
+
                 switch (event.window.event)
                 {
                 	case SDL_WINDOWEVENT_CLOSE:
-                    break;
+                        break;
+                    default:
+                        break;
                     	
                 }
+                break;
+
+
+            case SDL_QUIT:
+                running = 0;
+                break;
+
             case SDL_KEYDOWN:
                 switch(event.key.keysym.sym)
                 {
@@ -99,16 +167,16 @@ int main(){
                             action = LEFT;
                             movement = 1;
                             break;
-
-
-                        
-
-            /*case SDL_QUIT:
-                running = 0;
-                break;*/
+                        default:
+                            break;
                 }
+                break;
+
+            default:
+                break;
             }
         }
+
         /* Affichage de la grille */
         for(i=0;i<25;i++){
             for(j=0;j<25;j++){
@@ -120,32 +188,51 @@ int main(){
                 
                 switch(grille[i][j]){
                     case 0:
-                        SDL_RenderCopy(renderer,texture4,NULL,&rect);
+                        SDL_RenderCopy(renderer,texture[0],NULL,&rect);
                     break;
                     case 1:
-                        SDL_RenderCopy(renderer,texture6,NULL,&rect);
+                        SDL_RenderCopy(renderer,texture[1],NULL,&rect);
                     break;
                     case 2:
-                        SDL_RenderCopy(renderer,texture3,NULL,&rect);
+                        SDL_RenderCopy(renderer,texture[2],NULL,&rect);
                     break;
                     case 3:
-                        SDL_RenderCopy(renderer,texture2,NULL,&rect);
+                        SDL_RenderCopy(renderer,texture[3],NULL,&rect);
                     break;
                     case 4:
-                        SDL_RenderCopy(renderer,texture1,NULL,&rect);
+                        SDL_RenderCopy(renderer,texture[4],NULL,&rect);
                     break;
                     case 5:
-                        SDL_RenderCopy(renderer,texture5,NULL,&rect);
+                        SDL_RenderCopy(renderer,texture[5],NULL,&rect);
                     break;
                     case 6:
-                        SDL_RenderCopy(renderer,texture10,NULL,&rect);
+                        SDL_RenderCopy(renderer,texture[6],NULL,&rect);
                     break;
                     case 7:
-                        SDL_RenderCopy(renderer,texture9,NULL,&rect);
+                        SDL_RenderCopy(renderer,texture[7],NULL,&rect);
                     break;
                     case 8:
-                        SDL_RenderCopy(renderer,texture8,NULL,&rect);
+                        SDL_RenderCopy(renderer,texture[8],NULL,&rect);
                     break;
+                    case 9:
+                        SDL_RenderCopy(renderer,texture[9],NULL,&rect);
+                    break;
+                    case 10:
+                        SDL_RenderCopy(renderer,texture[10],NULL,&rect);
+                    break;
+                    case 11:
+                        SDL_RenderCopy(renderer,texture[11],NULL,&rect);
+                    break;
+                    case 12:
+                        SDL_RenderCopy(renderer,texture[12],NULL,&rect);
+                    break;
+                    case 13:
+                        SDL_RenderCopy(renderer,texture[13],NULL,&rect);
+                    break;
+                    case 14:
+                        SDL_RenderCopy(renderer,texture[14],NULL,&rect);
+                    break;
+
                 }
             }
         }
@@ -220,7 +307,6 @@ int main(){
                             character.row++;
                             cptCharac = 0;
                             action = -1;
-                            printf("%d\n", movement);
                         }
                     }
                     break;
@@ -249,9 +335,6 @@ int main(){
         }
         
         teleport = hasToTeleport(tabTeleporter,character);
-
-        printf("move:%d\n",movement);
-
 
         if(teleport != -1 && movement==0)
         {
@@ -307,8 +390,12 @@ int main(){
         SDL_Delay(60);
 
         SDL_RenderPresent(renderer);
-        
     }
+
+    for(i=0;i<15;i++){
+        SDL_DestroyTexture(texture[i]);
+    }
+
     SDL_Delay(500);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
