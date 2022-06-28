@@ -9,7 +9,7 @@
 #define SCREEN_HEIGHT 600
 
 /* Pas du sprite */
-#define SPRITE_STEP 5
+#define SPRITE_STEP 4
 
 /* Direction du sprite */
 #define UP 0
@@ -30,9 +30,9 @@ typedef struct character
 
 typedef struct teleporter
 {
-	int positionX;
-	int positionY;
-	int destinationX;
-	int destinationY;
+	int positionRow;
+	int positionColumn;
+	int destinationRow;
+	int destinationColumn;
 
 } Teleporter_t;
