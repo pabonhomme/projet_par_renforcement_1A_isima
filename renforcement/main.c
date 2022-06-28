@@ -2,62 +2,23 @@
 
 int main(){
     int running=1,i=0,j=0;
-    int grille [][25]={{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-                       {1,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,1},
-                       {1,2,4,2,2,2,4,2,1,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,1},
-                       {1,2,6,2,2,2,2,2,1,2,2,3,2,2,2,8,1,2,2,2,2,2,2,2,1},
-                       {1,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,1},
-                       {1,2,2,2,2,2,2,2,1,2,2,2,2,4,2,2,1,2,2,2,2,2,2,2,1},
-                       {1,2,4,2,2,2,2,2,1,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,1},
-                       {1,2,2,2,2,2,2,2,1,2,2,2,2,2,2,4,1,2,2,2,2,2,2,2,1},
-                       {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-                       {1,2,2,2,2,2,2,2,1,4,2,2,2,7,2,2,1,2,2,2,2,2,2,2,1},
-                       {1,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,1},
-                       {1,2,2,2,2,2,2,2,1,2,2,4,2,4,2,2,1,2,2,2,2,2,2,2,1},
-                       {1,2,2,2,2,8,2,2,1,2,2,2,5,2,2,2,1,2,2,2,2,2,2,2,1},
-                       {1,2,2,2,2,2,2,2,1,2,2,4,2,4,2,2,1,2,2,2,2,2,2,2,1},
-                       {1,2,4,2,2,2,2,4,1,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,1},
-                       {1,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,1},
-                       {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-                       {1,2,2,2,2,2,2,6,1,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,1},
-                       {1,2,2,7,2,2,2,2,1,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,1},
-                       {1,2,4,2,2,2,2,2,1,2,2,2,2,2,2,2,1,4,2,2,2,2,2,2,1},
-                       {1,2,4,2,2,2,2,2,1,2,2,2,2,2,2,2,1,4,4,2,2,2,2,2,1},
-                       {1,2,4,2,2,2,2,2,1,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,1},
-                       {1,2,4,2,2,2,2,2,1,2,2,2,2,2,2,2,1,2,4,2,2,2,2,2,1},
-                       {1,2,2,2,2,2,2,2,1,2,2,2,0,2,2,2,1,2,2,2,2,2,2,2,1},
-                       {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-                       };
 
     SDL_Renderer *renderer;
     SDL_Event event;
-    SDL_Texture *texture1, 
-                *texture2, 
-                *texture3, 
-                *texture4, 
-                *texture5, 
-                *texture6, 
-                *texture7,
-                *texture8,
-                *texture9,
-                *texture10;  // texture du message
+
     SDL_Window *window;
 
     SDL_Texture* sprite;
     Character_t character;
+    Teleporter_t tabTeleporter[NB_TELEPORTER], 
+    t1 = {3, 2, 17, 7},
+    t2 = {17, 7, 3, 2};
+    tabTeleporter[0] = t1;
+    tabTeleporter[1] = t2;
     SDL_Rect source = {0};
-    int offset_w, offset_h, cptCharac = 0, cptCharacMax = 6, action, movement = 1;
 
-    SDL_Surface* image1, 
-                * image2, 
-                * image3, 
-                * image4, 
-                * image5, 
-                * image6, 
-                * image7,
-                * image8,
-                * image9,
-                *image10;
+    int offset_w, offset_h, cptCharac = 0, cptCharacMax = 6, action, movement = 1, teleport = -1, hasTeleported = 0, firstTeleport = 1;
+    float zoom = 0.8;
 
     if (SDL_Init(SDL_INIT_VIDEO) == -1)
     {
@@ -79,62 +40,12 @@ int main(){
     {
         fprintf(stderr, "Erreur d'initialisation de la SDL : %s\n", SDL_GetError());
     }
-    
-    image2 = IMG_Load("./img/blue_button06.png");
-    if(!image2)
-    {
-        printf("Erreur de chargement de l'image : %s",SDL_GetError());
-        return -1;
-    }
-    texture2=SDL_CreateTextureFromSurface(renderer,image2);
-    SDL_FreeSurface(image2);
-    image3 = IMG_Load("./img/grey_button09.png");
-    if(!image3)
-    {
-        printf("Erreur de chargement de l'image : %s",SDL_GetError());
-        return -1;
-    }
-    texture3=SDL_CreateTextureFromSurface(renderer,image3);
-    SDL_FreeSurface(image3);
-    image4 = IMG_Load("./img/green_button06.png");
-    if(!image4)
-    {
-        printf("Erreur de chargement de l'image : %s",SDL_GetError());
-        return -1;
-    }
-    texture4=SDL_CreateTextureFromSurface(renderer,image4);
-    SDL_FreeSurface(image4);
-    image5 = IMG_Load("./img/green_button07.png");
-    if(!image5)
-    {
-        printf("Erreur de chargement de l'image : %s",SDL_GetError());
-        return -1;
-    }
-    texture5=SDL_CreateTextureFromSurface(renderer,image5);
-    SDL_FreeSurface(image5);
-    image6 = IMG_Load("./img/tile_0000.png");
-    if(!image6)
-    {
-        printf("Erreur de chargement de l'image : %s",SDL_GetError());
-        return -1;
-    }
-    texture6=SDL_CreateTextureFromSurface(renderer,image6);
-    SDL_FreeSurface(image6);
-    image7 = IMG_Load("./img/grey_sliderVertical.png");
-    if(!image7)
-    {
-        printf("Erreur de chargement de l'image : %s",SDL_GetError());
-        return -1;
-    }
-    texture7=SDL_CreateTextureFromSurface(renderer,image7);
-    SDL_FreeSurface(image7);
 
     sprite = IMG_LoadTexture(renderer,"./img/george.png");
     if (sprite == NULL)
     {
          fprintf(stderr, "Erreur de chargement de l'image : %s\n", SDL_GetError());
     }
-
     character.sprite = sprite;
     
     SDL_QueryTexture(character.sprite,NULL,NULL,&source.w, &source.h);
@@ -151,40 +62,6 @@ int main(){
     (character.state).h = offset_h;
     character.row = 1;
     character.column = 1;
-    
-    image8 = IMG_Load("./img/red_button03.png");
-    if(!image8)
-    {
-        printf("Erreur de chargement de l'image : %s",SDL_GetError());
-        return -1;
-    }
-    texture8=SDL_CreateTextureFromSurface(renderer,image8);
-    SDL_FreeSurface(image8);
-    image9 = IMG_Load("./img/redbutton.png");
-    if(!image9)
-    {
-        printf("Erreur de chargement de l'image : %s",SDL_GetError());
-        return -1;
-    }
-    texture9=SDL_CreateTextureFromSurface(renderer,image9);
-    SDL_FreeSurface(image9);
-    image10 = IMG_Load("./img/yellow_button06.png");
-    if(!image10)
-    {
-        printf("Erreur de chargement de l'image : %s",SDL_GetError());
-        return -1;
-    }
-    texture10=SDL_CreateTextureFromSurface(renderer,image10);
-    SDL_FreeSurface(image10);
-    image1 = IMG_Load("./img/black_button.png");
-    if(!image1)
-    {
-        printf("Erreur de chargement de l'image : %s",SDL_GetError());
-        return -1;
-    }
-    SDL_RenderClear(renderer);
-    texture1=SDL_CreateTextureFromSurface(renderer,image1);
-    SDL_FreeSurface(image1);
 
     while (running)
     {
@@ -208,15 +85,19 @@ int main(){
 
                         case SDLK_UP:
                             action = UP;
+                            movement = 1;
                             break;
                         case SDLK_RIGHT:
                             action = RIGHT;
+                            movement = 1;
                             break;
                         case SDLK_DOWN:
                             action = DOWN;
+                            movement = 1;
                             break;
                         case SDLK_LEFT:
                             action = LEFT;
+                            movement = 1;
                             break;
 
 
@@ -292,12 +173,13 @@ int main(){
                         }
                         else
                         {
+                            movement = 0;
                             character.row--;
                             cptCharac = 0;
                             action = -1;
-                            //movement = 0;
                         }
                     }
+
                     break;
 
                 case RIGHT:
@@ -316,7 +198,7 @@ int main(){
                             character.column++;
                             cptCharac = 0;
                             action = -1;
-                            //movement = 0;
+                            movement = 0;
                         }
                     }
                     break;
@@ -334,10 +216,11 @@ int main(){
                         }
                         else
                         {
+                            movement = 0;
                             character.row++;
                             cptCharac = 0;
                             action = -1;
-                            //movement = 0;
+                            printf("%d\n", movement);
                         }
                     }
                     break;
@@ -358,13 +241,67 @@ int main(){
                             character.column--;
                             cptCharac = 0;
                             action = -1;
-                            //movement = 0;
+                            movement = 0;
                         }
                     }
                     break;
             }
         }
+        
+        teleport = hasToTeleport(tabTeleporter,character);
 
+        printf("move:%d\n",movement);
+
+
+        if(teleport != -1 && movement==0)
+        {
+            if (firstTeleport)
+            {
+                if(zoom > 0)
+                {
+                    (character.state).x += offset_w;                // La première vignette est en début de ligne
+                    (character.state).x %= source.w;                 // La vignette qui suit celle de fin de ligne est
+                    (character.position).w = offset_w * zoom;       // Largeur du sprite à l'écran
+                    (character.position).h = offset_h * zoom;       // Hauteur du sprite à l'écran 
+                    (character.position).x = (character.position).x + (offset_w * 0.05); // pour qu'il reste centré quand il diminue
+                    (character.position).y = (character.position).y + (offset_h * 0.05);
+                    zoom = zoom - 0.1;
+                }
+                else
+                {
+                    (character.position).x = 24*((tabTeleporter[teleport].destinationColumn))+17;
+                    (character.position).y = 24*((tabTeleporter[teleport].destinationRow))+10;
+                    character.row = tabTeleporter[teleport].destinationRow;
+                    character.column = tabTeleporter[teleport].destinationColumn;
+                    firstTeleport = 0;
+                    hasTeleported = 1;
+                }           
+            }
+
+            if(hasTeleported)
+            {
+                if(zoom < 0.8)
+                {
+                    (character.state).x += offset_w;                // La première vignette est en début de ligne
+                    (character.state).x %= source.w;                 // La vignette qui suit celle de fin de ligne est
+                    (character.position).w = offset_w * zoom;       // Largeur du sprite à l'écran
+                    (character.position).h = offset_h * zoom;       // Hauteur du sprite à l'écran
+                    (character.position).x = (character.position).x - (offset_w * 0.05); // pour qu'il reste centré quand il diminue
+                    (character.position).y = (character.position).y - (offset_h * 0.05);
+                    zoom += 0.1;
+                }
+                else
+                {
+                    hasTeleported = 0;
+                    firstTeleport = 1;
+                    movement = 1;
+                }
+            }
+        }
+        else
+        {
+                movement = 1;
+        }
 
         SDL_RenderCopy(renderer, character.sprite, &(character.state), &(character.position)); 
         SDL_Delay(60);
@@ -372,15 +309,9 @@ int main(){
         SDL_RenderPresent(renderer);
         
     }
-    SDL_DestroyTexture(texture1);
-    SDL_DestroyTexture(texture2);
-    SDL_DestroyTexture(texture3);
-    SDL_DestroyTexture(texture4);
-    SDL_DestroyTexture(texture5);
-    SDL_DestroyTexture(texture6);
-    SDL_DestroyTexture(texture7);
     SDL_Delay(500);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
 }
+

@@ -8,6 +8,7 @@
 #define SCREEN_WIDTH  600
 #define SCREEN_HEIGHT 600
 
+
 /* Pas du sprite */
 #define SPRITE_STEP 4
 
@@ -18,6 +19,9 @@
 #define LEFT 3
 
 /* Structures */
+#define NB_TELEPORTER 20
+
+
 typedef struct character
 {
 	SDL_Texture* sprite;
@@ -36,3 +40,6 @@ typedef struct teleporter
 	int destinationColumn;
 
 } Teleporter_t;
+
+
+int hasToTeleport(Teleporter_t tabTeleporter[], Character_t character);
