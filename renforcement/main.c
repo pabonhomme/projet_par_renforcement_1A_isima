@@ -15,7 +15,8 @@ int main(){
     SDL_Rect source = {0};
 	float zoom = 0.8;
 
-    int running = 1, i = 0, j = 0, k = 0, offset_w, offset_h, cptCharac = 0, cptCharacMax = 6, action = -1, 
+    int running = 1, i = 0, j = 0, k = 0, offset_w, offset_h, cptCharac = 0, cptCharacMax = 6, action = -1,
+    first_jump = 1, ite_jump = 0, hasJump = 0, haswon = 0,
     movement = 1, teleport = -1, hasTeleported = 0, firstTeleport = 1,
     	grille [][25]={{1,1,1,1,1,1,1,1,   1,1,1,1,1,1,1,1,  1,1,1,1,1,1,1,1,1},
                        {1,2,2,2,2,2,2,2,   1,2,2,2,12,2,2,2, 1,2,2,4,2,2,2,2,1},
@@ -148,19 +149,19 @@ int main(){
 
                         case SDLK_UP:
                             action = UP;
-                            movement = 1;
+                            movement = !haswon ? 1 : 0;
                             break;
                         case SDLK_RIGHT:
                             action = RIGHT;
-                            movement = 1;
+                            movement = !haswon ? 1 : 0;
                             break;
                         case SDLK_DOWN:
                             action = DOWN;
-                            movement = 1;
+                            movement = !haswon ? 1 : 0;
                             break;
                         case SDLK_LEFT:
                             action = LEFT;
-                            movement = 1;
+                            movement = !haswon ? 1 : 0;
                             break;
                         default:
                             break;
@@ -403,7 +404,53 @@ int main(){
             }
             else
             {
-                    movement = 1;
+            	if(grille[character.row][character.column] == 5 && haswon == 0)
+            	{
+            		if(first_jump)
+            		{
+	            		if(ite_jump < 8)
+	            		{
+	            			(character.state).x += offset_w; // La première vignette est en début de ligne
+	              			(character.state).x %= source.w; // La vignette qui suit celle de fin de ligne est
+	              			(character.position).w = offset_w * zoom; // Largeur du sprite à l'écran
+	              			(character.position).h = offset_h * zoom; // Hauteur du sprite à l'écran 
+	              			(character.position).y = (character.position).y - 1.2;
+	              			ite_jump++;
+	            		}
+	            		else
+	            		{
+	            			first_jump = 0;
+	            			hasJump = 1;
+	            			ite_jump = 0;
+	            		}
+            		}	
+
+            		if (hasJump)
+            		{
+            			if(ite_jump < 8)
+            			{
+            				(character.state).x += offset_w; // La première vignette est en début de ligne
+              				(character.state).x %= source.w; // La vignette qui suit celle de fin de ligne est
+              				(character.position).w = offset_w * zoom; // Largeur du sprite à l'écran
+              				(character.position).h = offset_h * zoom; // Hauteur du sprite à l'écran 
+              				(character.position).y = (character.position).y + 1.2;
+              				ite_jump++;
+            			}
+            			else
+            			{
+            				(character.state).x = 0; // La première vignette est en début de ligne
+            				first_jump = 1;
+            				hasJump = 0;
+            				ite_jump = 0;
+            				haswon = 1;
+            				movement = 0;
+            			}
+            		}
+            	}
+            	else 
+            	{
+					movement = !haswon ? 1 : 0;
+            	}
             }
         }
 
