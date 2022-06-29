@@ -1,63 +1,24 @@
-#include <SDL2/SDL.h>
-#include <stdio.h>
-#include<string.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_ttf.h>
+#include "game.h"
 
-void display_background(SDL_Texture *bg_texture, SDL_Window *window,
-                         SDL_Renderer *renderer) {
-  SDL_Rect 
-    source = {0},                         // Rectangle définissant la zone de la texture à récupérer
-    window_dimensions = {0},              // Rectangle définissant la fenêtre, on n'utilisera que largeur et hauteur
-    destination = {0};                    // Rectangle définissant où la zone_source doit être déposée dans le renderer
-    SDL_GetWindowSize(
-      window, &window_dimensions.w,
-      &window_dimensions.h);                    // Récupération des dimensions de la fenêtre
-    SDL_QueryTexture(bg_texture, NULL, NULL,
-                   &source.w, &source.h);       // Récupération des dimensions de l'image
 
-  destination = window_dimensions;              // On fixe les dimensions de l'affichage à  celles de la fenêtre
-
-  /* On veut afficher la texture de façon à ce que l'image occupe la totalité de la fenêtre */
-
-    SDL_RenderCopy(renderer, bg_texture,
-                 &source,
-                 &destination);                 // Création de l'élément à afficher
-
-}
-
-void get_text(SDL_Renderer *renderer, int x, int y, char *text,
-        TTF_Font *font, SDL_Texture **texture, SDL_Rect *rect) {
-    int text_width;
-    int text_height;
-    SDL_Surface *surface;
-    SDL_Color textColor = {255, 255, 255, 0};
-
-    surface = TTF_RenderText_Solid(font, text, textColor);
-    *texture = SDL_CreateTextureFromSurface(renderer, surface);
-    text_width = surface->w;
-    text_height = surface->h;
-    SDL_FreeSurface(surface);
-    rect->x = x;
-    rect->y = y;
-    rect->w = text_width;
-    rect->h = text_height;
-}
 
 int main()
 {
     SDL_Window* window; // fenetre de jeu
     SDL_Renderer* renderer; 
-    SDL_Texture *texture;
-    SDL_Rect rect, rect2;
-    SDL_Rect surface;
+    SDL_Texture *texture, *texture1, *texture2, *sprite;
+    SDL_Rect rect, rect1, rect2;
     SDL_Texture *bg;
     int running=1;
     SDL_Event event;
-    rect2.x = 260;
-    rect2.y = 260;
-    rect2.w = 50;
-    rect2.h = 20;
+	int offset_x=0,offset_y=0;
+	float zoom = 1.5;
+    Character_t character;
+    int direction=RIGHT, cpt_x=0, cpt_xmax=62, cpt_y=0, cpt_ymax=43,mode=0;
+	SDL_Rect 
+            source = {0},                    
+            window_dimensions = {0}
+            ;
     
 
     if (SDL_Init(SDL_INIT_VIDEO) == -1)
@@ -83,23 +44,102 @@ int main()
         // faire ce qu'il faut pour quitter proprement
     }
     TTF_Init();
-    TTF_Font *font = TTF_OpenFont("./04B_19__.TTF", 24);
+    TTF_Font *font = TTF_OpenFont("./font/04B_30__.TTF", 20);
     if (font == NULL) {
         fprintf(stderr, "error: font not found\n");
         exit(EXIT_FAILURE);
     }
-    get_text(renderer, 0, 0, "Jouer",  font, &texture, &rect);
-    
+    TTF_Font *font1 = TTF_OpenFont("./font/04B_30__.TTF", 28);
 
-    bg= IMG_LoadTexture(renderer,"./img/bg.jpg");
+    bg= IMG_LoadTexture(renderer,"./img/game-modified.png");
     if (bg == NULL) 
         fprintf(stderr, "Erreur d'initialisation de la texture : %s\n", SDL_GetError());  
 
     display_background(bg,window,renderer);
-    SDL_RenderDrawRect(renderer, &rect2);
     
+    sprite = IMG_LoadTexture(renderer,"./img/george.png");
+	if (sprite == NULL)
+	{
+		 fprintf(stderr, "Erreur de chargement de l'image : %s\n", SDL_GetError());
+	}
+    SDL_GetWindowSize(window,&window_dimensions.w,&window_dimensions.h);
+    SDL_QueryTexture(sprite,NULL,NULL,&source.w, &source.h);
+
+    offset_x = source.w/4;
+    offset_y = source.h/4;				   // Je n'ai qu'une seule ligne dans mon sprite
+
+    (character.state).x = 3*offset_x;                          // La première vignette est en début de ligne
+    (character.state).y = 0;                    // Une seule ligne
+    (character.state).w = offset_x;                    // Largeur de la vignette
+    (character.state).h = offset_y;  
+
+    (character.position).w = offset_x * zoom;       // Largeur du sprite à l'écran
+    (character.position).h = offset_y * zoom;       // Hauteur du sprite à l'écran
+    (character.position).x = 115;
+    (character.position).y = 180;
+
+
     while(running)
     {
+        switch(direction){
+            case UP:
+                (character.state).x = 2*offset_x;
+                if(cpt_y<cpt_ymax){
+                    (character.position).y -=5;
+                    (character.state).y += offset_y;
+                    (character.state).y %= source.h;
+                    cpt_y++;
+                }
+                else{
+                    direction=RIGHT;
+                    cpt_y=0;
+                    (character.state).y = 0;
+                }
+            break;
+            case DOWN:
+                (character.state).x = 0;
+                if(cpt_y<cpt_ymax){
+                    (character.position).y+=5;
+                    (character.state).y += offset_y;
+                    (character.state).y %= source.h;
+                    cpt_y++;
+                }
+                else{
+                    direction=LEFT;
+                    cpt_y=0;
+                    (character.state).y = 0;
+                }
+                
+            break;
+            case LEFT:
+                (character.state).x = offset_x;
+                if(cpt_x<cpt_xmax){
+                    (character.position).x-=5;
+                    (character.state).y += offset_y;
+                    (character.state).y %= source.h;
+                    cpt_x++;
+                }
+                else{
+                    direction=UP;
+                    cpt_x=0;
+                    (character.state).y = 0;
+                }
+            break;
+            case RIGHT:
+                (character.state).x = 3*offset_x;
+                if(cpt_x<cpt_xmax){
+                    (character.position).x+=5;
+                    (character.state).y += offset_y;
+                    (character.state).y %= source.h;
+                    cpt_x++;
+                }
+                else{
+                    direction=DOWN;
+                    cpt_x=0;
+                    (character.state).y = 0;
+                }
+            break;
+        }
         while (SDL_PollEvent(&event))
         {
             switch (event.type)
@@ -114,37 +154,54 @@ int main()
                     default:
                         break;      
                 }
-                break;
+            break;
             case SDL_MOUSEBUTTONUP:
-              if (   event.button.y > 260
-                  && event.button.y <= 260+rect.h   
-                  && event.button.x > 260
-                  && event.button.x <= 260+rect.w){
-                      printf("appui sur jouer\n");
+              if (   event.button.y > 255
+                  && event.button.y <= 255+rect.h   
+                  && event.button.x > 180
+                  && event.button.x <= 180+rect.w){
+                    printf("appui sur jouer normal\n");
+                    mode=0;
+
+                  }
+                  else if (   event.button.y > 350
+                  && event.button.y <= 350+rect.h   
+                  && event.button.x > 210
+                  && event.button.x <= 210+rect.w){
+                    printf("appui sur jouer ia\n");
+                    mode=1;
                   }
 
             break;
             case SDL_QUIT:
                 running = 0;
-                break;
+            break;
             }
         }
+        
         SDL_RenderClear(renderer);
-        // SDL_SetRenderDrawColor(renderer, 255,255,255,255);
         display_background(bg,window,renderer);
-        get_text(renderer, 260, 260, "Jouer",  font, &texture, &rect);
+        SDL_RenderCopy(renderer, sprite, &(character.state), &(character.position));  
+        get_text(renderer, 50, 50, "TELEPORTING GEORGE",  font1, &texture1, &rect1);
+        get_text(renderer, 190, 255, "Mode normal",  font, &texture, &rect);
+        get_text(renderer, 225, 350, "Mode IA",  font, &texture2, &rect2);
         SDL_RenderCopy(renderer, texture, NULL, &rect);
+        SDL_RenderCopy(renderer, texture1, NULL, &rect1);
+        SDL_RenderCopy(renderer, texture2, NULL, &rect2);
         SDL_RenderPresent(renderer);
-        SDL_Delay(500);
+        SDL_Delay(50);
         
     }
     
-    // SDL_RenderClear(renderer);
+    SDL_DestroyTexture(sprite);
+    TTF_CloseFont(font);
     SDL_DestroyTexture(texture);
+    SDL_DestroyTexture(texture1);
+    SDL_DestroyTexture(texture2);
     SDL_DestroyTexture(bg);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
-    TTF_CloseFont(font);
+
     TTF_Quit();
     IMG_Quit();
     SDL_Quit();

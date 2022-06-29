@@ -44,3 +44,5 @@ typedef struct teleporter
 
 int hasToTeleport(Teleporter_t tabTeleporter[], Character_t character);
 void initTeleporter(Teleporter_t tabTeleporter[]);
+void get_text(SDL_Renderer *renderer, int x, int y, char *text,TTF_Font *font, SDL_Texture **texture, SDL_Rect *rect);
+void display_background(SDL_Texture *bg_texture, SDL_Window *window,SDL_Renderer *renderer);
