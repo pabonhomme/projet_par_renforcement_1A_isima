@@ -2,7 +2,7 @@
 
 
 
-int main()
+void menu()
 {
     SDL_Window* window; // fenetre de jeu
     SDL_Renderer* renderer; 
@@ -14,7 +14,7 @@ int main()
 	int offset_x=0,offset_y=0;
 	float zoom = 1.5;
     Character_t character;
-    int direction=RIGHT, cpt_x=0, cpt_xmax=62, cpt_y=0, cpt_ymax=43,mode=0;
+    int direction=RIGHT, cpt_x=0, cpt_xmax=62, cpt_y=0, cpt_ymax=43;
 	SDL_Rect 
             source = {0},                    
             window_dimensions = {0}
@@ -27,7 +27,7 @@ int main()
         return EXIT_FAILURE;
     }
 
-    window = SDL_CreateWindow("Game",  
+    window = SDL_CreateWindow("Teleporting Georges", 
                               SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                               600, 600,
                               SDL_WINDOW_RESIZABLE);
@@ -161,15 +161,25 @@ int main()
                   && event.button.x > 180
                   && event.button.x <= 180+rect.w){
                     printf("appui sur jouer normal\n");
-                    mode=0;
+                    SDL_DestroyTexture(sprite);
+                    SDL_DestroyTexture(texture);
+                    SDL_DestroyTexture(texture1);
+                    SDL_DestroyTexture(texture2);
+                    SDL_DestroyTexture(bg);
+                    SDL_DestroyRenderer(renderer);
+                    SDL_DestroyWindow(window);
 
+                    
+                    game_normal(); 
+                    running=0;
+                        
                   }
                   else if (   event.button.y > 350
                   && event.button.y <= 350+rect.h   
                   && event.button.x > 210
                   && event.button.x <= 210+rect.w){
                     printf("appui sur jouer ia\n");
-                    mode=1;
+                    
                   }
 
             break;
@@ -182,7 +192,7 @@ int main()
         SDL_RenderClear(renderer);
         display_background(bg,window,renderer);
         SDL_RenderCopy(renderer, sprite, &(character.state), &(character.position));  
-        get_text(renderer, 50, 50, "TELEPORTING GEORGE",  font1, &texture1, &rect1);
+        get_text(renderer, 40, 50, "TELEPORTING GEORGES",  font1, &texture1, &rect1);
         get_text(renderer, 190, 255, "Mode normal",  font, &texture, &rect);
         get_text(renderer, 225, 350, "Mode IA",  font, &texture2, &rect2);
         SDL_RenderCopy(renderer, texture, NULL, &rect);
@@ -201,9 +211,7 @@ int main()
     SDL_DestroyTexture(bg);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
-
     TTF_Quit();
     IMG_Quit();
     SDL_Quit();
-    return 0;
 }
