@@ -115,64 +115,7 @@ void game_normal(){
         texture[i]=SDL_CreateTextureFromSurface(renderer,image[i]);
         SDL_FreeSurface(image[i]);
     }
-            for(i=0;i<25;i++){
-            for(j=0;j<25;j++){
-                SDL_Rect rect;
-                rect.x=24*j;
-                rect.y=24*i;
-                rect.w=24;
-                rect.h=24;
-                
-                switch(grille[i][j]){
-                    case 0:
-                        SDL_RenderCopy(renderer,texture[0],NULL,&rect);
-                    break;
-                    case 1:
-                        SDL_RenderCopy(renderer,texture[1],NULL,&rect);
-                    break;
-                    case 2:
-                        SDL_RenderCopy(renderer,texture[2],NULL,&rect);
-                    break;
-                    case 3:
-                        SDL_RenderCopy(renderer,texture[3],NULL,&rect);
-                    break;
-                    case 4:
-                        SDL_RenderCopy(renderer,texture[4],NULL,&rect);
-                    break;
-                    case 5:
-                        SDL_RenderCopy(renderer,texture[5],NULL,&rect);
-                    break;
-                    case 6:
-                        SDL_RenderCopy(renderer,texture[6],NULL,&rect);
-                    break;
-                    case 7:
-                        SDL_RenderCopy(renderer,texture[7],NULL,&rect);
-                    break;
-                    case 8:
-                        SDL_RenderCopy(renderer,texture[8],NULL,&rect);
-                    break;
-                    case 9:
-                        SDL_RenderCopy(renderer,texture[9],NULL,&rect);
-                    break;
-                    case 10:
-                        SDL_RenderCopy(renderer,texture[10],NULL,&rect);
-                    break;
-                    case 11:
-                        SDL_RenderCopy(renderer,texture[11],NULL,&rect);
-                    break;
-                    case 12:
-                        SDL_RenderCopy(renderer,texture[12],NULL,&rect);
-                    break;
-                    case 13:
-                        SDL_RenderCopy(renderer,texture[13],NULL,&rect);
-                    break;
-                    case 14:
-                        SDL_RenderCopy(renderer,texture[14],NULL,&rect);
-                    break;
-
-                }
-            }
-            }
+    
     while (running)
     {
 		  while (SDL_PollEvent(&event))
