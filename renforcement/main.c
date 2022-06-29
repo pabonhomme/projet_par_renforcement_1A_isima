@@ -1,52 +1,58 @@
 #include "game.h"
 
 int main(){
+    srand(time(NULL));
     SDL_Renderer *renderer;
     SDL_Event event;
     SDL_Window *window;
-    SDL_Texture *texture[15], *sprite;
-    SDL_Surface* image[15];
+    SDL_Texture *texture[16], *sprite;
+    SDL_Surface* image[16];
 
     Character_t character;
     Teleporter_t tabTeleporter[NB_TELEPORTER];
+    
+    StateList_t stateList[200000];
+    stateList[0].reward = 0;
 
     initTeleporter(tabTeleporter);
 
     SDL_Rect source = {0};
-	float zoom = 0.8;
+	float zoom = 0.8, max, eps = 1.0, epsRandom, qTable[NB_STATE][DIRECTION], xi = 0.99, gamma = 0.9;
 
-    int running = 1, i = 0, j = 0, k = 0, offset_w, offset_h, cptCharac = 0, cptCharacMax = 6, action = -1, 
-    movement = 1, teleport = -1, hasTeleported = 0, firstTeleport = 1,
+    initQtable(qTable);
+
+    int running = 1, i = 0, j = 0, n =0, generation = 0, argmax, offset_w, offset_h, cptCharac = 0, cptCharacMax = 6, action = -1, 
+    movement = 1, teleport = -1, hasTeleported = 0, firstTeleport = 1, nbState = 0,
     	grille [][25]={{1,1,1,1,1,1,1,1,   1,1,1,1,1,1,1,1,  1,1,1,1,1,1,1,1,1},
-                       {1,2,2,2,2,2,2,2,   1,2,2,2,12,2,2,2, 1,2,2,4,2,2,2,2,1},
-                       {1,2,4,2,2,14,4,2,  1,2,2,4,4,2,2,2,  1,2,2,2,2,7,2,2,1},
+                       {1,2,2,4,2,2,2,2,   1,2,2,2,12,2,2,2, 1,2,2,4,2,2,2,2,1},
+                       {1,2,2,2,2,14,2,2,  1,2,2,2,2,4,2,2,  1,2,2,2,2,7,2,2,1},
                        {1,2,13,2,2,2,2,2,  1,2,2,3,2,2,2,2,  1,2,2,4,2,2,2,2,1},
-                       {1,4,4,4,4,4,4,2,   1,2,2,2,2,2,2,2,  1,2,2,2,2,2,4,2,1},
-                       {1,2,2,2,2,2,2,2,   1,2,2,2,2,4,2,2,  1,2,4,2,4,2,2,2,1},
+                       {1,4,2,2,2,2,4,2,   1,2,4,2,2,2,2,2,  1,2,2,2,2,2,4,2,1},
+                       {1,2,2,2,2,2,2,2,   1,2,2,2,2,2,4,2,  1,2,4,2,2,2,2,2,1},
                        {1,2,4,2,2,2,2,2,   1,2,2,2,2,9,2,2,  1,2,2,2,2,2,2,2,1},
-                       {1,2,2,2,2,2,2,2,   1,2,2,2,2,2,2,4,  1,2,4,2,2,2,2,2,1},
+                       {1,2,2,2,2,2,4,2,   1,2,2,2,2,2,2,4,  1,2,2,2,15,2,2,2,1},
                        {1,1,1,1,1,1,1,1,   1,1,1,1,1,1,1,1,  1,1,1,1,1,1,1,1,1},
 
-                       {1,2,2,2,2,2,2,2,   1,4,2,2,14,2,2,2, 1,2,2,11,2,2,2,2,1},
+                       {1,2,2,2,4,2,2,2,   1,2,2,2,14,2,2,2, 1,2,2,11,2,2,2,2,1},
                        {1,2,2,2,2,2,2,2,   1,2,2,2,2,2,2,2,  1,2,2,2,2,9,2,2,1},
                        {1,2,2,4,2,2,2,2,   1,2,2,4,2,4,2,2,  1,2,2,4,2,2,2,2,1},
-                       {1,12,2,2,4,11,2,2, 1,2,2,2,5,2,2,2,  1,2,2,2,2,2,2,2,1},
-                       {1,2,2,2,2,4,2,2,   1,2,3,4,2,4,2,2,  1,2,2,2,2,4,2,2,1},
-                       {1,2,4,2,2,2,2,4,   1,2,2,2,2,2,2,2,  1,2,4,2,2,2,2,4,1},
+                       {1,12,2,2,2,11,2,2, 1,2,2,2,5,2,2,2,  1,2,2,2,2,2,2,2,1},
+                       {1,2,2,2,2,2,2,2,   1,2,3,4,2,4,2,2,  1,2,2,2,2,4,2,2,1},
+                       {1,2,4,2,2,2,2,4,   1,2,2,2,2,2,2,15,  1,2,4,2,2,2,2,4,1},
                        {1,2,2,2,2,2,2,2,   1,2,2,2,2,2,2,2,  1,2,2,2,8,2,2,2,1},
                        {1,1,1,1,1,1,1,1,   1,1,1,1,1,1,1,1,  1,1,1,1,1,1,1,1,1},
 
-                       {1,2,2,2,2,2,4,6,   1,4,4,4,2,2,2,2,  1,2,2,2,7,2,2,2,1},
-                       {1,2,2,2,2,2,4,2,   1,4,10,2,2,2,2,2, 1,2,2,2,4,2,2,2,1},
-                       {1,2,2,2,2,2,2,2,   1,4,4,4,4,4,2,2,  1,4,2,2,2,2,2,4,1},
-                       {1,2,4,4,4,4,4,4,   1,2,2,2,2,4,2,6,  1,4,4,2,2,2,2,10,1},
-                       {1,2,2,2,8,2,2,2,   1,2,2,2,2,4,2,2,  1,13,2,2,2,2,2,4,1},
-                       {1,2,2,2,2,2,2,2,   1,2,2,2,2,2,2,2,  1,2,4,2,2,2,2,2,1},
-                       {1,2,2,2,2,2,2,2,   1,2,2,2,0,2,2,2,  1,2,2,2,2,2,2,2,1},
+                       {1,2,2,2,4,2,2,6,   1,2,2,4,2,2,2,2,  1,2,2,2,7,2,4,2,1},
+                       {1,2,2,4,2,2,2,2,   1,2,10,2,2,2,2,2, 1,2,2,2,2,2,2,2,1},
+                       {1,2,2,2,2,2,2,2,   1,4,2,2,2,4,2,2,  1,4,2,2,2,2,2,2,1},
+                       {1,2,4,2,2,2,2,4,   1,2,2,2,2,2,2,6,  1,2,2,2,2,2,2,10,1},
+                       {1,2,2,2,8,2,2,2,   1,2,2,2,2,2,2,2,  1,13,2,2,2,2,2,4,1},
+                       {1,2,2,2,2,2,2,2,   1,2,4,2,2,2,2,2,  1,2,4,2,2,2,2,2,1},
+                       {1,2,2,4,2,2,2,2,   1,2,2,2,0,2,2,2,  1,2,2,2,2,4,2,2,1},
                        {1,1,1,1,1,1,1,1,   1,1,1,1,1,1,1,1,  1,1,1,1,1,1,1,1,1},
                        };
 
-    char * link[15]={"./img/green_button06.png",
+    char * link[16]={"./img/green_button06.png",
                        "./img/tile_0000.png",
                        "./img/grey_button09.png",
                        "./img/blue_button06.png",
@@ -60,7 +66,8 @@ int main(){
                        "./img/pink_button.png",
                        "./img/purple_button.png",
                        "./img/brown_button.png",
-                       "./img/red_button03.png"
+                       "./img/red_button03.png",
+                       "./img/grey_button.png"
                        };
 
     if (SDL_Init(SDL_INIT_VIDEO) == -1)
@@ -105,7 +112,7 @@ int main(){
     character.row = 23;
     character.column = 12;
 
-    for(i=0;i<15;i++){
+    for(i=0;i<16;i++){
         image[i]=IMG_Load(link[i]);
         if(!image[i])
         {
@@ -116,7 +123,7 @@ int main(){
         SDL_FreeSurface(image[i]);
     }
     
-    while (running)
+    while (running && generation<5000)
     {
 		while (SDL_PollEvent(&event))
         {
@@ -227,6 +234,9 @@ int main(){
                     case 14:
                         SDL_RenderCopy(renderer,texture[14],NULL,&rect);
                     break;
+                    case 15:
+                        SDL_RenderCopy(renderer,texture[15],NULL,&rect);
+                    break;
 
                 }
             }
@@ -235,6 +245,29 @@ int main(){
         /* Animation personnage */
         if (movement)
         {
+            if (cptCharac == 0)
+            {
+                argmax = 0;
+                max = maxStateQtable(qTable,stateList[nbState].state,&argmax);
+                epsRandom = (float)rand()/RAND_MAX;  
+                
+                if (epsRandom > eps)
+                {
+                    if (max > 0)
+                    {
+                        action = argmax;
+                    }
+                    else
+                    {
+                        action = rand()%4;
+                    }
+                }
+                else
+                {
+                    action = rand()%4;
+                }
+            }
+
             switch(action)
             {
                 case UP:
@@ -247,12 +280,27 @@ int main(){
                             (character.state).y += offset_h;
                             (character.state).y %= source.h;
                             cptCharac++;
+                            stateList[nbState].state = 23*(character.row-1)+(character.column-1);
                         }
                         else
                         {
-                            movement = 0;
                             character.row--;
                             cptCharac = 0;
+                            stateList[nbState].action = action;
+                            switch(grille[character.row][character.column])
+                            {
+                                case 6:
+                                    stateList[nbState+1].reward = 10;
+                                    break;
+                                case 10:
+                                    stateList[nbState+1].reward = 10;
+                                    break;
+                                default:
+                                    stateList[nbState+1].reward = 0;
+                                    break;
+                            }
+                            nbState++;
+                            movement = 0;
                             action = -1;
                         }
                     }
@@ -269,13 +317,28 @@ int main(){
                             (character.state).y += offset_h;
                             (character.state).y %= source.h;
                             cptCharac++;
+                            stateList[nbState].state = 23*(character.row-1)+(character.column-1);
                         }
                         else
                         {
                             character.column++;
                             cptCharac = 0;
-                            action = -1;
+                            stateList[nbState].action = action;
+                            switch(grille[character.row][character.column])
+                            {
+                                case 6:
+                                    stateList[nbState+1].reward = 10;
+                                    break;
+                                case 10:
+                                    stateList[nbState+1].reward = 10;
+                                    break;
+                                default:
+                                    stateList[nbState+1].reward = 0;
+                                    break;
+                            }
+                            nbState++;
                             movement = 0;
+                            action = -1;
                         }
                     }
                     break;
@@ -290,12 +353,27 @@ int main(){
                             (character.state).y += offset_h;
                             (character.state).y %= source.h;
                             cptCharac++;
+                            stateList[nbState].state = 23*(character.row-1)+(character.column-1);
                         }
                         else
                         {
-                            movement = 0;
                             character.row++;
                             cptCharac = 0;
+                            stateList[nbState].action = action;
+                            switch(grille[character.row][character.column])
+                            {
+                                case 10:
+                                    stateList[nbState+1].reward = 10;
+                                    break;
+                                case 6:
+                                    stateList[nbState+1].reward = 10;
+                                    break;
+                                default:
+                                    stateList[nbState+1].reward = 0;
+                                    break;
+                            }
+                            nbState++;
+                            movement = 0;
                             action = -1;
                         }
                     }
@@ -311,13 +389,29 @@ int main(){
                             (character.state).y += offset_h;
                             (character.state).y %= source.h;
                             cptCharac++;
+                            stateList[nbState].state = 23*(character.row-1)+(character.column-1);
                         }
                         else
                         {
                             character.column--;
                             cptCharac = 0;
-                            action = -1;
+                            stateList[nbState].action = action;
+                            switch(grille[character.row][character.column])
+                            {
+                                case 10:
+                                    stateList[nbState+1].reward = 10;
+                                    break;
+                                case 6:
+                                    stateList[nbState+1].reward = 10;
+                                    break;
+                                default:
+                                    stateList[nbState+1].reward = 0;
+                                    break;
+                            }
+                            nbState++;
                             movement = 0;
+                            action = -1;
+                            
                         }
                     }
                     break;
@@ -338,6 +432,9 @@ int main(){
             } 
             else 
             {
+                stateList[nbState].state = 23*(character.row-1)+(character.column-1);
+                stateList[nbState].action = -1;
+                nbState++;
                 (character.position).x = 12*24-8;
                 (character.position).y = 22*24+12;
                 (character.position).w = offset_w*0.8;
@@ -348,8 +445,10 @@ int main(){
                 (character.state).h = offset_h;
                 character.row = 23;
                 character.column = 12;
-                k++;
+                generation++;
                 zoom = 0.8;
+                updateQtable(qTable,stateList,nbState,xi,gamma);
+                nbState = 0;
             }
         }
         else
@@ -403,12 +502,45 @@ int main(){
             }
             else
             {
+                if (grille[character.row][character.column] == 10 || grille[character.row][character.column] == 6)
+                {
+                    stateList[nbState].state = 23*(character.row-1)+(character.column-1);
+                    stateList[nbState].action = -1;
+                    nbState++;
+                    (character.position).x = 12*24-8;
+                    (character.position).y = 22*24+12;
+                    (character.position).w = offset_w*0.8;
+                    (character.position).h = offset_h*0.8;
+                    (character.state).x = 0;
+                    (character.state).y = 0;
+                    (character.state).w = offset_w;
+                    (character.state).h = offset_h;
+                    character.row = 23;
+                    character.column = 12;
+                    generation++;
+                    zoom = 0.8;
+                    updateQtable(qTable,stateList,nbState,xi,gamma);
+                    printStateList(stateList,nbState);
+                    sauvegarder("sauvegarde.txt",qTable);
+                    nbState = 0;
                     movement = 1;
+                }
+                else
+                {
+                    movement = 1;    
+                }
             }
         }
 
+        if (n%100 == 0)
+        {
+            eps *= 0.99; 
+        }
+        n++;
+        printf("eps:%f\n",eps);
+
         SDL_RenderCopy(renderer, character.sprite, &(character.state), &(character.position)); 
-        SDL_Delay(50);
+        SDL_Delay(10);
 
         SDL_RenderPresent(renderer);
     }
@@ -416,7 +548,6 @@ int main(){
     for(i=0;i<15;i++){
         SDL_DestroyTexture(texture[i]);
     }
-
     SDL_Delay(500);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);

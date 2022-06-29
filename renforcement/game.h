@@ -1,8 +1,9 @@
 #include <SDL2/SDL.h>
 #include <stdio.h>
-#include<string.h>
+#include <string.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
+#include <time.h>
 
 /* Taille de la fenêtre */
 #define SCREEN_WIDTH  600
@@ -17,10 +18,11 @@
 #define RIGHT 1
 #define DOWN 2
 #define LEFT 3
+#define DIRECTION 4
 
 /* Structures */
 #define NB_TELEPORTER 20
-
+#define NB_STATE 529
 
 typedef struct character
 {
@@ -41,6 +43,21 @@ typedef struct teleporter
 
 } Teleporter_t;
 
+typedef struct stateList
+{
+	int state;
+	int action;
+	int reward;
+
+} StateList_t;
+
 
 int hasToTeleport(Teleporter_t tabTeleporter[], Character_t character);
 void initTeleporter(Teleporter_t tabTeleporter[]);
+float maxStateQtable(float qtable[][DIRECTION], int state, int *argmax);
+void initQtable(float qTable[][DIRECTION]);
+void updateQtable(float qTable[][DIRECTION], StateList_t stateList[], int nbState, float xi, float gamma);
+void printQtable(float qTable[][DIRECTION]);
+void printStateList(StateList_t stateList[], int nbState);
+void sauvegarder(char* nomFichier, float grid[][DIRECTION]);
+void charger(char* nomFichier,float grid[][DIRECTION]);
