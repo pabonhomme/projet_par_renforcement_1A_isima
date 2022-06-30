@@ -5,11 +5,14 @@ EXEC=game
 
 all: $(EXEC)
 
-game: main.o game.o
+game: main.o menu.o game.o
 	$(CC) -o $@ $^ $(LDFLAGS)
 	@echo "\nLancer le programme avec ./game"
 
 main.o: main.c
+	$(CC) -o $@ -c $< $(CFLAGS)
+
+menu.o: menu.c
 	$(CC) -o $@ -c $< $(CFLAGS)
 
 game.o: game.c game.h
