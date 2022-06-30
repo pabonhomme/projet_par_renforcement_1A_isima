@@ -1,8 +1,9 @@
 #include <SDL2/SDL.h>
 #include <stdio.h>
-#include<string.h>
+#include <string.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
+#include <time.h>
 
 /* Taille de la fenêtre */
 #define SCREEN_WIDTH  600
