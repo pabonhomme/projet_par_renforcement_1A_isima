@@ -23,6 +23,7 @@
 /* Structures */
 #define NB_TELEPORTER 22
 #define NB_STATE 529
+#define NB_ITE 200
 
 typedef struct character
 {
@@ -61,3 +62,4 @@ void printQtable(float qTable[][DIRECTION]);
 void printStateList(StateList_t stateList[], int nbState);
 void sauvegarder(char* nomFichier, float grid[][DIRECTION]);
 void charger(char* nomFichier,float grid[][DIRECTION]);
+void initStateList(StateList_t stateList[]);
