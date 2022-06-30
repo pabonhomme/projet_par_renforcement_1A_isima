@@ -6,25 +6,18 @@ void menu()
 {
     SDL_Window* window; // fenetre de jeu
     SDL_Renderer* renderer; 
-    SDL_Texture *texture, *texture1, *texture2, *sprite;
-    SDL_Rect rect, rect1, rect2;
-    SDL_Texture *bg;
-    int running=1;
+    SDL_Texture *texture_mode_normal, *texture_titre, *texture_mode_ia, *sprite_georges, *bg;
+    int running=1, offset_x=0,offset_y=0, direction=RIGHT, cpt_x=0, cpt_xmax=62, cpt_y=0, cpt_ymax=43;
     SDL_Event event;
-	int offset_x=0,offset_y=0;
 	float zoom = 1.5;
     Character_t character;
-    int direction=RIGHT, cpt_x=0, cpt_xmax=62, cpt_y=0, cpt_ymax=43;
-	SDL_Rect 
-            source = {0},                    
-            window_dimensions = {0}
-            ;
-    
+	SDL_Rect rect_mode_normal, rect_titre, rect_mode_ia, source = {0}, window_dimensions = {0};
+    TTF_Font *font_titre, *font_mode;
 
     if (SDL_Init(SDL_INIT_VIDEO) == -1)
     {
         fprintf(stderr, "Erreur d'initialisation de la SDL : %s\n", SDL_GetError());
-        return EXIT_FAILURE;
+        // return EXIT_FAILURE;
     }
 
     window = SDL_CreateWindow("Teleporting Georges", 
@@ -44,12 +37,12 @@ void menu()
         // faire ce qu'il faut pour quitter proprement
     }
     TTF_Init();
-    TTF_Font *font = TTF_OpenFont("./font/04B_30__.TTF", 20);
-    if (font == NULL) {
+    font_mode = TTF_OpenFont("./font/04B_30__.TTF", 20);
+    if (font_mode == NULL) {
         fprintf(stderr, "error: font not found\n");
         exit(EXIT_FAILURE);
     }
-    TTF_Font *font1 = TTF_OpenFont("./font/04B_30__.TTF", 28);
+    font_titre = TTF_OpenFont("./font/04B_30__.TTF", 28);
 
     bg= IMG_LoadTexture(renderer,"./img/game-modified.png");
     if (bg == NULL) 
@@ -57,13 +50,13 @@ void menu()
 
     display_background(bg,window,renderer);
     
-    sprite = IMG_LoadTexture(renderer,"./img/george.png");
-	if (sprite == NULL)
+    sprite_georges = IMG_LoadTexture(renderer,"./img/george.png");
+	if (sprite_georges == NULL)
 	{
 		 fprintf(stderr, "Erreur de chargement de l'image : %s\n", SDL_GetError());
 	}
     SDL_GetWindowSize(window,&window_dimensions.w,&window_dimensions.h);
-    SDL_QueryTexture(sprite,NULL,NULL,&source.w, &source.h);
+    SDL_QueryTexture(sprite_georges,NULL,NULL,&source.w, &source.h);
 
     offset_x = source.w/4;
     offset_y = source.h/4;				   // Je n'ai qu'une seule ligne dans mon sprite
@@ -155,31 +148,41 @@ void menu()
                         break;      
                 }
             break;
+            case SDL_KEYDOWN:
+                switch(event.key.keysym.sym)
+                {
+                case SDLK_ESCAPE:
+                    running = 0;
+                    break;
+                default:
+                    break;
+                }
+                break;
             case SDL_MOUSEBUTTONUP:
               if (   event.button.y > 255
-                  && event.button.y <= 255+rect.h   
+                  && event.button.y <= 255+rect_mode_normal.h   
                   && event.button.x > 180
-                  && event.button.x <= 180+rect.w){
-                    printf("appui sur jouer normal\n");
-                    SDL_DestroyTexture(sprite);
-                    SDL_DestroyTexture(texture);
-                    SDL_DestroyTexture(texture1);
-                    SDL_DestroyTexture(texture2);
+                  && event.button.x <= 180+rect_mode_normal.w)
+                  {
+
+                    SDL_DestroyTexture(sprite_georges);
+                    SDL_DestroyTexture(texture_mode_normal);
+                    SDL_DestroyTexture(texture_titre);
+                    SDL_DestroyTexture(texture_mode_ia);
                     SDL_DestroyTexture(bg);
                     SDL_DestroyRenderer(renderer);
                     SDL_DestroyWindow(window);
 
-                    
                     game_normal(); 
                     running=0;
                         
                   }
-                  else if (   event.button.y > 350
-                  && event.button.y <= 350+rect.h   
+                  else if ( event.button.y > 350
+                  && event.button.y <= 350+rect_mode_normal.h   
                   && event.button.x > 210
-                  && event.button.x <= 210+rect.w){
-                    printf("appui sur jouer ia\n");
-                    
+                  && event.button.x <= 210+rect_mode_normal.w)
+                  {
+   
                   }
 
             break;
@@ -191,23 +194,24 @@ void menu()
         
         SDL_RenderClear(renderer);
         display_background(bg,window,renderer);
-        SDL_RenderCopy(renderer, sprite, &(character.state), &(character.position));  
-        get_text(renderer, 40, 50, "TELEPORTING GEORGES",  font1, &texture1, &rect1);
-        get_text(renderer, 190, 255, "Mode normal",  font, &texture, &rect);
-        get_text(renderer, 225, 350, "Mode IA",  font, &texture2, &rect2);
-        SDL_RenderCopy(renderer, texture, NULL, &rect);
-        SDL_RenderCopy(renderer, texture1, NULL, &rect1);
-        SDL_RenderCopy(renderer, texture2, NULL, &rect2);
+        SDL_RenderCopy(renderer, sprite_georges, &(character.state), &(character.position));  
+        get_text(renderer, 40, 50, "TELEPORTING GEORGES",  font_titre, &texture_titre, &rect_titre);
+        get_text(renderer, 190, 255, "Mode normal",  font_mode, &texture_mode_normal, &rect_mode_normal);
+        get_text(renderer, 225, 350, "Mode IA",  font_mode, &texture_mode_ia, &rect_mode_ia);
+        SDL_RenderCopy(renderer, texture_mode_normal, NULL, &rect_mode_normal);
+        SDL_RenderCopy(renderer, texture_titre, NULL, &rect_titre);
+        SDL_RenderCopy(renderer, texture_mode_ia, NULL, &rect_mode_ia);
         SDL_RenderPresent(renderer);
         SDL_Delay(50);
         
     }
     
-    SDL_DestroyTexture(sprite);
-    TTF_CloseFont(font);
-    SDL_DestroyTexture(texture);
-    SDL_DestroyTexture(texture1);
-    SDL_DestroyTexture(texture2);
+    SDL_DestroyTexture(sprite_georges);
+    TTF_CloseFont(font_mode);
+    TTF_CloseFont(font_titre);
+    SDL_DestroyTexture(texture_mode_normal);
+    SDL_DestroyTexture(texture_titre);
+    SDL_DestroyTexture(texture_mode_ia);
     SDL_DestroyTexture(bg);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
