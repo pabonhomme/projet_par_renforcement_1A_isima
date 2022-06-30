@@ -785,7 +785,7 @@ void generation()
                        {1,1,1,1,1,1,1,1,   1,1,1,1,1,1,1,1,  1,1,1,1,1,1,1,1,1},
                        };
 
-    for (i=0; i<10000; i++)
+    for (i=0; i<20000; i++)
     {
     	initStateList(stateList);
         nbState = 0;
