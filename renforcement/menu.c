@@ -182,7 +182,16 @@ void menu()
                   && event.button.x > 210
                   && event.button.x <= 210+rect_mode_normal.w)
                   {
-   
+                    SDL_DestroyTexture(sprite_georges);
+                    SDL_DestroyTexture(texture_mode_normal);
+                    SDL_DestroyTexture(texture_titre);
+                    SDL_DestroyTexture(texture_mode_ia);
+                    SDL_DestroyTexture(bg);
+                    SDL_DestroyRenderer(renderer);
+                    SDL_DestroyWindow(window);
+
+                    game_ia(); 
+                    running=0;
                   }
 
             break;
