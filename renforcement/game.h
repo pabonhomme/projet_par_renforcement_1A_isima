@@ -63,3 +63,5 @@ void printStateList(StateList_t stateList[], int nbState);
 void sauvegarder(char* nomFichier, float grid[][DIRECTION]);
 void charger(char* nomFichier,float grid[][DIRECTION]);
 void initStateList(StateList_t stateList[]);
+void generation(); 
+void game_ia();
