@@ -163,8 +163,10 @@ h5{
 .fin{
 	padding-bottom: 2cm;
 }
-.p1{
-	text-align:justify;
+.conclusion{
+	font-family: 'Open Sans', sans-serif;
+	font-size: 32;
+	text-align:center;
 	font-style: bold;
 	padding:4cm;
 	padding-top: 0cm;
@@ -179,4 +181,55 @@ h5{
 }
 .ff{
 	padding-bottom: 2cm;
+}
+.p4{
+	text-align: left;
+	text-align: justify;
+	padding: 2cm;
+	padding-top: 0cm;
+	padding-bottom: 0cm;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 32;
+}
+figcaption{
+	padding-bottom: 2cm;
+}
+.mapintro{
+	margin-top: 2cm;
+	width: 18cm;
+	height:16cm;
+
+}
+.parties{
+	font-family: 'Roboto', sans-serif;
+	font-style: bold;
+	font-size:x-large;
+	text-decoration: underline;
+	margin-top: 1cm;
+	margin-bottom: 1cm;
+	
+}
+.screen{
+	margin: 1cm;
+}
+.ia{
+	margin:1cm;
+	margin-top: 0cm;;
+	margin-bottom:0cm;
+}
+.telep{
+	margin-top:1cm;
+	width: 30cm;
+	height: 24cm;
+}
+.sousparties{
+	font-family: 'Roboto', sans-serif;
+	font-style: bold;
+	font-size:large;
+	margin-top: 1cm;
+	margin-bottom: 1cm;
+	
+}
+.ameliorer{
+	margin-bottom: 2cm;
 }
