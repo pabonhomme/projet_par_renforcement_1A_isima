@@ -21,7 +21,7 @@
 #define DIRECTION 4
 
 /* Structures */
-#define NB_TELEPORTER 20
+#define NB_TELEPORTER 22
 #define NB_STATE 529
 
 typedef struct character
