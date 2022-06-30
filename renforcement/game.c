@@ -4,7 +4,7 @@ void game_normal(){
   SDL_Renderer *renderer;
     SDL_Event event;
     SDL_Window *window;
-    SDL_Texture *texture[15], *sprite;
+    SDL_Texture *texture[15], *sprite, *texture_fin;
     SDL_Surface* image[15];
 
     Character_t character;
@@ -14,7 +14,8 @@ void game_normal(){
 
     SDL_Rect source = {0};
 	float zoom = 0.8;
-
+    TTF_Font *font_fin;
+    SDL_Rect rect_fin;
     int running = 1, i = 0, j = 0, k = 0, offset_w, offset_h, cptCharac = 0, cptCharacMax = 6, action = -1, 
     first_jump = 1, ite_jump = 0, hasJump = 0, haswon = 0,
     movement = 1, teleport = -1, hasTeleported = 0, firstTeleport = 1,
@@ -434,6 +435,7 @@ void game_normal(){
             			}
             			else
             			{
+                            
             				(character.state).x = 0; // La première vignette est en début de ligne
             				first_jump = 1;
             				hasJump = 0;
@@ -459,6 +461,15 @@ void game_normal(){
         SDL_RenderPresent(renderer);
         if(haswon)
                     {
+                    TTF_Init();
+                    font_fin = TTF_OpenFont("./font/04B_30__.TTF", 20);
+                    if (font_fin == NULL) {
+                        fprintf(stderr, "error: font not found\n");
+                        exit(EXIT_FAILURE);
+                    }
+                    get_text(renderer, 210, 310, "VICTORY!!",  font_fin, &texture_fin, &rect_fin);
+                    SDL_RenderCopy(renderer, texture_fin, NULL, &rect_fin);
+                    SDL_RenderPresent(renderer);
                         for(i=0;i<15;i++)
                         {
                             SDL_DestroyTexture(texture[i]);
