@@ -256,112 +256,111 @@
 </div>
     <div class="partie4" id="ds">
         <div class="container">
-        <center><h1>Deuxième semaine</h1></center> 
-        <ol type="I">
-            
-            
-            <li class="parties"><b>Introduction:</b></li>
-            <p class= "p4"> <br> Durant la première semaine, nous avons réalisé différents 
-            exercices qui nous ont permis de développer nos compétences en C et en SDL. </br>
-            A l'aide de ces acquis, nous avons dû réaliser un projet qui s'étend sur toute la deuxième semaine.
-            <br>Ce projet consiste en la création d'un jeu qui utilise l'apprentissage par renforcement. 
-            Nous avons donc créé un jeu dont l'entité apprend à jouer et à atteindre un objectif final par ses propres moyens. 
-            Le principe de notre jeu se rapproche plus ou moins de celui d'un labyrinthe. </br></p>
-            <center><img src="gif/menu.gif"  class="mapintro" alt=""></center>
-            <figcaption><a  href="../renforcement/">Code du jeu</a></figcaption>
-            <h5> Notre menu dispose de deux options distinctes:</h5>
-            <ul style="list-style-type:lower-alpha partie5">
-                
-                <li class="partie5">Jeu en mode normal où l'utilisateur déplace le personnage grâce aux touches directionnelles.</li>
-                <li class="partie5">Jeu en mode IA où le personnage est déplacé grâce à l'apprentissage par renforcement réalisé au préalable.</li>
-            </ul>
-            <!-- <p class= "p4"> <br> Notre menu dispose de deux options distinctes: </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;-Jeu en mode normal où l'utilisateur déplace le personnage grâce aux touches directionnelles.
-                <br>&nbsp;&nbsp;&nbsp;&nbsp;-Jeu en mode IA où le personnage est déplacé grâce à l'apprentissage par renforcement réalisé au préalable.</br>
-            </p> -->
-            <h5>Comment jouer en mode normal ?</h5>
-                <ol style="list-style-type:lower-alpha partie5">
-                    <li class="partie5">Une fois que le joueur a cliqué sur mode normal, la partie est lancée directement.&nbsp; Le personnage est sur la case de départ.</li>
-                    <li class="partie5">Déplacer le personnage en utilisant les touches directionnelles et en évitant les trous.</li>
-                    <li class="partie5 ">Utiliser les téléporteurs pour arriver à la case d'arrivée.</li>
-                </ol>
-                <h5>Comment jouer en mode IA ?</h5>
-                <ol style="list-style-type:lower-alpha partie5">
-                    <li class="partie5">Une fois que le joueur a cliqué sur mode IA, la partie est lancée directement.</li>
-                    <li class="partie5">Regarder le personnage se déplacer vers la case d'arrivée.</li>
-
-                </ol>
-            <center><img src="./images/map_intro.png" class=mapintro alt=""></center>
-            <figcaption>Apperçu du jeu</figcaption>
-            
-            
-            <li class="parties">Présentation du jeu en mode normal:</li>
-            <ol type="a">
-                <li class="sousparties">Téléportation du personnage: 
-            <p class= "p4"> <br> Comme nous l'avons expliqué précedemment, nous devons guider notre personnage de la case de
-            départ vers la case d'arrivée en passant par des téléporteurs. </br>
-            Les téléporteurs sont liés deux à deux avec une couleur précise.
-            Quand le personnage arrive sur un téléporteur, nous remarquons comme sur l'image qu'il fait une animation qui le mène vers 
-            le téléporteur correspondant.
-            </p>
-            <center><img src="./gif/mvt_teleportation.gif" class=mapintro alt=""></center>
-            <figcaption>Mouvement de téléportation</figcaption>
-            <center><img src="./images/teleport.png" class="telep" alt=""></center>
-            <figcaption>Code de la téléportation</figcaption>
-            
-            <li class="sousparties">Mort du personnage: 
-            <p class= "p4"> <br> Si notre personnage touche un trou, il est remis sur la position de départ.
-            Nous utilisons l'animation de téléportation. En effet, la mort du personnage le téléporte directement sur la case de départ. </br></p>
-            <center><img src="./gif/mort.gif" class=mapintro alt=""></center>
-            <figcaption>Mort du personnage</figcaption>
-            </li>
-
-            <li class="sousparties">Victoire du personnage: 
-            <center><img src="./gif/animVictory.gif" class=mapintro alt=""></center>
-            <figcaption>Victoire du personnage</figcaption>
-            <p class= "p4">Lorsque le personnage atteint la case finale, il effectue un petit saut en tournant sur lui-même.  </p>
-            </li>
-            </ol>
-            <br><li class="parties">Présentation du jeu en mode IA:</li></br>
-            <center><img src="./images/directions.png" class="screen" alt=""></center>
-            <p class= "p4"> <br>
-            Nos perceptions sont en fonction des positions x et y du personnage dans la map. Nous avons 529 états qui dépendent de 4 directions.</br>
-            <br>L’IA suit l’algorithme de Q-Learning.&nbsp;&nbsp;Ainsi notre QTable est une matrice 529x4.</br>
-            
-            
-            
-            <br>Notre système de reward est simple: 1 si le personnage a atteint le point d’arrivée, 0 sinon.</br>
-            
-            
-            
-            <br>Afin de déterminer les paramètres xi et gamma, nous avons réalisé différentes modélisations sur 500 000 générations. 
-            
-            Les meilleurs résultats sont pour xi = 0.8 et gamma = 0.93.</br>
-            
-            
-            
-            <br>Le choix des actions est suivant l’algorithme E-greedy. Notre epsilon est une suite géométrique de paramètre 0.999. 
-            Pour notre modélisation finale, cet epsilon décroit tous les 150 générations.</br>
-            
-            
-            
-            <br>Une fois cette modélisation faite, on sauvegarde la QTable résultante et on la charge dans le programme global pour faire bouger notre personnage 
-            avec l’expérience des générations précédentes.</br></p>
-            <center><img src="./images/screenQtable.png" class="screen" alt=""></center>
-            <p class= "p4">Notre point d'arrivée correspond à l’état 265, les états 264 et 266 correspondent respectivement aux cases à gauche et droite de la case finale.
-            <br>On remarque bien que les 1 dans les colonnes RIGHT et LEFT de chaque état.</br>
-            <br><br>Voici une démonstration du jeu en mode IA: </br></br> </p>
-            <center><img src="./gif/IA.gif" class="ia" alt=""></center>
-            <figcaption>Démo de l'IA</figcaption>
-            <li class="parties">Conclusion:</li>
-            <h5>Points à améliorer?</h5>
-                <ul style="list-style-type:lower-alpha">
-                    <li >Gérer mieux les touches</li>
-                    <li >Améliorer la vitesse</li>
+            <center><h1>Deuxième semaine</h1></center> 
+            <ol type="I">
+                <li class="parties"><b>Introduction:</b></li>
+                <p class= "p4"> <br> Durant la première semaine, nous avons réalisé différents 
+                exercices qui nous ont permis de développer nos compétences en C et en SDL. </br>
+                A l'aide de ces acquis, nous avons dû réaliser un projet qui s'étend sur toute la deuxième semaine.
+                <br>Ce projet consiste en la création d'un jeu qui utilise l'apprentissage par renforcement. 
+                Nous avons donc créé un jeu dont l'entité apprend à jouer et à atteindre un objectif final par ses propres moyens. 
+                Le principe de notre jeu se rapproche plus ou moins de celui d'un labyrinthe. </br></p>
+                <center><img src="gif/menu.gif"  class="mapintro" alt=""></center>
+                <figcaption><a  href="../renforcement/">Code du jeu</a></figcaption>
+                <h5> Notre menu dispose de deux options distinctes:</h5>
+                <ul style="list-style-type:lower-alpha partie5">
+                    
+                    <li class="partie5">Jeu en mode normal où l'utilisateur déplace le personnage grâce aux touches directionnelles.</li>
+                    <li class="partie5">Jeu en mode IA où le personnage est déplacé grâce à l'apprentissage par renforcement réalisé au préalable.</li>
                 </ul>
-        </ol>
+                <!-- <p class= "p4"> <br> Notre menu dispose de deux options distinctes: </br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;-Jeu en mode normal où l'utilisateur déplace le personnage grâce aux touches directionnelles.
+                    <br>&nbsp;&nbsp;&nbsp;&nbsp;-Jeu en mode IA où le personnage est déplacé grâce à l'apprentissage par renforcement réalisé au préalable.</br>
+                </p> -->
+                <h5>Comment jouer en mode normal ?</h5>
+                    <ol style="list-style-type:lower-alpha partie5">
+                        <li class="partie5">Une fois que le joueur a cliqué sur mode normal, la partie est lancée directement.&nbsp; Le personnage est sur la case de départ.</li>
+                        <li class="partie5">Déplacer le personnage en utilisant les touches directionnelles et en évitant les trous.</li>
+                        <li class="partie5 ">Utiliser les téléporteurs pour arriver à la case d'arrivée.</li>
+                    </ol>
+                    <h5>Comment jouer en mode IA ?</h5>
+                    <ol style="list-style-type:lower-alpha partie5">
+                        <li class="partie5">Une fois que le joueur a cliqué sur mode IA, la partie est lancée directement.</li>
+                        <li class="partie5">Regarder le personnage se déplacer vers la case d'arrivée.</li>
 
-    </div>
+                    </ol>
+                <center><img src="./images/map_intro.png" class=mapintro alt=""></center>
+                <figcaption>Apperçu du jeu</figcaption>
+                
+                
+                <li class="parties">Présentation du jeu en mode normal:</li>
+                <ol type="a">
+                    <li class="sousparties">Téléportation du personnage: 
+                <p class= "p4"> <br> Comme nous l'avons expliqué précedemment, nous devons guider notre personnage de la case de
+                départ vers la case d'arrivée en passant par des téléporteurs. </br>
+                Les téléporteurs sont liés deux à deux avec une couleur précise.
+                Quand le personnage arrive sur un téléporteur, nous remarquons comme sur l'image qu'il fait une animation qui le mène vers 
+                le téléporteur correspondant.
+                </p>
+                <center><img src="./gif/mvt_teleportation.gif" class=mapintro alt=""></center>
+                <figcaption>Mouvement de téléportation</figcaption>
+                <center><img src="./images/teleport.png" class="telep" alt=""></center>
+                <figcaption>Code de la téléportation</figcaption>
+                
+                <li class="sousparties">Mort du personnage: 
+                <p class= "p4"> <br> Si notre personnage touche un trou, il est remis sur la position de départ.
+                Nous utilisons l'animation de téléportation. En effet, la mort du personnage le téléporte directement sur la case de départ. </br></p>
+                <center><img src="./gif/mort.gif" class=mapintro alt=""></center>
+                <figcaption>Mort du personnage</figcaption>
+                </li>
+
+                <li class="sousparties">Victoire du personnage: 
+                <center><img src="./gif/animVictory.gif" class=mapintro alt=""></center>
+                <figcaption>Victoire du personnage</figcaption>
+                <p class= "p4">Lorsque le personnage atteint la case finale, il effectue un petit saut en tournant sur lui-même.  </p>
+                </li>
+                </ol>
+                <br><li class="parties">Présentation du jeu en mode IA:</li></br>
+                <center><img src="./images/directions.png" class="screen" alt=""></center>
+                <p class= "p4"> <br>
+                Nos perceptions sont en fonction des positions x et y du personnage dans la map. Nous avons 529 états qui dépendent de 4 directions.</br>
+                <br>L’IA suit l’algorithme de Q-Learning.&nbsp;&nbsp;Ainsi notre QTable est une matrice 529x4.</br>
+                
+                
+                
+                <br>Notre système de reward est simple: 1 si le personnage a atteint le point d’arrivée, 0 sinon.</br>
+                
+                
+                
+                <br>Afin de déterminer les paramètres xi et gamma, nous avons réalisé différentes modélisations sur 500 000 générations. 
+                
+                Les meilleurs résultats sont pour xi = 0.8 et gamma = 0.93.</br>
+                
+                
+                
+                <br>Le choix des actions est suivant l’algorithme E-greedy. Notre epsilon est une suite géométrique de paramètre 0.999. 
+                Pour notre modélisation finale, cet epsilon décroit tous les 150 générations.</br>
+                
+                
+                
+                <br>Une fois cette modélisation faite, on sauvegarde la QTable résultante et on la charge dans le programme global pour faire bouger notre personnage 
+                avec l’expérience des générations précédentes.</br></p>
+                <center><img src="./images/screenQtable.png" class="screen" alt=""></center>
+                <p class= "p4">Notre point d'arrivée correspond à l’état 265, les états 264 et 266 correspondent respectivement aux cases à gauche et droite de la case finale.
+                <br>On remarque bien que les 1 dans les colonnes RIGHT et LEFT de chaque état.</br>
+                <br><br>Voici une démonstration du jeu en mode IA: </br></br></p>
+                <center><img src="./gif/IA.gif" class="ia" alt=""></center>
+                <figcaption>Démo de l'IA</figcaption>
+
+                <li class="parties">Conclusion:</li>
+                    <h4>Points à améliorer?</h4>
+                    <ul style="list-style-type:lower-alpha">
+                        <li class="p4" >Gérer mieux les touches</li>
+                        <li class="p4" >Améliorer la vitesse</li>
+                </div>
+            </ol>
+
+        </div>
     </div>
     <div class="container-fluid bg-white" id="Conclusion">
         <div class="container-fluid ff">

@@ -75,6 +75,7 @@ figcaption {
 .partie4{
 	background-color:  #282828;
 	color: aliceblue;
+	padding-bottom: 2cm;
 }
 .image{
 	width: 10cm;
@@ -219,8 +220,8 @@ figcaption{
 }
 .telep{
 	margin-top:1cm;
-	width: 30cm;
-	height: 24cm;
+	width: 24cm;
+	height: 20cm;
 }
 .sousparties{
 	font-family: 'Roboto', sans-serif;
@@ -232,4 +233,5 @@ figcaption{
 }
 .ameliorer{
 	margin-bottom: 2cm;
+	text-decoration: none;
 }
